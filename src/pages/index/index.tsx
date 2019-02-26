@@ -1,5 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
+import { AtTabBar } from 'taro-ui'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
@@ -53,16 +54,29 @@ interface Index {
   }
 }))
 class Index extends Component {
-
-    /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-    config: Config = {
+  
+ /**
+ * 指定config的类型声明为: Taro.Config
+ *
+ * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
+ * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
+ * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
+ */
+  config: Config = {
     navigationBarTitleText: '首页'
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      current: 0
+    }
+  }
+
+  handleClick (value) {
+    this.setState({
+      current: value
+    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -77,8 +91,17 @@ class Index extends Component {
 
   render () {
     return (
-      <View className='index'>
-        
+      <View className='homeContainer'>
+        <AtTabBar
+          fixed
+          tabList={[
+            { title: '待办事项', iconType: 'bullet-list'},
+            { title: '拍照', iconType: 'camera' },
+            { title: '文件夹', iconType: 'folder'}
+          ]}
+          onClick={this.handleClick.bind(this)}
+          current={this.state.current}
+        />
       </View>
     )
   }
