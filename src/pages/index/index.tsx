@@ -89,7 +89,7 @@ class Index extends Component<IProps, PageState> {
   componentWillUnmount () { 
   }
 
-  async componentDidShow () { 
+  async componentWillMount () { 
     const banner = await this.getBannerUrl()
     this.setState({
       banner
