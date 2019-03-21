@@ -31,6 +31,7 @@
     "@tarojs/taro-swan": "1.2.13",
     "@tarojs/taro-tt": "1.2.13",
     "@tarojs/taro-weapp": "1.2.13",
+    "classnames": "^2.2.6",
     "nerv-devtools": "^1.3.9",
     "nervjs": "^1.3.9",
     "redux": "^4.0.0",

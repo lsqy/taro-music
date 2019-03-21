@@ -29,6 +29,7 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/login/index',
       'pages/index/index'
     ],
     window: {

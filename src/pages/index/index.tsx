@@ -1,8 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
+import CLoading from '../../components/CLoading'
+import CTitle from '../../components/CTitle'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
 
@@ -65,7 +67,7 @@ class Index extends Component<IProps, PageState> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
     config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '网易云音乐'
   }
 
   constructor (props) {
@@ -85,7 +87,7 @@ class Index extends Component<IProps, PageState> {
 
   componentDidHide () { }
 
-  handleClick (value) {
+  switchTab (value) {
     this.setState({
       current: value
     })
@@ -93,19 +95,16 @@ class Index extends Component<IProps, PageState> {
 
   render () {
     return (
-      <View className='index'>
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+      <View className='index_container'>
+        <CLoading fullPage={true} />
+        <CTitle isFixed={false} />
         <AtTabBar
           fixed
           tabList={[
             { title: '发现', iconPrefixClass:'fa', iconType: 'feed'},
             { title: '我的', iconPrefixClass:'fa', iconType: 'music' }
           ]}
-          onClick={this.handleClick.bind(this)}
+          onClick={this.switchTab.bind(this)}
           current={this.state.current}
         />
       </View>
