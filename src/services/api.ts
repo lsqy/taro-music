@@ -8,7 +8,15 @@ export default {
     let { url, data } = params
     let contentType = 'application/json'
     contentType = params.contentType || contentType
-    const option = {
+    type OptionType = {
+      url: string,
+      data?: object | string,
+      method?: any,
+      header: object,
+      success: any,
+      error: any
+    }
+    const option: OptionType = {
       url: url.indexOf('http') !== -1 ? url : baseUrl + url,
       data: data,
       method: method,
@@ -41,6 +49,7 @@ export default {
         logError('api', '请求接口出现问题', e)
       }
     }
+    // eslint-disable-next-line
     return Taro.request(option)
   },
   get(url, data?: object) {

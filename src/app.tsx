@@ -29,14 +29,15 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/my/index',
       'pages/login/index',
       'pages/index/index'
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#d43c33',
       navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarTextStyle: 'white'
     }
   }
 

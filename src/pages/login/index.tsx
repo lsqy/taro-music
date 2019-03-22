@@ -6,15 +6,6 @@ import CTitle from '../../components/CTitle'
 import api from '../../services/api'
 import './index.scss'
 
-// #region 书写注意
-// 
-// 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
-// 需要显示声明 connect 的参数类型并通过 interface 的方式指定 Taro.Component 子类的 props
-// 这样才能完成类型检查和 IDE 的自动提示
-// 使用函数模式则无此限制
-// ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
-//
-// #endregion
 
 type PageState = {
     phone: string,
@@ -57,9 +48,6 @@ class Login extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentDidShow () {
-    api.get('/playlist/hot').then((res) => {
-        console.log(res)
-    })
    }
 
   componentDidHide () { }
@@ -90,7 +78,7 @@ class Login extends Component<{}, PageState> {
           const { code } = res.data
           let tip = '登录成功'
           if (code !== 200) {
-            tip = res.msg || '登录失败'
+            tip = res.data.msg || '登录失败'
           }
           this.setState({
             showLoading: false,
@@ -98,18 +86,12 @@ class Login extends Component<{}, PageState> {
             tip
           })
           if (code === 200) {
+            Taro.setStorageSync('userInfo', res.data)
             Taro.navigateTo({
-              url: '/'
+              url: '/pages/index/index'
             })
           }
       })
-    //   setTimeout(() => {
-    //     this.setState({
-    //         showLoading: false,
-    //         showTip: true,
-    //         tip: '登录成功'
-    //     })
-    //   }, 3000)
   }
 
   handleChange (type: InputType, event) {
@@ -138,7 +120,7 @@ class Login extends Component<{}, PageState> {
             </View>
             <View className='login_content__item'>
                 <AtIcon value='lock' size='24' color='#ccc'></AtIcon>
-                <Input type='text' placeholder='密码' className='login_content__input' onInput={ (e) : void => {this.handleChange('password', e)} } />
+                <Input type='text' password placeholder='密码' className='login_content__input' onInput={ (e) : void => {this.handleChange('password', e)} } />
             </View>
             <AtButton className='login_content__btn' onClick={this.login.bind(this)}>登录</AtButton>
         </View>

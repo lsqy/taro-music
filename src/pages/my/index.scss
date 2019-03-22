@@ -1,0 +1,26 @@
+.my_container {
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    .header__img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+    .header__info {
+      padding: 20px;
+      .header__info__name {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+      .header__info__level {
+        color: #888888;
+        font-size: 24px;
+        border: 1px solid #888888;
+        padding: 2px 20px;
+        border-radius: 40px;
+      }
+    }
+  }
+}
