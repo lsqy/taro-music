@@ -97,6 +97,11 @@ class Login extends Component<{}, PageState> {
             showTip: true,
             tip
           })
+          if (code === 200) {
+            Taro.navigateTo({
+              url: '/'
+            })
+          }
       })
     //   setTimeout(() => {
     //     this.setState({
