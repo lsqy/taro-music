@@ -47,6 +47,12 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentDidShow () {
+    if (!this.state.userInfo) {
+      Taro.navigateTo({
+        url: '/pages/login/index'
+      })
+      return
+    }
     const { id } = this.state.userInfo.account
     api.get('/user/detail', {
       uid: id
