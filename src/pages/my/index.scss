@@ -23,4 +23,21 @@
       }
     }
   }
+  .user_count {
+    display: flex;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    .user_count__sub {
+      flex: 1;
+      font-size: 22px;
+      color: #888888;
+      .user_count__sub--num {
+        color: #323232;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+    }
+  }
 }

@@ -88,8 +88,9 @@ class Index extends Component<IProps, PageState> {
   componentDidHide () { }
 
   switchTab (value) {
-    this.setState({
-      current: value
+    if (value !== 1) return
+    Taro.navigateTo({
+      url: '/pages/my/index'
     })
   }
 
@@ -100,6 +101,7 @@ class Index extends Component<IProps, PageState> {
         <CTitle isFixed={false} />
         <AtTabBar
           fixed
+          selectedColor='#d43c33'
           tabList={[
             { title: '发现', iconPrefixClass:'fa', iconType: 'feed'},
             { title: '我的', iconPrefixClass:'fa', iconType: 'music' }

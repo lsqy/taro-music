@@ -1,5 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
+import { AtTabBar } from 'taro-ui'
 import { View, Image, Text } from '@tarojs/components'
 import api from '../../services/api'
 import './index.scss'
@@ -13,10 +14,14 @@ type PageState = {
       profile: {
         avatarUrl: string,
         backgroundUrl: string,
-        nickname: string
+        nickname: string,
+        eventCount: number,
+        follows: number,
+        followeds: number
       }
     },
-    userLevel: number
+    userLevel: number,
+    current: number
 }
 
 class Page extends Component<{}, PageState> {
@@ -36,7 +41,8 @@ class Page extends Component<{}, PageState> {
     super(props)
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
-      userLevel: 0
+      userLevel: 0,
+      current: 1
     }
   }
 
@@ -70,6 +76,13 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  
+  switchTab (value) {
+    if (value !== 0) return
+    Taro.navigateTo({
+      url: '/pages/index/index'
+    })
+  }
 
   render () {
     const { userInfo, userLevel } = this.state
@@ -87,7 +100,36 @@ class Page extends Component<{}, PageState> {
             </View>
           </View>
         </View>
-        
+        <View className='user_count'>
+          <View className='user_count__sub'>
+            <View className='user_count__sub--num'>
+              {userInfo.profile.eventCount}
+            </View>
+            <View>动态</View>
+          </View>
+          <View className='user_count__sub'>
+            <View className='user_count__sub--num'>
+              {userInfo.profile.follows}
+            </View>
+            <View>关注</View>
+          </View>
+          <View className='user_count__sub'>
+            <View className='user_count__sub--num'>
+              {userInfo.profile.followeds}
+            </View>
+            <View>粉丝</View>
+          </View>
+        </View>
+        <AtTabBar
+          fixed
+          selectedColor='#d43c33'
+          tabList={[
+            { title: '发现', iconPrefixClass:'fa', iconType: 'feed'},
+            { title: '我的', iconPrefixClass:'fa', iconType: 'music' }
+          ]}
+          onClick={this.switchTab.bind(this)}
+          current={this.state.current}
+        />
       </View>
     )
   }
