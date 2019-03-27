@@ -1,0 +1,90 @@
+.playList_container {
+  .playList__header {
+    position: relative;
+    width: 100%;
+    height: 372px;
+    overflow: hidden;
+    display: flex;
+    box-sizing: border-box;
+    padding: 60px 20px;
+    color: #fff;
+    .playList__header__bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 200%;
+      height: 200%;
+      filter: blur(20px);
+      transform: scale(1.5);
+      &:after {
+        position: absolute;
+        content: '';
+        background-color: rgba(0,0,0,.5);
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+    }
+    .playList__header__cover {
+      position: relative;
+      z-index: 2;
+      margin-right: 32px;
+      font-size: 24px;
+      .playList__header__cover__img {
+        width: 252px;
+        height: 252px;
+      }
+      .playList__header__cover__desc {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        padding: 0 16px;
+        height: 34px;
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        line-height: 34px;
+        background-color: rgba(217,48,48,.8);
+        border-top-right-radius: 34px;
+        border-bottom-right-radius: 34px;
+      }
+      .playList__header__cover__num {
+        position: absolute;
+        right: 5px;
+        top: 0;
+        font-weight: 700;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        .at-icon-sound {
+          margin-right: 10px;
+        }
+      }
+    }
+    .playList__header__info {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      .playList__header__info__title {
+        font-size: 34px;
+        line-height: 1.3;
+        line-height: 44px;
+      }
+      .playList__header__info__user {
+        color: #ffffffcc;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        margin-top: 40px;
+        .playList__header__info__user_avatar {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

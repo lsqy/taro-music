@@ -30,13 +30,16 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/my/index',
+      'pages/myFans/index',
+      'pages/myFocus/index',
+      'pages/myEvents/index',
       'pages/index/index',
       'pages/login/index',
-      'pages/myFocus/index'
+      'pages/playListDetail/index'
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#d43c33',
+      navigationBarBackgroundColor: '#d43c33',      
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'white'
     }

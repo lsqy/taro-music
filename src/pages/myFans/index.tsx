@@ -29,7 +29,7 @@ class Page extends Component<{}, PageState> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '我的关注'
+    navigationBarTitleText: '我的粉丝'
   }
 
   constructor (props) {
@@ -49,12 +49,12 @@ class Page extends Component<{}, PageState> {
 
   componentWillMount () {
     const { userId } = this.state
-    api.get('/user/follows', {
+    api.get('/user/followeds', {
       uid: userId,
       limit: 1000
     }).then((res) => {
       this.setState({
-        userList: res.data.follow,
+        userList: res.data.followeds,
         hideLoading: true
       })
     })
@@ -69,7 +69,7 @@ class Page extends Component<{}, PageState> {
   render () {
     const { hideLoading, userList } = this.state
     return (
-      <View className='myFocus_container'>
+      <View className='myFans_container'>
         <CLoading fullPage={true} hide={hideLoading} />
         <View className='userList'>
           {

@@ -1,22 +1,12 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import CLoading from '../../components/CLoading'
-import api from '../../services/api'
-import CUserListItem from '../../components/CUserListItem'
+// import api from '../../services/api'
 import './index.scss'
 
-type userInfo = {
-  avatarUrl: string,
-  nickname: string,
-  signature?: string,
-  gender: number
-}
 
 type PageState = {
-  userList: Array<userInfo>,
-  userId: number,
-  hideLoading: boolean
+  userId: number
 }
 
 class Page extends Component<{}, PageState> {
@@ -29,15 +19,13 @@ class Page extends Component<{}, PageState> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '我的关注'
+    navigationBarTitleText: '我的动态'
   }
 
   constructor (props) {
     super(props)
     this.state = {
       userId: Taro.getStorageSync('userId'),
-      userList: [],
-      hideLoading: false
     }
   }
 
@@ -45,19 +33,12 @@ class Page extends Component<{}, PageState> {
     console.log(this.props, nextProps)
   }
 
-  componentWillUnmount () { }
-
   componentWillMount () {
-    const { userId } = this.state
-    api.get('/user/follows', {
-      uid: userId,
-      limit: 1000
-    }).then((res) => {
-      this.setState({
-        userList: res.data.follow,
-        hideLoading: true
-      })
-    })
+    // const { userId } = this.state
+    // api.get('/user/event', {
+    //   uid: userId
+    // }).then((res) => {
+    // })
   }
 
   componentDidShow () {
@@ -67,15 +48,8 @@ class Page extends Component<{}, PageState> {
 
 
   render () {
-    const { hideLoading, userList } = this.state
     return (
-      <View className='myFocus_container'>
-        <CLoading fullPage={true} hide={hideLoading} />
-        <View className='userList'>
-          {
-            userList.map((item, index) => <CUserListItem userInfo={item} key={index} />)
-          }
-        </View>
+      <View className='template_container'>
       </View>
     )
   }

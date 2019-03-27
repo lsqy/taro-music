@@ -113,6 +113,12 @@ class Page extends Component<{}, PageState> {
     })
   }
 
+  goDetail(item) {
+    Taro.navigateTo({
+      url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+    })
+  }
+
   render () {
     const { userInfo, userLevel, userCreateList, userCollectList } = this.state
     console.log('userInfo', userInfo)
@@ -130,10 +136,10 @@ class Page extends Component<{}, PageState> {
               </View>
             </View>
           </View>
-          <AtIcon prefixClass='fa' value='sign-out' size='30' color='#F00' className='exit_icon' onClick={this.signOut.bind(this)}></AtIcon>
+          <AtIcon prefixClass='fa' value='sign-out' size='30' color='#d43c33' className='exit_icon' onClick={this.signOut.bind(this)}></AtIcon>
         </View>
         <View className='user_count'>
-          <View className='user_count__sub'>
+          <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myEvents')}>
             <View className='user_count__sub--num'>
               {userInfo.profile.eventCount}
             </View>
@@ -145,7 +151,7 @@ class Page extends Component<{}, PageState> {
             </View>
             <View>关注</View>
           </View>
-          <View className='user_count__sub'>
+          <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myFans')}>
             <View className='user_count__sub--num'>
               {userInfo.profile.followeds}
             </View>
@@ -161,7 +167,7 @@ class Page extends Component<{}, PageState> {
           }
           <View>
             {
-              userCreateList.map((item, index) => <View key={index} className='user_playlist__item'>
+              userCreateList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
                   src={item.coverImgUrl}
@@ -183,7 +189,7 @@ class Page extends Component<{}, PageState> {
           }
           <View>
             {
-              userCollectList.map((item, index) => <View key={index} className='user_playlist__item'>
+              userCollectList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
                   src={item.coverImgUrl}
