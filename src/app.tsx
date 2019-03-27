@@ -31,7 +31,8 @@ class App extends Component {
     pages: [
       'pages/my/index',
       'pages/index/index',
-      'pages/login/index'
+      'pages/login/index',
+      'pages/myFocus/index'
     ],
     window: {
       backgroundTextStyle: 'light',

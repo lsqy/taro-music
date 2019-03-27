@@ -87,6 +87,7 @@ class Login extends Component<{}, PageState> {
           })
           if (code === 200) {
             Taro.setStorageSync('userInfo', res.data)
+            Taro.setStorageSync('userId', res.data.account.id)
             Taro.navigateTo({
               url: '/pages/index/index'
             })

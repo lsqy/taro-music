@@ -5,7 +5,8 @@ import { View } from '@tarojs/components'
 import './index.scss'
 
 type Props = {
-  fullPage: boolean
+  fullPage?: boolean,
+  hide?: boolean
 }
 
 export default class CLoading extends Component<Props, {}> {
@@ -14,10 +15,11 @@ export default class CLoading extends Component<Props, {}> {
   }
 
   render() {
-    const { fullPage } = this.props
+    const { fullPage, hide } = this.props
     const cls = classnames({
         loading_components: true,
-        fullScreen: fullPage
+        fullScreen: fullPage,
+        hide: hide
     })
     return (
         <View className={cls}>

@@ -1,10 +1,16 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { AtTabBar } from 'taro-ui'
+import { AtTabBar, AtIcon } from 'taro-ui'
 import { View, Image, Text } from '@tarojs/components'
+import CLoading from '../../components/CLoading'
 import api from '../../services/api'
 import './index.scss'
 
+type ListItemInfo = {
+  coverImgUrl: string,
+  name: string,
+  trackCount: number
+}
 
 type PageState = {
     userInfo: {
@@ -21,7 +27,9 @@ type PageState = {
       }
     },
     userLevel: number,
-    current: number
+    current: number,
+    userCreateList: Array<ListItemInfo>,
+    userCollectList: Array<ListItemInfo>
 }
 
 class Page extends Component<{}, PageState> {
@@ -42,7 +50,9 @@ class Page extends Component<{}, PageState> {
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
       userLevel: 0,
-      current: 1
+      current: 1,
+      userCreateList: [],
+      userCollectList: []
     }
   }
 
@@ -68,9 +78,15 @@ class Page extends Component<{}, PageState> {
       })
     })
     api.get('/user/playlist', {
-      uid: id
+      uid: id,
+      limit: 300
     }).then((res) => {
-      console.log('获取用户歌单', res.data)
+      if (res.data.playlist && res.data.playlist.length > 0) {
+        this.setState({
+          userCreateList: res.data.playlist.filter(item => item.userId === id),
+          userCollectList: res.data.playlist.filter(item => item.userId !== id),
+        })
+      }
     })
   }
 
@@ -84,21 +100,37 @@ class Page extends Component<{}, PageState> {
     })
   }
 
+  jumpPage(name) {
+    Taro.navigateTo({
+      url: `/pages/${name}/index`
+    })
+  }
+
+  signOut() {
+    Taro.clearStorage()
+    Taro.redirectTo({
+      url: '/pages/login/index'
+    })
+  }
+
   render () {
-    const { userInfo, userLevel } = this.state
+    const { userInfo, userLevel, userCreateList, userCollectList } = this.state
     console.log('userInfo', userInfo)
     return (
       <View className='my_container'>
         <View className='header'>
-          <Image src={userInfo.profile.avatarUrl} className='header__img' />
-          <View className='header__info'>
-            <View className='header__info__name'>
-              {userInfo.profile.nickname}
-            </View>
-            <View>
-              <Text className='header__info__level'>LV.{userLevel}</Text>
+          <View className='header__left'>
+            <Image src={userInfo.profile.avatarUrl} className='header__img' />
+            <View className='header__info'>
+              <View className='header__info__name'>
+                {userInfo.profile.nickname}
+              </View>
+              <View>
+                <Text className='header__info__level'>LV.{userLevel}</Text>
+              </View>
             </View>
           </View>
+          <AtIcon prefixClass='fa' value='sign-out' size='30' color='#F00' className='exit_icon' onClick={this.signOut.bind(this)}></AtIcon>
         </View>
         <View className='user_count'>
           <View className='user_count__sub'>
@@ -107,7 +139,7 @@ class Page extends Component<{}, PageState> {
             </View>
             <View>动态</View>
           </View>
-          <View className='user_count__sub'>
+          <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myFocus')}>
             <View className='user_count__sub--num'>
               {userInfo.profile.follows}
             </View>
@@ -118,6 +150,50 @@ class Page extends Component<{}, PageState> {
               {userInfo.profile.followeds}
             </View>
             <View>粉丝</View>
+          </View>
+        </View>
+        <View className='user_playlist'>
+          <View className='user_playlist__title'>
+            我创建的歌单<Text className='user_playlist__title__desc'>({userCreateList.length})</Text>
+          </View>
+          {
+            userCreateList.length === 0 ? <CLoading /> : ''
+          }
+          <View>
+            {
+              userCreateList.map((item, index) => <View key={index} className='user_playlist__item'>
+                <Image
+                  className='user_playlist__item__cover'
+                  src={item.coverImgUrl}
+                />
+                <View className='user_playlist__item__info'>
+                  <View className='user_playlist__item__info__name'>{item.name}</View>
+                  <View className='user_playlist__item__info__count'>{item.trackCount}首</View>
+                </View>
+              </View>)
+            }
+          </View>
+        </View>
+        <View className='user_playlist'>
+          <View className='user_playlist__title'>
+            我收藏的歌单<Text className='user_playlist__title__desc'>({userCollectList.length})</Text>
+          </View>
+          {
+            userCollectList.length === 0 ? <CLoading /> : ''
+          }
+          <View>
+            {
+              userCollectList.map((item, index) => <View key={index} className='user_playlist__item'>
+                <Image
+                  className='user_playlist__item__cover'
+                  src={item.coverImgUrl}
+                />
+                <View className='user_playlist__item__info'>
+                  <View className='user_playlist__item__info__name'>{item.name}</View>
+                  <View className='user_playlist__item__info__count'>{item.trackCount}首</View>
+                </View>
+              </View>)
+            }
           </View>
         </View>
         <AtTabBar

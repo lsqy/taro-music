@@ -1,8 +1,13 @@
 .my_container {
+  padding-bottom: 120px;
   .header {
     display: flex;
     align-items: center;
     padding: 40px;
+    .header__left {
+      display: flex;
+      flex: 1;
+    }
     .header__img {
       width: 150px;
       height: 150px;
@@ -22,6 +27,9 @@
         border-radius: 40px;
       }
     }
+    .exit_icon {
+      float: right;
+    }
   }
   .user_count {
     display: flex;
@@ -37,6 +45,39 @@
         font-size: 36px;
         font-weight: 700;
         margin-bottom: 10px;
+      }
+    }
+  }
+  .user_playlist {
+    padding: 30px;
+    .user_playlist__title {
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      .user_playlist__title__desc {
+        font-size: 24px;
+        color: #888888;
+        margin-left: 10px;
+      }
+    }
+    .user_playlist__item {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      .user_playlist__item__cover {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+      .user_playlist__item__info {
+        flex: 1;
+        .user_playlist__item__info__count {
+          font-size: 24px;
+          color: #888888;
+          margin-top: 10px;
+        }
       }
     }
   }
