@@ -92,6 +92,14 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  playSong(songId, canPlay) {
+    if (canPlay) {
+      Taro.navigateTo({
+        url: `/pages/songDetail/index?id=${songId}`
+      })
+    }
+  }
+
 
   render () {
     const { playListInfo, privileges } = this.state
@@ -152,7 +160,10 @@ class Page extends Component<{}, PageState> {
                 playListInfo.tracks.map((track, index) => <View className={classnames({
                   playList__content__list__item: true,
                   disabled: privileges[index].st === -200
-                })}>
+                })}
+                key={index}
+                onClick={this.playSong.bind(this, track.id, privileges[index].st !== -200)}
+                >
                   <Text className='playList__content__list__item__index'>{index+1}</Text>
                   <View className='playList__content__list__item__info'>
                     <View>

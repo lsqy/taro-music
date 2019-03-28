@@ -2,14 +2,35 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { AtTabBar, AtIcon } from 'taro-ui'
 import { View, Image, Text } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
+import { getSongDetail } from '../../actions/song'
 import './index.scss'
 
 type ListItemInfo = {
   coverImgUrl: string,
   name: string,
   trackCount: number
+}
+
+type PageStateProps = {
+  song: {
+    name: string
+  }
+}
+
+type PageDispatchProps = {
+  getSongDetail: (object) => void
+}
+
+
+type PageOwnProps = {}
+
+type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+
+interface Page {
+  props: IProps;
 }
 
 type PageState = {
@@ -32,7 +53,19 @@ type PageState = {
     userCollectList: Array<ListItemInfo>
 }
 
-class Page extends Component<{}, PageState> {
+// interface Page {
+//   props: PageStateProps;
+// }
+
+@connect(({ song }) => ({
+  song
+}), (dispatch) => ({
+  getSongDetail (payload) {
+    dispatch(getSongDetail(payload))
+  }
+}))
+
+class Page extends Component<IProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -54,6 +87,9 @@ class Page extends Component<{}, PageState> {
       userCreateList: [],
       userCollectList: []
     }
+    // this.props.getSongDetail({
+    //   id: 22112
+    // })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -121,7 +157,6 @@ class Page extends Component<{}, PageState> {
 
   render () {
     const { userInfo, userLevel, userCreateList, userCollectList } = this.state
-    console.log('userInfo', userInfo)
     return (
       <View className='my_container'>
         <View className='header'>
@@ -224,4 +259,4 @@ class Page extends Component<{}, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass
+export default Page as ComponentClass<PageOwnProps, PageState>
