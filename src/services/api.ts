@@ -30,13 +30,15 @@ export default {
         } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
           return logError('api', '服务端出现了问题')
         } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
-          Taro.setStorageSync('Authorization', '')
+          // Taro.setStorageSync('Authorization', '')
+          Taro.clearStorage()
           Taro.navigateTo({
               url: '/pages/login/index'
           })
           return logError('api', '没有权限访问')
         } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-          Taro.setStorageSync('Authorization', '')
+          // Taro.setStorageSync('Authorization', '')
+          Taro.clearStorage()
           Taro.navigateTo({
             url: '/pages/login/index'
           })

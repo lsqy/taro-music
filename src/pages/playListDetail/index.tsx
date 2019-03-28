@@ -1,20 +1,38 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
+import classnames from 'classnames'
 import api from '../../services/api'
 import './index.scss'
 
+type MusicItem = {
+  name: string,
+  id: number,
+  ar: Array<{
+    name: string
+  }>,
+  al: {
+    name: string
+  },
+  copyright: number
+}
 
 type PageState = {
   playListInfo: {
     coverImgUrl: string,
     playCount: number,
     name: string,
+    description?: string,
+    tags: Array<string | undefined>,
     creator: {
       avatarUrl: string,
       nickname: string
-    }
-  }
+    },
+    tracks: Array<MusicItem>
+  },
+  privileges: Array<{
+    st: number
+  }>
 }
 
 class Page extends Component<{}, PageState> {
@@ -34,8 +52,17 @@ class Page extends Component<{}, PageState> {
     super(props)
     this.state = {
       playListInfo: {
-        playCount: 0
-      }
+        coverImgUrl: '',
+        name: '',
+        playCount: 0,
+        tags: [],
+        creator: {
+          avatarUrl: '',
+          nickname: ''
+        },
+        tracks: []
+      },
+      privileges: []
     }
   }
 
@@ -54,7 +81,8 @@ class Page extends Component<{}, PageState> {
       id
     }).then((res) => {
       this.setState({
-        playListInfo: res.data.playlist
+        playListInfo: res.data.playlist,
+        privileges: res.data.privileges
       })
     })
   }
@@ -66,7 +94,7 @@ class Page extends Component<{}, PageState> {
 
 
   render () {
-    const { playListInfo } = this.state
+    const { playListInfo, privileges } = this.state
     return (
       <View className='playList_container'>
         <View className='playList__header'>
@@ -99,6 +127,46 @@ class Page extends Component<{}, PageState> {
                 src={playListInfo.creator.avatarUrl}
               />{playListInfo.creator.nickname}
             </View>
+          </View>
+        </View>
+        <View className='playList__header--more'>
+          <View className='playList__header--more__tag'>
+              标签：
+              {
+                playListInfo.tags.map((tag, index) => <Text key={index} className='playList__header--more__tag__item'>{tag}</Text>)
+              }
+              {
+                playListInfo.tags.length === 0 ? '暂无' : ''
+              }
+          </View>
+          <View className='playList__header--more__desc'>
+            简介：{playListInfo.description || '暂无'}
+          </View>
+        </View>
+        <View className='playList__content'>
+          <View className='playList__content__title'>
+              歌曲列表
+          </View>
+          <View className='playList__content__list'>
+              {
+                playListInfo.tracks.map((track, index) => <View className={classnames({
+                  playList__content__list__item: true,
+                  disabled: privileges[index].st === -200
+                })}>
+                  <Text className='playList__content__list__item__index'>{index+1}</Text>
+                  <View className='playList__content__list__item__info'>
+                    <View>
+                      <View className='playList__content__list__item__info__name'>
+                        {track.name}
+                      </View>
+                      <View className='playList__content__list__item__info__desc'>
+                        {track.ar[0] ? track.ar[0].name : ''} - {track.al.name}
+                      </View>
+                    </View>
+                    <View className='at-icon at-icon-play'></View>
+                  </View>
+                </View>)
+              }
           </View>
         </View>
       </View>

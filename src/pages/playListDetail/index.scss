@@ -87,4 +87,66 @@
       }
     }
   }
+  .playList__header--more {
+    padding: 30px;
+    font-size: 28px;
+    color: #666;
+    .playList__header--more__tag {
+      .playList__header--more__tag__item {
+        font-size: 24px;
+        margin-right: 20px;
+        padding: 4px 16px;
+        border: 1px solid rgba(0,0,0,.1);
+        border-radius: 20px;
+      }
+    }
+    .playList__header--more__desc {
+      margin-top: 28px;
+    }
+  }
+  .playList__content {
+    .playList__content__title {
+      color: #666;
+      font-size: 24px;
+      background-color: #eeeff0;
+      padding: 20px;
+    }
+    .playList__content__list {
+      .playList__content__list__item {
+        display: flex;
+        align-items: center;
+        &.disabled {
+          color: #ccc;
+        }
+        .playList__content__list__item__index {
+          font-size: 34px;
+          color: #999999;
+          width: 80px;
+          text-align: center;
+        }
+        .playList__content__list__item__info {
+          display: flex;
+          justify-content: space-between;
+          padding: 20px 0;
+          flex: 1;
+          align-items: center;
+          border-bottom: 1px solid rgba(0,0,0,.1);
+          .playList__content__list__item__info__name {
+            font-size: 34px;
+          }
+          .playList__content__list__item__info__desc {
+            font-size: 24px;
+            color: #888888;
+            margin-top: 10px;
+          }
+          .at-icon {
+            font-size: 50px;
+            margin: 0 10px;
+            padding: 15px;
+            color: #888888;
+          }
+        }
+      }
+    }
+  }
 }
