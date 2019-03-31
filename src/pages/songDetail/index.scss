@@ -70,7 +70,6 @@
       top: 0;
       bottom: 0;
       z-index: 3;
-      transform: matrix(-0.381433, 0.924396, -0.924396, -0.381433, 0, 0) matrix(0.876905, -0.480663, 0.480663, 0.876905, 0, 0);
       .song__box__lgour__cover {
         position: absolute;
         left: 0;
@@ -81,15 +80,6 @@
         background: url(//s3.music.126.net/m/s/img/disc_light-ip6.png?996fc8a2bc62e1ab3f51f135fc459577) no-repeat;
         background-size: contain;
       }
-    }
-    .song__box__play {
-      position: absolute;
-      font-size: 100px;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 10;
-      color: #ffffff;
     }
   }
 }

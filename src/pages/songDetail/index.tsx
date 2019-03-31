@@ -106,7 +106,6 @@ class Page extends Component<{}, PageState> {
             <View className='song__box__lgour__cover a-circling'>
             </View>
           </View>
-          <View className='at-icon at-icon-play song__box__play'></View>
         </View>
       </View>
     )
