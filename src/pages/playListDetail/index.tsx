@@ -2,6 +2,7 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
+import CLoading from '../../components/CLoading'
 import api from '../../services/api'
 import './index.scss'
 
@@ -97,6 +98,11 @@ class Page extends Component<{}, PageState> {
       Taro.navigateTo({
         url: `/pages/songDetail/index?id=${songId}`
       })
+    } else {
+      Taro.showToast({
+        title: '暂无版权',
+        icon: 'none'
+      })
     }
   }
 
@@ -155,6 +161,9 @@ class Page extends Component<{}, PageState> {
           <View className='playList__content__title'>
               歌曲列表
           </View>
+          {
+            playListInfo.tracks.length === 0 ? <CLoading /> : ''
+          }
           <View className='playList__content__list'>
               {
                 playListInfo.tracks.map((track, index) => <View className={classnames({

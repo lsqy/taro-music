@@ -1,6 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import classnames from 'classnames'
 import api from '../../services/api'
 import './index.scss'
 
@@ -12,7 +13,9 @@ type PageState = {
       picUrl: string
     }
   },
-  songUrl: string
+  songUrl: string,
+  isPlaying: boolean,
+  lyric: string
 }
 
 class Page extends Component<{}, PageState> {
@@ -37,7 +40,9 @@ class Page extends Component<{}, PageState> {
           picUrl: ''
         }
       },
-      songUrl: ''
+      songUrl: '',
+      isPlaying: true,
+      lyric: ''
     }
   }
 
@@ -52,31 +57,59 @@ class Page extends Component<{}, PageState> {
     const id = 1336856777
     api.get('/song/detail', {
       ids: id
-    }).then((res1) => {
+    }).then((res) => {
       this.setState({
-        songInfo: res1.data.songs[0]
+        songInfo: res.data.songs[0]
       })
       Taro.setNavigationBarTitle({
-        title: res1.data.songs[0].name
+        title: res.data.songs[0].name
       })
-      api.get('/song/url', {
-        id
-      }).then((res) => {
-        this.setState({
-          songUrl: res.data.data[0].url
-        })
-        // Taro.playBackgroundAudio({
-        //   dataUrl: res.data.data[0].url,
-        //   title: res1.data.songs[0].name,
-        //   coverImgUrl: res1.data.songs[0].al.picUrl
-        // })
+      this.getSongUrl(res.data.songs[0].name, res.data.songs[0].al.picUrl)
+    })
+  }
+
+  getSongUrl(name: string, picUrl: string) {
+    // const { id } = this.$router.params
+    const id = 1336856777
+    api.get('/song/url', {
+      id
+    }).then((res) => {
+      this.setState({
+        songUrl: res.data.data[0].url
+      })
+      // Taro.playBackgroundAudio({
+      //   dataUrl: res.data.data[0].url,
+      //   title: name,
+      //   coverImgUrl: picUrl
+      // })
+    })
+  }
+
+  getLyric() {
+    // const { id } = this.$router.params
+    const id = 1336856777
+    api.get('/lyric', {
+      id
+    }).then((res) => {
+      this.setState({
+        // lyric: res.data.data[0].url
       })
     })
-    
+  }
+
+  pauseMusic() {
+    this.setState({
+      isPlaying: false
+    })
+  }
+
+  playMusic() {
+    this.setState({
+      isPlaying: true
+    })
   }
 
   componentDidMount() {
-
   }
 
   componentDidShow () {
@@ -87,7 +120,7 @@ class Page extends Component<{}, PageState> {
 
 
   render () {
-    const { songInfo } = this.state
+    const { songInfo, isPlaying } = this.state
     return (
       <View className='song_container'>
         <Image 
@@ -95,18 +128,43 @@ class Page extends Component<{}, PageState> {
           src={songInfo.al.picUrl}
         />
         <View className='song__box'>
-          <View className='song__box__main'>
+          <View className={
+            classnames({
+              song__box__main: true,
+              playing: isPlaying
+            })
+          }>
             <View className='song__box__main__cover'> 
-              <View className='song__box__main__img a-circling'>
-                {/* <Image className='' src={songInfo.al.picUrl} /> */}
+              <View className={
+                classnames({
+                  song__box__main__img: true,
+                  circling: isPlaying
+                })
+              }>
+                <Image className='song__box__main__img__cover' src={songInfo.al.picUrl} />
               </View>
             </View>
           </View>
           <View className='song__box__lgour'>
-            <View className='song__box__lgour__cover a-circling'>
+            <View className={
+              classnames({
+                song__box__lgour__cover: true,
+                circling: isPlaying
+              })
+            }>
             </View>
           </View>
-          <View className='at-icon at-icon-play song__box__play'></View>
+        </View>
+        <View className='song__bottom'>
+          <View className='song__operation'>
+            <Image src={require('../../assets/images/ajh.png')} className='song__prev'/>
+            {
+              isPlaying ? <Image src={require('../../assets/images/ajd.png')} className='song__play' onClick={this.pauseMusic.bind(this)}/> :
+              <Image src={require('../../assets/images/ajf.png')} className='song__play' onClick={this.playMusic.bind(this)}/>
+            }
+            
+            <Image src={require('../../assets/images/ajb.png')} className='song__next'/>
+          </View>
         </View>
       </View>
     )

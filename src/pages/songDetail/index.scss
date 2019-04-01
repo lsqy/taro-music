@@ -1,4 +1,5 @@
 .song_container {
+  overflow: hidden;
   .song__bg {
     transform: scale(1.5);
     transform-origin: center top;
@@ -31,6 +32,11 @@
       position: relative;
       width: 100%;
       height: 100%;
+      &.playing {
+        &:before {
+          transform: rotate(0deg);
+        }
+      }
       &:after {
         content: " ";
         position: absolute;
@@ -41,6 +47,21 @@
         z-index: 2;
         background: url(//s3.music.126.net/m/s/img/disc-ip6.png?69796123ad7cfe95781ea38aac8f2d48) no-repeat;
         background-size: contain;
+      }
+      &:before {
+        content: " ";
+        position: absolute;
+        width: 192px;
+        height: 274px;
+        top: -140px;
+        left: 266px;
+        background-image: url(//s3.music.126.net/m/s/img/needle-ip6.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        transform-origin: top left;
+        z-index: 5;
+        transition: all 1.5s;
+        transform: rotate(-20deg);
       }
       .song__box__main__cover {
         position: absolute;
@@ -58,6 +79,10 @@
           overflow: hidden;
           background: url(//s3.music.126.net/m/s/img/disc_default.png?7c9b3ad…) no-repeat;
           background-size: contain;
+          .song__box__main__img__cover {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
@@ -70,7 +95,6 @@
       top: 0;
       bottom: 0;
       z-index: 3;
-      transform: matrix(-0.381433, 0.924396, -0.924396, -0.381433, 0, 0) matrix(0.876905, -0.480663, 0.480663, 0.876905, 0, 0);
       .song__box__lgour__cover {
         position: absolute;
         left: 0;
@@ -82,19 +106,36 @@
         background-size: contain;
       }
     }
-    .song__box__play {
-      position: absolute;
-      font-size: 100px;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      z-index: 10;
-      color: #ffffff;
+  }
+  .song__bottom {
+    position: absolute;
+    padding: 40px 0;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    box-sizing: border-box;
+    .song__operation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .song__prev {
+        width: 60px;
+        height: 60px;
+      }
+      .song__play {
+        width: 120px;
+        height: 120px;
+        margin: 0 50px;
+      }
+      .song__next {
+        width: 60px;
+        height: 60px;
+      }
     }
   }
 }
 
-.a-circling {
+.circling {
   animation: circling 20s infinite linear;
   &.z-pause{
     animation-play-state: paused;
