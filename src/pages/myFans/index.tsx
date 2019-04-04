@@ -69,9 +69,9 @@ class Page extends Component<{}, PageState> {
   render () {
     const { hideLoading, userList } = this.state
     return (
-      <View className='myFans_container'>
+      <View className='my_fans_container'>
         <CLoading fullPage={true} hide={hideLoading} />
-        <View className='userList'>
+        <View className='user_list'>
           {
             userList.map((item, index) => <CUserListItem userInfo={item} key={index} />)
           }

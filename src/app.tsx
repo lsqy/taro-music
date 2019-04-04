@@ -29,12 +29,12 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/songDetail/index',
       'pages/my/index',
+      'pages/index/index',
+      'pages/songDetail/index',
       'pages/myFans/index',
       'pages/myFocus/index',
       'pages/myEvents/index',
-      'pages/index/index',
       'pages/login/index',
       'pages/playListDetail/index'
     ],

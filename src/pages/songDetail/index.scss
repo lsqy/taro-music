@@ -118,16 +118,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      .song__prev {
+      .song__operation__prev {
         width: 60px;
         height: 60px;
       }
-      .song__play {
+      .song__operation__play {
         width: 120px;
         height: 120px;
         margin: 0 50px;
       }
-      .song__next {
+      .song__operation__next {
         width: 60px;
         height: 60px;
       }

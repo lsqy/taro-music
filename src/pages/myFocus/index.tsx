@@ -69,7 +69,7 @@ class Page extends Component<{}, PageState> {
   render () {
     const { hideLoading, userList } = this.state
     return (
-      <View className='myFocus_container'>
+      <View className='my_focus_container'>
         <CLoading fullPage={true} hide={hideLoading} />
         <View className='userList'>
           {

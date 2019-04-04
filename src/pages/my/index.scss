@@ -35,7 +35,7 @@
     display: flex;
     text-align: center;
     padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(0,0,0,.1);
     .user_count__sub {
       flex: 1;
       font-size: 22px;
@@ -47,6 +47,36 @@
         margin-bottom: 10px;
       }
     }
+  }
+  .user_brief {
+    .user_brief__item {
+      display: flex;
+      align-items: center;
+      &:last-child {
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        .user_brief__item__text {
+          border-bottom: none;
+        }
+      }
+      .user_brief__item__img {
+        width: 70px;
+        height: 70px;
+        margin: 20px 40px;
+      }
+      .user_brief__item__text {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        line-height: 110px;
+        .at-icon {
+          font-size: 40px;
+          margin-right: 40px;
+        }
+      }
+    }
+
   }
   .user_playlist {
     padding: 30px;

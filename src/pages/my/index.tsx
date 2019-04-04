@@ -105,6 +105,14 @@ class Page extends Component<IProps, PageState> {
       })
       return
     }
+    this.getSubcount()
+    this.getUserDetail()
+    this.getPlayList()
+  }
+
+  componentDidHide () { }
+
+  getUserDetail() {
     const { id } = this.state.userInfo.account
     api.get('/user/detail', {
       uid: id
@@ -113,6 +121,10 @@ class Page extends Component<IProps, PageState> {
         userLevel: res.data.level
       })
     })
+  }
+
+  getPlayList() {
+    const { id } = this.state.userInfo.account
     api.get('/user/playlist', {
       uid: id,
       limit: 300
@@ -126,8 +138,14 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
-  componentDidHide () { }
-
+  getSubcount() {
+    const { id } = this.state.userInfo.account
+    api.get('/user/subcount', {
+      id
+    }).then((res) => {
+      console.log('res', res)
+    })
+  }
   
   switchTab (value) {
     if (value !== 0) return
@@ -191,6 +209,44 @@ class Page extends Component<IProps, PageState> {
               {userInfo.profile.followeds}
             </View>
             <View>粉丝</View>
+          </View>
+        </View>
+        <View className='user_brief'>
+          <View className='user_brief__item'>
+            <Image 
+              className='user_brief__item__img'
+              src={require('../../assets/images/my/recent_play.png')}
+            />
+            <View className='user_brief__item__text'>
+              <Text>
+                最近播放
+              </Text>
+              <Text className='at-icon at-icon-chevron-right'></Text>
+            </View>
+          </View>
+          <View className='user_brief__item'>
+            <Image 
+              className='user_brief__item__img'
+              src={require('../../assets/images/my/my_radio.png')}
+            />
+            <View className='user_brief__item__text'>
+              <Text>
+                我的电台
+              </Text>
+              <Text className='at-icon at-icon-chevron-right'></Text>
+            </View>
+          </View>
+          <View className='user_brief__item'>
+            <Image 
+              className='user_brief__item__img'
+              src={require('../../assets/images/my/my_collection_icon.png')}
+            />
+            <View className='user_brief__item__text'>
+              <Text>
+                我的收藏
+              </Text>
+              <Text className='at-icon at-icon-chevron-right'></Text>
+            </View>
           </View>
         </View>
         <View className='user_playlist'>

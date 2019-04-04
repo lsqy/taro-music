@@ -98,7 +98,7 @@ class Index extends Component<IProps, PageState> {
     return (
       <View className='index_container'>
         <CLoading fullPage={true} />
-        <CTitle isFixed={false} />
+        {/* <CTitle isFixed={false} /> */}
         <AtTabBar
           fixed
           selectedColor='#d43c33'

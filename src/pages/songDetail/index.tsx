@@ -53,8 +53,8 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentWillMount() {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/song/detail', {
       ids: id
     }).then((res) => {
@@ -69,8 +69,8 @@ class Page extends Component<{}, PageState> {
   }
 
   getSongUrl(name: string, picUrl: string) {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/song/url', {
       id
     }).then((res) => {
@@ -86,8 +86,8 @@ class Page extends Component<{}, PageState> {
   }
 
   getLyric() {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/lyric', {
       id
     }).then((res) => {
@@ -157,13 +157,12 @@ class Page extends Component<{}, PageState> {
         </View>
         <View className='song__bottom'>
           <View className='song__operation'>
-            <Image src={require('../../assets/images/ajh.png')} className='song__prev'/>
+            <Image src={require('../../assets/images/ajh.png')} className='song__operation__prev'/>
             {
-              isPlaying ? <Image src={require('../../assets/images/ajd.png')} className='song__play' onClick={this.pauseMusic.bind(this)}/> :
-              <Image src={require('../../assets/images/ajf.png')} className='song__play' onClick={this.playMusic.bind(this)}/>
+              isPlaying ? <Image src={require('../../assets/images/ajd.png')} className='song__operation__play' onClick={this.pauseMusic.bind(this)}/> :
+              <Image src={require('../../assets/images/ajf.png')} className='song__operation__play' onClick={this.playMusic.bind(this)}/>
             }
-            
-            <Image src={require('../../assets/images/ajb.png')} className='song__next'/>
+            <Image src={require('../../assets/images/ajb.png')} className='song__operation__next'/>
           </View>
         </View>
       </View>
