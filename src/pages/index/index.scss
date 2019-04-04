@@ -18,4 +18,21 @@
             height: 50px;
         }
     }
+    .recommend_playlist {
+        padding: 40px;
+        .recommend_playlist__title {
+
+        }
+        .recommend_playlist__content {
+            .recommend_playlist__item {
+                width: 33.33%;
+                float: left;
+                .recommend_playlist__item__cover {
+                    display: block;
+                    width: 100%;
+                    height: 200px;
+                }
+            }
+        }
+    }
 }

@@ -1,10 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
+import api from '../../services/api'
 import CLoading from '../../components/CLoading'
-import CTitle from '../../components/CTitle'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
 
@@ -35,7 +35,11 @@ type PageDispatchProps = {
 type PageOwnProps = {}
 
 type PageState = {
-  current: number
+  current: number,
+  recommend_playlist: Array<{
+    name: string,
+    picUrl: string
+  }>
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -73,12 +77,20 @@ class Index extends Component<IProps, PageState> {
   constructor (props) {
     super(props)
     this.state = {
-      current: 0
+      current: 0,
+      recommend_playlist: []
     }
   }
 
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
+  }
+
+  componentWillMount() {
+    this.getPersonalized()
+    this.getNewsong()
+    this.getDjprogram()
+    this.getRecommend()
   }
 
   componentWillUnmount () { }
@@ -94,11 +106,65 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
+  /**
+   * 获取推荐歌单
+   */
+  getPersonalized() {
+    api.get('/personalized').then((res) => {
+      this.setState({
+        recommend_playlist: res.data.result
+      })
+    })
+  }
+
+  /**
+   * 获取推荐新音乐
+   */
+  getNewsong() {
+    api.get('/personalized/newsong').then((res) => {
+      
+    })
+  }
+
+  /**
+   * 获取推荐电台
+   */
+  getDjprogram() {
+    api.get('/personalized/djprogram').then((res) => {
+      
+    })
+  }
+
+  /**
+   * 获取推荐节目
+   */
+  getRecommend() {
+    api.get('/program/recommend').then((res) => {
+      
+    })
+  }
+
   render () {
+    const { recommend_playlist } = this.state
     return (
       <View className='index_container'>
         <CLoading fullPage={true} />
-        {/* <CTitle isFixed={false} /> */}
+        <View className='recommend_playlist'>
+          <View className='recommend_playlist__title'>
+            推荐歌单
+          </View>
+          <View className='recommend_playlist__content'>
+            {
+              recommend_playlist.map((item, index) => <View key={index} className='recommend_playlist__item'>
+                <Image 
+                  src={item.picUrl}
+                  className='recommend_playlist__item__cover'
+                />
+                <View>{item.name}</View>
+              </View>)
+            }
+          </View>
+        </View>
         <AtTabBar
           fixed
           selectedColor='#d43c33'

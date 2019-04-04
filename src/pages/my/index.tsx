@@ -140,9 +140,7 @@ class Page extends Component<IProps, PageState> {
 
   getSubcount() {
     const { id } = this.state.userInfo.account
-    api.get('/user/subcount', {
-      id
-    }).then((res) => {
+    api.get('/user/subcount').then((res) => {
       console.log('res', res)
     })
   }
