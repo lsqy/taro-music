@@ -32,6 +32,13 @@
                     width: 100%;
                     height: 200px;
                 }
+                .recommend_playlist__item__title {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                }
             }
         }
     }

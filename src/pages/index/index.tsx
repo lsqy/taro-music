@@ -160,7 +160,7 @@ class Index extends Component<IProps, PageState> {
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
                 />
-                <View>{item.name}</View>
+                <View className='recommend_playlist__item__title'>{item.name}</View>
               </View>)
             }
           </View>
