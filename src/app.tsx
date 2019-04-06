@@ -29,8 +29,8 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/my/index',
       'pages/index/index',
+      'pages/my/index',
       'pages/songDetail/index',
       'pages/myFans/index',
       'pages/myFocus/index',

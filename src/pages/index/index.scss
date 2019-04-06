@@ -1,5 +1,5 @@
 .index_container {
-    height: 100%;
+    padding-bottom: 120px;
     .index_header {
         position: fixed;
         top: 0;
@@ -20,17 +20,23 @@
     }
     .recommend_playlist {
         padding: 40px;
+        overflow: hidden;
         .recommend_playlist__title {
-
+            margin-bottom: 30px;
         }
         .recommend_playlist__content {
             .recommend_playlist__item {
-                width: 33.33%;
+                width: 32%;
                 float: left;
+                margin-bottom: 30px;
+                &:nth-child(3n-1) {
+                    margin: 0 2%;
+                }
                 .recommend_playlist__item__cover {
                     display: block;
                     width: 100%;
                     height: 200px;
+                    border-radius: 12px;
                 }
                 .recommend_playlist__item__title {
                     overflow: hidden;
@@ -38,6 +44,8 @@
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
+                    font-size: 26px;
+                    margin-top: 10px;
                 }
             }
         }

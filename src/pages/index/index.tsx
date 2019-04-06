@@ -39,7 +39,8 @@ type PageState = {
   recommend_playlist: Array<{
     name: string,
     picUrl: string
-  }>
+  }>,
+  showLoading: boolean
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -78,7 +79,8 @@ class Index extends Component<IProps, PageState> {
     super(props)
     this.state = {
       current: 0,
-      recommend_playlist: []
+      recommend_playlist: [],
+      showLoading: true
     }
   }
 
@@ -112,7 +114,8 @@ class Index extends Component<IProps, PageState> {
   getPersonalized() {
     api.get('/personalized').then((res) => {
       this.setState({
-        recommend_playlist: res.data.result
+        recommend_playlist: res.data.result,
+        showLoading: false
       })
     })
   }
@@ -144,18 +147,24 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
+  goDetail(item) {
+    Taro.navigateTo({
+      url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+    })
+  }
+
   render () {
-    const { recommend_playlist } = this.state
+    const { recommend_playlist, showLoading } = this.state
     return (
       <View className='index_container'>
-        <CLoading fullPage={true} />
+        <CLoading fullPage={true} hide={!showLoading} />
         <View className='recommend_playlist'>
           <View className='recommend_playlist__title'>
             推荐歌单
           </View>
           <View className='recommend_playlist__content'>
             {
-              recommend_playlist.map((item, index) => <View key={index} className='recommend_playlist__item'>
+              recommend_playlist.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
