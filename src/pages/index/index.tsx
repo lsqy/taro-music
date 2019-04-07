@@ -40,6 +40,10 @@ type PageState = {
     name: string,
     picUrl: string
   }>,
+  recommend_djprogram: Array<{
+    name: string,
+    picUrl: string
+  }>,
   showLoading: boolean
 }
 
@@ -80,6 +84,7 @@ class Index extends Component<IProps, PageState> {
     this.state = {
       current: 0,
       recommend_playlist: [],
+      recommend_djprogram: [],
       showLoading: true
     }
   }
@@ -134,7 +139,9 @@ class Index extends Component<IProps, PageState> {
    */
   getDjprogram() {
     api.get('/personalized/djprogram').then((res) => {
-      
+      this.setState({
+        recommend_djprogram: res.data.result
+      })
     })
   }
 
@@ -154,7 +161,7 @@ class Index extends Component<IProps, PageState> {
   }
 
   render () {
-    const { recommend_playlist, showLoading } = this.state
+    const { recommend_playlist, recommend_djprogram, showLoading } = this.state
     return (
       <View className='index_container'>
         <CLoading fullPage={true} hide={!showLoading} />
@@ -165,6 +172,22 @@ class Index extends Component<IProps, PageState> {
           <View className='recommend_playlist__content'>
             {
               recommend_playlist.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
+                <Image 
+                  src={item.picUrl}
+                  className='recommend_playlist__item__cover'
+                />
+                <View className='recommend_playlist__item__title'>{item.name}</View>
+              </View>)
+            }
+          </View>
+        </View>
+        <View className='recommend_playlist'>
+          <View className='recommend_playlist__title'>
+            推荐电台
+          </View>
+          <View className='recommend_playlist__content'>
+            {
+              recommend_djprogram.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
