@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '../../services/api'
@@ -38,7 +38,8 @@ type PageState = {
   current: number,
   recommend_playlist: Array<{
     name: string,
-    picUrl: string
+    picUrl: string,
+    playCount: number
   }>,
   recommend_djprogram: Array<{
     name: string,
@@ -108,7 +109,7 @@ class Index extends Component<IProps, PageState> {
 
   switchTab (value) {
     if (value !== 1) return
-    Taro.navigateTo({
+    Taro.reLaunch({
       url: '/pages/my/index'
     })
   }
@@ -176,6 +177,14 @@ class Index extends Component<IProps, PageState> {
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
                 />
+                <View className='recommend_playlist__item__cover__num'>
+                  <Text className='at-icon at-icon-sound'></Text>
+                  {
+                    item.playCount < 10000 ?
+                    item.playCount : 
+                    `${parseInt(item.playCount/10000)}万`
+                  }
+                </View>
                 <View className='recommend_playlist__item__title'>{item.name}</View>
               </View>)
             }

@@ -134,11 +134,16 @@ class Page extends Component<{}, PageState> {
               playing: isPlaying
             })
           }>
+            <Image  
+             className='song__box__main--before'
+             src={require('../../assets/images/aag.png')}
+            />
             <View className='song__box__main__cover'> 
               <View className={
                 classnames({
                   song__box__main__img: true,
-                  circling: isPlaying
+                  'z-pause': !isPlaying,
+                  circling: true
                 })
               }>
                 <Image className='song__box__main__img__cover' src={songInfo.al.picUrl} />
@@ -149,7 +154,8 @@ class Page extends Component<{}, PageState> {
             <View className={
               classnames({
                 song__box__lgour__cover: true,
-                circling: isPlaying
+                'z-pause': !isPlaying,
+                circling: true
               })
             }>
             </View>

@@ -26,11 +26,26 @@
         }
         .recommend_playlist__content {
             .recommend_playlist__item {
+                position: relative;
                 width: 32%;
                 float: left;
                 margin-bottom: 30px;
                 &:nth-child(3n-1) {
                     margin: 0 2%;
+                }
+                .recommend_playlist__item__cover__num {
+                    font-size: 20px;
+                    position: absolute;
+                    right: 10px;
+                    top: 0;
+                    font-weight: 700;
+                    z-index: 3;
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    .at-icon-sound {
+                        margin-right: 10px;
+                    }
                 }
                 .recommend_playlist__item__cover {
                     display: block;

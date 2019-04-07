@@ -33,7 +33,7 @@
       width: 100%;
       height: 100%;
       &.playing {
-        &:before {
+        .song__box__main--before {
           transform: rotate(0deg);
         }
       }
@@ -48,17 +48,17 @@
         background: url(//s3.music.126.net/m/s/img/disc-ip6.png?69796123ad7cfe95781ea38aac8f2d48) no-repeat;
         background-size: contain;
       }
-      &:before {
-        content: " ";
+      .song__box__main--before {
         position: absolute;
-        width: 192px;
-        height: 274px;
-        top: -140px;
-        left: 266px;
-        background-image: url(//s3.music.126.net/m/s/img/needle-ip6.png);
+        width: 222px;
+        height: 366px;
+        top: -200px;
+        left: 240px;
+        // background-image: url(//s3.music.126.net/m/s/img/needle-ip6.png);
         background-size: contain;
         background-repeat: no-repeat;
-        transform-origin: top left;
+        // transform-origin: top left;
+        transform-origin: 60px 60px;
         z-index: 5;
         transition: all 1.5s;
         transform: rotate(-20deg);
@@ -137,7 +137,7 @@
 
 .circling {
   animation: circling 20s infinite linear;
-  &.z-pause{
+  &.z-pause {
     animation-play-state: paused;
   }
 }
