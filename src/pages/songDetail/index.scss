@@ -1,7 +1,7 @@
 .song_container {
   overflow: hidden;
   .song__bg {
-    transform: scale(1.5);
+    transform: scale(1.2);
     transform-origin: center top;
     position: fixed;
     left: 0;
@@ -9,7 +9,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    filter: blur(8px);
+    filter:blur(30px) brightness(.8);
     overflow: hidden;
     z-index: -1;
     transition: opacity .3s linear;
@@ -23,17 +23,17 @@
       background-color: rgba(0,0,0,.5);
     }
   }
-  .song__box {
+  .song__music {
     position: relative;
     width: 592px;
     height: 592px;
     margin: 140px auto 0;
-    .song__box__main {
+    .song__music__main {
       position: relative;
       width: 100%;
       height: 100%;
       &.playing {
-        .song__box__main--before {
+        .song__music__main--before {
           transform: rotate(0deg);
         }
       }
@@ -48,7 +48,7 @@
         background: url(//s3.music.126.net/m/s/img/disc-ip6.png?69796123ad7cfe95781ea38aac8f2d48) no-repeat;
         background-size: contain;
       }
-      .song__box__main--before {
+      .song__music__main--before {
         position: absolute;
         width: 222px;
         height: 366px;
@@ -63,7 +63,7 @@
         transition: all 1.5s;
         transform: rotate(-20deg);
       }
-      .song__box__main__cover {
+      .song__music__main__cover {
         position: absolute;
         width: 368px;
         height: 368px;
@@ -72,21 +72,21 @@
         transform: translate(-50%, -50%);
         z-index: 1;
         overflow: hidden;
-        .song__box__main__img {
+        .song__music__main__img {
           width: 100%;
           height: 100%;
           border-radius: 50%;
           overflow: hidden;
           background: url(//s3.music.126.net/m/s/img/disc_default.png?7c9b3ad…) no-repeat;
           background-size: contain;
-          .song__box__main__img__cover {
+          .song__music__main__img__cover {
             width: 100%;
             height: 100%;
           }
         }
       }
     }
-    .song__box__lgour {
+    .song__music__lgour {
       position: absolute;
       width: 592px;
       height: 592px;
@@ -95,7 +95,7 @@
       top: 0;
       bottom: 0;
       z-index: 3;
-      .song__box__lgour__cover {
+      .song__music__lgour__cover {
         position: absolute;
         left: 0;
         right: 0;
@@ -113,7 +113,7 @@
     bottom: 0;
     width: 100%;
     height: 200px;
-    box-sizing: border-box;
+    music-sizing: border-music;
     .song__operation {
       display: flex;
       justify-content: center;

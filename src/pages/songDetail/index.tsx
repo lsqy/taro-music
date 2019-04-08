@@ -53,8 +53,8 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentWillMount() {
-    const { id } = this.$router.params
-    // const id = 1336856777
+    // const { id } = this.$router.params
+    const id = 1336856777
     api.get('/song/detail', {
       ids: id
     }).then((res) => {
@@ -66,11 +66,12 @@ class Page extends Component<{}, PageState> {
       })
       this.getSongUrl(res.data.songs[0].name, res.data.songs[0].al.picUrl)
     })
+    this.getLyric()
   }
 
   getSongUrl(name: string, picUrl: string) {
-    const { id } = this.$router.params
-    // const id = 1336856777
+    // const { id } = this.$router.params
+    const id = 1336856777
     api.get('/song/url', {
       id
     }).then((res) => {
@@ -86,8 +87,8 @@ class Page extends Component<{}, PageState> {
   }
 
   getLyric() {
-    const { id } = this.$router.params
-    // const id = 1336856777
+    // const { id } = this.$router.params
+    const id = 1336856777
     api.get('/lyric', {
       id
     }).then((res) => {
@@ -127,33 +128,33 @@ class Page extends Component<{}, PageState> {
           className='song__bg'
           src={songInfo.al.picUrl}
         />
-        <View className='song__box'>
+        <View className='song__music'>
           <View className={
             classnames({
-              song__box__main: true,
+              song__music__main: true,
               playing: isPlaying
             })
           }>
             <Image  
-             className='song__box__main--before'
+             className='song__music__main--before'
              src={require('../../assets/images/aag.png')}
             />
-            <View className='song__box__main__cover'> 
+            <View className='song__music__main__cover'> 
               <View className={
                 classnames({
-                  song__box__main__img: true,
+                  song__music__main__img: true,
                   'z-pause': !isPlaying,
                   circling: true
                 })
               }>
-                <Image className='song__box__main__img__cover' src={songInfo.al.picUrl} />
+                <Image className='song__music__main__img__cover' src={songInfo.al.picUrl} />
               </View>
             </View>
           </View>
-          <View className='song__box__lgour'>
+          <View className='song__music__lgour'>
             <View className={
               classnames({
-                song__box__lgour__cover: true,
+                song__music__lgour__cover: true,
                 'z-pause': !isPlaying,
                 circling: true
               })
