@@ -31,7 +31,7 @@
                 float: left;
                 margin-bottom: 30px;
                 &:nth-child(3n-1) {
-                    margin: 0 2%;
+                    margin: 0 2% 30px 2%;
                 }
                 .recommend_playlist__item__cover__num {
                     font-size: 20px;
@@ -61,7 +61,7 @@
                     -webkit-box-orient: vertical;
                     font-size: 26px;
                     margin-top: 10px;
-                    min-height: 72px;
+                    height: 72px;
                 }
             }
         }
