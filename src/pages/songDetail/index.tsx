@@ -2,7 +2,9 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import classnames from 'classnames'
+import { parse_lrc } from '../../utils/common'
 import api from '../../services/api'
+import CLyric from '../../components/CLyric'
 import './index.scss'
 
 
@@ -15,7 +17,17 @@ type PageState = {
   },
   songUrl: string,
   isPlaying: boolean,
-  lyric: string
+  lyric: string,
+  showLyric: boolean,
+  lrc: {
+    scroll: boolean,
+    nolyric: boolean,
+    uncollected: boolean,
+    lrc: Array<{
+      lrc: string,
+      lrc_sec: number
+    }>
+  }
 }
 
 class Page extends Component<{}, PageState> {
@@ -42,7 +54,14 @@ class Page extends Component<{}, PageState> {
       },
       songUrl: '',
       isPlaying: true,
-      lyric: ''
+      lyric: '',
+      showLyric: false,
+      lrc: {
+        scroll: false,
+        nolyric: false,
+        uncollected: false,
+        lrc: []
+      }
     }
   }
 
@@ -92,9 +111,15 @@ class Page extends Component<{}, PageState> {
     api.get('/lyric', {
       id
     }).then((res) => {
+      const lrc = parse_lrc(res.data.lrc && res.data.lrc.lyric ? res.data.lrc.lyric : '');
+      res.data.lrc = lrc.now_lrc;
+      res.data.scroll = lrc.scroll ? 1 : 0
       this.setState({
-        // lyric: res.data.data[0].url
-      })
+        lrc: res.data
+      });
+      // this.setState({
+      //   // lyric: res.data.data[0].url
+      // })
     })
   }
 
@@ -119,16 +144,33 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  showLyric() {
+    this.setState({
+      showLyric: true
+    })
+  }
+
+  hiddenLyric() {
+    this.setState({
+      showLyric: false
+    })
+  }
+
 
   render () {
-    const { songInfo, isPlaying } = this.state
+    const { songInfo, isPlaying, showLyric, lrc } = this.state
     return (
       <View className='song_container'>
         <Image 
           className='song__bg'
           src={songInfo.al.picUrl}
         />
-        <View className='song__music'>
+        <View className={
+          classnames({
+            song__music: true,
+            hidden: showLyric
+          })
+        }>
           <View className={
             classnames({
               song__music__main: true,
@@ -136,8 +178,8 @@ class Page extends Component<{}, PageState> {
             })
           }>
             <Image  
-             className='song__music__main--before'
-             src={require('../../assets/images/aag.png')}
+            className='song__music__main--before'
+            src={require('../../assets/images/aag.png')}
             />
             <View className='song__music__main__cover'> 
               <View className={
@@ -151,7 +193,7 @@ class Page extends Component<{}, PageState> {
               </View>
             </View>
           </View>
-          <View className='song__music__lgour'>
+          <View className='song__music__lgour' onClick={this.showLyric.bind(this)}>
             <View className={
               classnames({
                 song__music__lgour__cover: true,
@@ -161,7 +203,8 @@ class Page extends Component<{}, PageState> {
             }>
             </View>
           </View>
-        </View>
+        </View> 
+        <CLyric lrc={lrc} lrcIndex={20} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
         <View className='song__bottom'>
           <View className='song__operation'>
             <Image src={require('../../assets/images/ajh.png')} className='song__operation__prev'/>

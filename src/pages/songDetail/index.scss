@@ -28,6 +28,9 @@
     width: 592px;
     height: 592px;
     margin: 140px auto 0;
+    &.hidden {
+      display: none;
+    }
     .song__music__main {
       position: relative;
       width: 100%;
@@ -113,7 +116,7 @@
     bottom: 0;
     width: 100%;
     height: 200px;
-    music-sizing: border-music;
+    box-sizing: border-box;
     .song__operation {
       display: flex;
       justify-content: center;
