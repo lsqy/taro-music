@@ -1,3 +1,8 @@
+export const formatNumber = n => {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+
 export const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -9,20 +14,15 @@ export const formatTime = date => {
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
-export const formatNumber = n => {
-  n = n.toString()
-  return n[1] ? n : '0' + n
-}
-
 // 转换歌词字符串为数组
 export const parse_lrc = (lrc_content) => {
-  let now_lrc = [];
-  let lrc_row = lrc_content.split("\n");
-  let scroll = true;
+  let now_lrc = []; // 声明一个临时数组
+  let lrc_row = lrc_content.split("\n"); // 将原始的歌词通过换行符转为数组
+  let scroll = true; // 默认scroll初始值为true
   for (let i in lrc_row) {
-    if ((lrc_row[i].indexOf(']') == -1) && lrc_row[i]) {
+    if ((lrc_row[i].indexOf(']') === -1) && lrc_row[i]) {
       now_lrc.push({ lrc: lrc_row[i] });
-    } else if (lrc_row[i] != "") {
+    } else if (lrc_row[i] !== '') {
       var tmp = lrc_row[i].split("]");
       for (let j in tmp) {
         scroll = false
