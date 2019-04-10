@@ -23,7 +23,6 @@ export default class CLyric extends Component<Props, {}> {
 
   render() {
     const { lrc, lrcIndex, showLyric } = this.props
-    console.log('this.props', this.props)
     const cls = classnames({
       song__lyric_components: true,
       hidden: !showLyric
@@ -35,7 +34,7 @@ export default class CLyric extends Component<Props, {}> {
       onClick={() => this.props.onTrigger()}
       >
         <View className='song__lyric__wrap' style={{
-            transform: `translateY(-${lrcIndex*100/(lrc.lrc.length+6)}%)`
+            transform: `translateY(-${lrcIndex*100/(lrc.lrc.length)}%)`
         }}>
           {
             lrc.nolyric ?  

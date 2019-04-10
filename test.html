@@ -24,8 +24,10 @@
             let tmp2 = tmp[j].substr(1, 8);
             tmp2 = tmp2.split(":");
             let lrc_sec = parseInt(tmp2[0] * 60 + tmp2[1] * 1);
+            console.log('lrc_sec', lrc_sec)
             if (lrc_sec && (lrc_sec > 0)) {
               let lrc = (tmp[tmp.length - 1]).replace(/(^\s*)|(\s*$)/g, "");
+              console.log('lrc', lrc)
               lrc && now_lrc.push({ lrc_sec: lrc_sec, lrc: lrc });
             }
           }

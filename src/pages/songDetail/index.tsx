@@ -27,8 +27,11 @@ type PageState = {
       lrc: string,
       lrc_sec: number
     }>
-  }
+  },
+  lrcIndex: number
 }
+
+const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
 class Page extends Component<{}, PageState> {
 
@@ -61,7 +64,8 @@ class Page extends Component<{}, PageState> {
         nolyric: false,
         uncollected: false,
         lrc: []
-      }
+      },
+      lrcIndex: 0
     }
   }
 
@@ -97,6 +101,9 @@ class Page extends Component<{}, PageState> {
       this.setState({
         songUrl: res.data.data[0].url
       })
+      backgroundAudioManager.title = name
+      backgroundAudioManager.coverImgUrl = picUrl
+      backgroundAudioManager.src = res.data.data[0].url
       // Taro.playBackgroundAudio({
       //   dataUrl: res.data.data[0].url,
       //   title: name,
@@ -117,25 +124,53 @@ class Page extends Component<{}, PageState> {
       this.setState({
         lrc: res.data
       });
-      // this.setState({
-      //   // lyric: res.data.data[0].url
-      // })
     })
   }
 
   pauseMusic() {
+    backgroundAudioManager.pause()
     this.setState({
       isPlaying: false
     })
   }
 
   playMusic() {
+    backgroundAudioManager.play()
     this.setState({
       isPlaying: true
     })
   }
 
   componentDidMount() {
+    // backgroundAudioManager.onTimeUpdate(() => {
+    //   console.log(1)
+    // })
+    const that = this
+    backgroundAudioManager.onTimeUpdate(() => {
+      Taro.getBackgroundAudioPlayerState({
+        success(res) {
+          const { lrc } = that.state
+          let lrcIndex = 0
+          if (res.status !== 2) {
+            if (!lrc.scroll) {
+              lrc.lrc.forEach((item, index) => {
+                if (item.lrc_sec <= res.currentPosition) {
+                  lrcIndex = index
+                }
+              })
+            };
+          }
+          that.setState({
+            lrcIndex
+          })
+          // const status = res.status
+          // const dataUrl = res.dataUrl
+          // const currentPosition = res.currentPosition
+          // const duration = res.duration
+          // const downloadPercent = res.downloadPercent
+        }
+      })
+    })
   }
 
   componentDidShow () {
@@ -158,7 +193,7 @@ class Page extends Component<{}, PageState> {
 
 
   render () {
-    const { songInfo, isPlaying, showLyric, lrc } = this.state
+    const { songInfo, isPlaying, showLyric, lrc, lrcIndex } = this.state
     return (
       <View className='song_container'>
         <Image 
@@ -204,7 +239,7 @@ class Page extends Component<{}, PageState> {
             </View>
           </View>
         </View> 
-        <CLyric lrc={lrc} lrcIndex={20} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
+        <CLyric lrc={lrc} lrcIndex={lrcIndex} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
         <View className='song__bottom'>
           <View className='song__operation'>
             <Image src={require('../../assets/images/ajh.png')} className='song__operation__prev'/>
