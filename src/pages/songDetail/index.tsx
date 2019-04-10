@@ -114,7 +114,7 @@ class Page extends Component<{}, PageState> {
       id
     }).then((res) => {
       const lrc = parse_lrc(res.data.lrc && res.data.lrc.lyric ? res.data.lrc.lyric : '');
-      res.data.lrc = lrc.now_lrc;
+      res.data.lrclist = lrc.now_lrc;
       res.data.scroll = lrc.scroll ? 1 : 0
       this.setState({
         lrc: res.data

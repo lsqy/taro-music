@@ -15,29 +15,32 @@ export const formatTime = date => {
 }
 
 // 转换歌词字符串为数组
-export const parse_lrc = (lrc_content) => {
-  let now_lrc = []; // 声明一个临时数组
-  let lrc_row = lrc_content.split("\n"); // 将原始的歌词通过换行符转为数组
+export const parse_lrc = (lrc_content: string) => {
+  let now_lrc: Array<{
+    lrc_text: string,
+    lrc_sec?: number
+  }> = []; // 声明一个临时数组
+  let lrc_row: Array<string> = lrc_content.split("\n"); // 将原始的歌词通过换行符转为数组
   let scroll = true; // 默认scroll初始值为true
   for (let i in lrc_row) {
     if ((lrc_row[i].indexOf(']') === -1) && lrc_row[i]) {
-      now_lrc.push({ lrc: lrc_row[i] });
+      now_lrc.push({ lrc_text: lrc_row[i] });
     } else if (lrc_row[i] !== '') {
       var tmp = lrc_row[i].split("]");
       for (let j in tmp) {
         scroll = false
-        let tmp2 = tmp[j].substr(1, 8);
+        let tmp2: string = tmp[j].substr(1, 8);
         tmp2 = tmp2.split(":");
         let lrc_sec = parseInt(tmp2[0] * 60 + tmp2[1] * 1);
         if (lrc_sec && (lrc_sec > 0)) {
           let lrc = (tmp[tmp.length - 1]).replace(/(^\s*)|(\s*$)/g, "");
-          lrc && now_lrc.push({ lrc_sec: lrc_sec, lrc: lrc });
+          lrc && now_lrc.push({ lrc_sec: lrc_sec, lrc_text: lrc });
         }
       }
     }
   }
   if (!scroll) {
-    now_lrc.sort(function (a, b) {
+    now_lrc.sort(function (a: {lrc_sec: number, lrc_text: string}, b: {lrc_sec: number, lrc_text: string}) : number {
       return a.lrc_sec - b.lrc_sec;
     });
   }
