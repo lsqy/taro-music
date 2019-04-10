@@ -23,8 +23,8 @@ type PageState = {
     scroll: boolean,
     nolyric: boolean,
     uncollected: boolean,
-    lrc: Array<{
-      lrc: string,
+    lrclist: Array<{
+      lrc_text: string,
       lrc_sec: number
     }>
   },
@@ -63,7 +63,7 @@ class Page extends Component<{}, PageState> {
         scroll: false,
         nolyric: false,
         uncollected: false,
-        lrc: []
+        lrclist: []
       },
       lrcIndex: 0
     }
@@ -76,8 +76,8 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentWillMount() {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/song/detail', {
       ids: id
     }).then((res) => {
@@ -93,8 +93,8 @@ class Page extends Component<{}, PageState> {
   }
 
   getSongUrl(name: string, picUrl: string) {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/song/url', {
       id
     }).then((res) => {
@@ -104,17 +104,12 @@ class Page extends Component<{}, PageState> {
       backgroundAudioManager.title = name
       backgroundAudioManager.coverImgUrl = picUrl
       backgroundAudioManager.src = res.data.data[0].url
-      // Taro.playBackgroundAudio({
-      //   dataUrl: res.data.data[0].url,
-      //   title: name,
-      //   coverImgUrl: picUrl
-      // })
     })
   }
 
   getLyric() {
-    // const { id } = this.$router.params
-    const id = 1336856777
+    const { id } = this.$router.params
+    // const id = 1336856777
     api.get('/lyric', {
       id
     }).then((res) => {
@@ -142,9 +137,6 @@ class Page extends Component<{}, PageState> {
   }
 
   componentDidMount() {
-    // backgroundAudioManager.onTimeUpdate(() => {
-    //   console.log(1)
-    // })
     const that = this
     backgroundAudioManager.onTimeUpdate(() => {
       Taro.getBackgroundAudioPlayerState({
@@ -152,8 +144,8 @@ class Page extends Component<{}, PageState> {
           const { lrc } = that.state
           let lrcIndex = 0
           if (res.status !== 2) {
-            if (!lrc.scroll) {
-              lrc.lrc.forEach((item, index) => {
+            if (!lrc.scroll && lrc.lrclist && lrc.lrclist.length > 0) {
+              lrc.lrclist.forEach((item, index) => {
                 if (item.lrc_sec <= res.currentPosition) {
                   lrcIndex = index
                 }
@@ -163,18 +155,9 @@ class Page extends Component<{}, PageState> {
           that.setState({
             lrcIndex
           })
-          // const status = res.status
-          // const dataUrl = res.dataUrl
-          // const currentPosition = res.currentPosition
-          // const duration = res.duration
-          // const downloadPercent = res.downloadPercent
         }
       })
     })
-  }
-
-  componentDidShow () {
-
   }
 
   componentDidHide () { }

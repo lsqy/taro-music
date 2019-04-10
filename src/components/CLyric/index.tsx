@@ -8,8 +8,8 @@ type Props = {
     scroll: boolean,
     nolyric: boolean,
     uncollected: boolean,
-    lrc: Array<{
-      lrc: string,
+    lrclist: Array<{
+      lrc_text: string,
       lrc_sec: number
     }>
   },
@@ -34,10 +34,10 @@ export default class CLyric extends Component<Props, {}> {
       onClick={() => this.props.onTrigger()}
       >
         <View className='song__lyric__wrap' style={{
-            transform: `translateY(-${lrcIndex*100/(lrc.lrc.length)}%)`
+            transform: `translateY(-${lrcIndex*100/(lrc.lrclist.length)}%)`
         }}>
           {
-            lrc.nolyric ?  
+            lrc.nolyric && !lrc.uncollected ?  
             <View className='song__lyric__notext'>
               纯音乐，无歌词
             </View> : ''
@@ -49,13 +49,13 @@ export default class CLyric extends Component<Props, {}> {
             </View> : ''
           }
           {
-            lrc.uncollected ?  
+            lrc.uncollected && !lrc.nolyric ?  
             <View className='song__lyric__notext'>
               暂无歌词
             </View> : ''
           }
           {
-            lrc.lrc.map((item, index) => 
+            lrc.lrclist.map((item, index) => 
                 <View key={index} className={
                   classnames({
                     song__lyric__text: true,
@@ -66,7 +66,7 @@ export default class CLyric extends Component<Props, {}> {
                 }
                 data-time={item.lrc_sec}
                 >
-                  {item.lrc}
+                  {item.lrc_text}
                 </View>
             )
           }         
