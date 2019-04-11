@@ -131,7 +131,7 @@ class Index extends Component<IProps, PageState> {
    */
   getNewsong() {
     api.get('/personalized/newsong').then((res) => {
-      
+      console.log('推荐新音乐', res)
     })
   }
 
@@ -151,7 +151,7 @@ class Index extends Component<IProps, PageState> {
    */
   getRecommend() {
     api.get('/program/recommend').then((res) => {
-      
+      console.log('推荐节目', res)
     })
   }
 
@@ -182,7 +182,7 @@ class Index extends Component<IProps, PageState> {
                   {
                     item.playCount < 10000 ?
                     item.playCount : 
-                    `${parseInt(item.playCount/10000)}万`
+                    `${Number(item.playCount/10000).toFixed(0)}万`
                   }
                 </View>
                 <View className='recommend_playlist__item__title'>{item.name}</View>
@@ -220,12 +220,5 @@ class Index extends Component<IProps, PageState> {
     )
   }
 }
-
-// #region 导出注意
-//
-// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
-// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
-//
-// #endregion
 
 export default Index as ComponentClass<PageOwnProps, PageState>

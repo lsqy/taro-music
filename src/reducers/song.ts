@@ -1,12 +1,16 @@
-import { GETSONGDETAIL } from '../constants/song'
+import { GETSONGDETAIL, GETPLAYLISTDETAIL } from '../constants/song'
 
 const INITIAL_STATE = {
   song: {
 
-  }
+  },
+  playListDetailInfo: {
+
+  },
+  
 }
 
-export default function counter (state = INITIAL_STATE, action) {
+export default function song (state = INITIAL_STATE, action) {
   switch (action.type) {
     case GETSONGDETAIL:
       console.log('action', action)
@@ -16,6 +20,10 @@ export default function counter (state = INITIAL_STATE, action) {
           name: 'test'
         }
       }
+    case GETPLAYLISTDETAIL: 
+      return {
+
+      }   
      default:
        return state
   }
