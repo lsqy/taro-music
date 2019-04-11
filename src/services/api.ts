@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { HTTP_STATUS } from '../constants/status'
-import { baseUrl } from './config'
+import { baseUrl } from '../config'
 import { logError } from '../utils/error'
 
 export default {
