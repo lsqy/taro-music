@@ -22,7 +22,8 @@ export default function song (state = INITIAL_STATE, action) {
       }
     case GETPLAYLISTDETAIL: 
       return {
-
+        ...state,
+        playListDetailInfo: action.payload.playListDetailInfo
       }   
      default:
        return state

@@ -11,28 +11,19 @@ export const getSongDetail = (payload) => {
   }
 }
 
-export const GETPLAYLISTDETAIL = (payload) => {
+export const getPlayListDetail = (payload) => {
   const { id } = payload
-  api.get('/playlist/detail', {
-    id
-  }).then((res) => {
-    return {
-      playListDetailInfo: res.data.playlist,
-      privileges: res.data.privileges
-    }
-  })
+  return dispatch => {
+    api.get('/playlist/detail', {
+      id
+    }).then((res) => {
+      dispatch({
+        type: GETPLAYLISTDETAIL,
+        payload: {
+          playListDetailInfo: res.data.playlist,
+          privileges: res.data.privileges
+        }
+      })
+    })
+  }
 }
-// export const minus = () => {
-//   return {
-//     type: MINUS
-//   }
-// }
-
-// 异步的action
-// export function asyncAdd () {
-//   return dispatch => {
-//     setTimeout(() => {
-//       dispatch(add())
-//     }, 2000)
-//   }
-// }

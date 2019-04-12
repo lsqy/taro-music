@@ -7,6 +7,7 @@ import api from '../../services/api'
 import CLoading from '../../components/CLoading'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
+import { getPlayListDetail } from '../../actions/song'
 
 import './index.scss'
 
@@ -23,13 +24,17 @@ import './index.scss'
 type PageStateProps = {
   counter: {
     num: number
+  },
+  song: {
+    
   }
 }
 
 type PageDispatchProps = {
   add: () => void
   dec: () => void
-  asyncAdd: () => any
+  asyncAdd: () => any,
+  getPlayListDetail: (object) => any
 }
 
 type PageOwnProps = {}
@@ -54,8 +59,9 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ counter }) => ({
-  counter
+@connect(({ counter, song }) => ({
+  counter,
+  song
 }), (dispatch) => ({
   add () {
     dispatch(add())
@@ -65,6 +71,9 @@ interface Index {
   },
   asyncAdd () {
     dispatch(asyncAdd())
+  },
+  getPlayListDetail (payload) {
+    dispatch(getPlayListDetail(payload))
   }
 }))
 class Index extends Component<IProps, PageState> {
@@ -99,6 +108,9 @@ class Index extends Component<IProps, PageState> {
     this.getNewsong()
     this.getDjprogram()
     this.getRecommend()
+    this.props.getPlayListDetail({
+      id: 2601648795
+    })
   }
 
   componentWillUnmount () { }
