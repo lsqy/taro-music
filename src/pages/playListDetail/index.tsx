@@ -2,8 +2,10 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
+import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
+import { getPlayListDetail } from '../../actions/song'
 import './index.scss'
 
 type MusicItem = {
@@ -16,6 +18,16 @@ type MusicItem = {
     name: string
   },
   copyright: number
+}
+
+type PageStateProps = {
+  song: {
+    
+  }
+}
+
+type PageDispatchProps = {
+  getPlayListDetail: (object) => any
 }
 
 type PageState = {
@@ -36,7 +48,15 @@ type PageState = {
   }>
 }
 
-class Page extends Component<{}, PageState> {
+@connect(({ song }) => ({
+  song
+}), (dispatch) => ({
+  getPlayListDetail (payload) {
+    dispatch(getPlayListDetail(payload))
+  }
+}))
+
+class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -78,13 +98,16 @@ class Page extends Component<{}, PageState> {
     Taro.setNavigationBarTitle({
       title: name
     })
-    api.get('/playlist/detail', {
+    // api.get('/playlist/detail', {
+    //   id
+    // }).then((res) => {
+    //   this.setState({
+    //     playListInfo: res.data.playlist,
+    //     privileges: res.data.privileges
+    //   })
+    // })
+    this.props.getPlayListDetail({
       id
-    }).then((res) => {
-      this.setState({
-        playListInfo: res.data.playlist,
-        privileges: res.data.privileges
-      })
     })
   }
 
@@ -201,4 +224,4 @@ class Page extends Component<{}, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass
+export default Page as ComponentClass<PageDispatchProps, PageState>
