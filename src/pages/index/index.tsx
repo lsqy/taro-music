@@ -108,9 +108,6 @@ class Index extends Component<IProps, PageState> {
     this.getNewsong()
     this.getDjprogram()
     this.getRecommend()
-    this.props.getPlayListDetail({
-      id: 2601648795
-    })
   }
 
   componentWillUnmount () { }

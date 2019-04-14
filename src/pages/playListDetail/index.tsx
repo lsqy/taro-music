@@ -4,7 +4,6 @@ import { View, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
-import api from '../../services/api'
 import { getPlayListDetail } from '../../actions/song'
 import './index.scss'
 
@@ -22,7 +21,21 @@ type MusicItem = {
 
 type PageStateProps = {
   song: {
-    
+    playListDetailInfo: {
+      coverImgUrl: string,
+      playCount: number,
+      name: string,
+      description?: string,
+      tags: Array<string | undefined>,
+      creator: {
+        avatarUrl: string,
+        nickname: string
+      },
+      tracks: Array<MusicItem>
+    },
+    playListDetailPrivileges: Array<{
+      st: number
+    }>
   }
 }
 
@@ -31,24 +44,11 @@ type PageDispatchProps = {
 }
 
 type PageState = {
-  playListInfo: {
-    coverImgUrl: string,
-    playCount: number,
-    name: string,
-    description?: string,
-    tags: Array<string | undefined>,
-    creator: {
-      avatarUrl: string,
-      nickname: string
-    },
-    tracks: Array<MusicItem>
-  },
-  privileges: Array<{
-    st: number
-  }>
 }
 
-@connect(({ song }) => ({
+@connect(({
+  song
+}) => ({
   song
 }), (dispatch) => ({
   getPlayListDetail (payload) {
@@ -72,23 +72,11 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   constructor (props) {
     super(props)
     this.state = {
-      playListInfo: {
-        coverImgUrl: '',
-        name: '',
-        playCount: 0,
-        tags: [],
-        creator: {
-          avatarUrl: '',
-          nickname: ''
-        },
-        tracks: []
-      },
-      privileges: []
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    console.log(`testtest-----${this.props}`, nextProps)
   }
 
   componentWillUnmount () { }
@@ -131,38 +119,38 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
 
   render () {
-    const { playListInfo, privileges } = this.state
+    const { playListDetailInfo, playListDetailPrivileges } = this.props.song
     return (
       <View className='playList_container'>
         <View className='playList__header'>
           <Image 
             className='playList__header__bg'
-            src={playListInfo.coverImgUrl}
+            src={playListDetailInfo.coverImgUrl}
           />
           <View className='playList__header__cover'>
             <Image 
               className='playList__header__cover__img'
-              src={playListInfo.coverImgUrl}
+              src={playListDetailInfo.coverImgUrl}
             />
             <Text className='playList__header__cover__desc'>歌单</Text>
             <View className='playList__header__cover__num'>
               <Text className='at-icon at-icon-sound'></Text>
               {
-                playListInfo.playCount < 10000 ?
-                playListInfo.playCount : 
-                `${Number(playListInfo.playCount/10000).toFixed(1)}万`
+                playListDetailInfo.playCount < 10000 ?
+                playListDetailInfo.playCount : 
+                `${Number(playListDetailInfo.playCount/10000).toFixed(1)}万`
               }
             </View>
           </View>
           <View className='playList__header__info'>
             <View className='playList__header__info__title'>
-            {playListInfo.name}
+            {playListDetailInfo.name}
             </View>
             <View className='playList__header__info__user'>
               <Image 
                 className='playList__header__info__user_avatar'
-                src={playListInfo.creator.avatarUrl}
-              />{playListInfo.creator.nickname}
+                src={playListDetailInfo.creator.avatarUrl}
+              />{playListDetailInfo.creator.nickname}
             </View>
           </View>
         </View>
@@ -170,14 +158,14 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
           <View className='playList__header--more__tag'>
               标签：
               {
-                playListInfo.tags.map((tag, index) => <Text key={index} className='playList__header--more__tag__item'>{tag}</Text>)
+                playListDetailInfo.tags.map((tag, index) => <Text key={index} className='playList__header--more__tag__item'>{tag}</Text>)
               }
               {
-                playListInfo.tags.length === 0 ? '暂无' : ''
+                playListDetailInfo.tags.length === 0 ? '暂无' : ''
               }
           </View>
           <View className='playList__header--more__desc'>
-            简介：{playListInfo.description || '暂无'}
+            简介：{playListDetailInfo.description || '暂无'}
           </View>
         </View>
         <View className='playList__content'>
@@ -185,16 +173,16 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
               歌曲列表
           </View>
           {
-            playListInfo.tracks.length === 0 ? <CLoading /> : ''
+            playListDetailInfo.tracks.length === 0 ? <CLoading /> : ''
           }
           <View className='playList__content__list'>
               {
-                playListInfo.tracks.map((track, index) => <View className={classnames({
+                playListDetailInfo.tracks.map((track, index) => <View className={classnames({
                   playList__content__list__item: true,
-                  disabled: privileges[index].st === -200
+                  disabled: playListDetailPrivileges[index].st === -200
                 })}
                 key={index}
-                onClick={this.playSong.bind(this, track.id, privileges[index].st !== -200)}
+                onClick={this.playSong.bind(this, track.id, playListDetailPrivileges[index].st !== -200)}
                 >
                   <Text className='playList__content__list__item__index'>{index+1}</Text>
                   <View className='playList__content__list__item__info'>

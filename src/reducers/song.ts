@@ -1,13 +1,18 @@
 import { GETSONGDETAIL, GETPLAYLISTDETAIL } from '../constants/song'
 
 const INITIAL_STATE = {
-  song: {
-
-  },
   playListDetailInfo: {
-
+    coverImgUrl: '',
+    name: '',
+    playCount: 0,
+    tags: [],
+    creator: {
+      avatarUrl: '',
+      nickname: ''
+    },
+    tracks: []
   },
-  
+  playListDetailPrivileges: []
 }
 
 export default function song (state = INITIAL_STATE, action) {
@@ -23,7 +28,8 @@ export default function song (state = INITIAL_STATE, action) {
     case GETPLAYLISTDETAIL: 
       return {
         ...state,
-        playListDetailInfo: action.payload.playListDetailInfo
+        playListDetailInfo: action.payload.playListDetailInfo,
+        playListDetailPrivileges: action.payload.playListDetailPrivileges
       }   
      default:
        return state

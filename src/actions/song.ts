@@ -21,7 +21,7 @@ export const getPlayListDetail = (payload) => {
         type: GETPLAYLISTDETAIL,
         payload: {
           playListDetailInfo: res.data.playlist,
-          privileges: res.data.privileges
+          playListDetailPrivileges: res.data.privileges
         }
       })
     })
