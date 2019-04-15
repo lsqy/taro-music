@@ -17,10 +17,20 @@ export const getPlayListDetail = (payload) => {
     api.get('/playlist/detail', {
       id
     }).then((res) => {
+      let playListDetailInfo = res.data.playlist
+      playListDetailInfo.tracks = playListDetailInfo.tracks.map((item) => {
+        let temp: any = {}
+        temp.name = item.name
+        temp.id = item.id
+        temp.ar = item.ar
+        temp.al = item.al
+        temp.copyright = item.copyright
+        return temp
+      })
       dispatch({
         type: GETPLAYLISTDETAIL,
         payload: {
-          playListDetailInfo: res.data.playlist,
+          playListDetailInfo,
           playListDetailPrivileges: res.data.privileges
         }
       })

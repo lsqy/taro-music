@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
@@ -117,11 +117,19 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     }
   }
 
+  loadMore() {
+    console.log('test')
+  }
+
 
   render () {
     const { playListDetailInfo, playListDetailPrivileges } = this.props.song
     return (
-      <View className='playList_container'>
+      <ScrollView 
+        className='playList_container'  
+        scrollY 
+        lowerThreshold={20}
+        onScrollToLower={this.loadMore.bind(this)}>
         <View className='playList__header'>
           <Image 
             className='playList__header__bg'
@@ -175,7 +183,9 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
           {
             playListDetailInfo.tracks.length === 0 ? <CLoading /> : ''
           }
-          <View className='playList__content__list'>
+          <View 
+            className='playList__content__list'
+          >
               {
                 playListDetailInfo.tracks.map((track, index) => <View className={classnames({
                   playList__content__list__item: true,
@@ -200,7 +210,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
               }
           </View>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
