@@ -2,10 +2,31 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import classnames from 'classnames'
+import { connect } from '@tarojs/redux'
 import { parse_lrc } from '../../utils/common'
 import api from '../../services/api'
 import CLyric from '../../components/CLyric'
 import './index.scss'
+
+type PageStateProps = {
+  song: {
+    playListDetailInfo: {
+      coverImgUrl: string,
+      playCount: number,
+      name: string,
+      description?: string,
+      tags: Array<string | undefined>,
+      creator: {
+        avatarUrl: string,
+        nickname: string
+      },
+      tracks: Array<MusicItem>
+    },
+    playListDetailPrivileges: Array<{
+      st: number
+    }>
+  }
+}
 
 
 type PageState = {
@@ -33,7 +54,15 @@ type PageState = {
 
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
-class Page extends Component<{}, PageState> {
+@connect(({
+  song
+}) => ({
+  song
+}), (dispatch) => ({
+
+}))
+
+class Page extends Component<PageStateProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -76,6 +105,7 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentWillMount() {
+    console.log('props', this.props)
     const { id } = this.$router.params
     // const id = 1336856777
     api.get('/song/detail', {
