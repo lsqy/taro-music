@@ -1,6 +1,9 @@
 import {
   GETSONGDETAIL,
-  GETPLAYLISTDETAIL
+  GETPLAYLISTDETAIL,
+  GETRECOMMENDPLAYLIST,
+  GETRECOMMENDDJ,
+  GETRECOMMENDNEWSONG
 } from '../constants/song'
 import api from '../services/api'
 
@@ -11,6 +14,7 @@ export const getSongDetail = (payload) => {
   }
 }
 
+// 获取歌单详情
 export const getPlayListDetail = (payload) => {
   const { id } = payload
   return dispatch => {
@@ -37,3 +41,65 @@ export const getPlayListDetail = (payload) => {
     })
   }
 }
+
+// 获取推荐歌单
+export const getRecommendPlayList = () => {
+  return dispatch => {
+    api.get('/personalized').then((res) => {
+      let recommendPlayList = res.data.result
+      dispatch({
+        type: GETRECOMMENDPLAYLIST,
+        payload: {
+          recommendPlayList
+        }
+      })
+    })
+  }
+}
+
+// 获取推荐电台
+export const getRecommendDj = () => {
+  return dispatch => {
+    api.get('/personalized/djprogram').then((res) => {
+      let recommendDj = res.data.result
+      dispatch({
+        type: GETRECOMMENDDJ,
+        payload: {
+          recommendDj
+        }
+      })
+    })
+  }
+}
+
+// 获取推荐新音乐
+export const getRecommendNewSong = () => {
+  return dispatch => {
+    api.get('/personalized/newsong').then((res) => {
+      let recommendNewSong = res.data.result
+      dispatch({
+        type: GETRECOMMENDNEWSONG,
+        payload: {
+          recommendNewSong
+        }
+      })
+    })
+  }
+}
+
+// 获取推荐精彩节目
+export const GETRECOMMEND = () => {
+  return dispatch => {
+    api.get('/personalized/recommend').then((res) => {
+      let recommend = res.data.result
+      dispatch({
+        type: GETRECOMMEND,
+        payload: {
+          recommend
+        }
+      })
+    })
+  }
+}
+
+

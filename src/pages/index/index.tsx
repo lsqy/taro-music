@@ -5,9 +5,7 @@ import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '../../services/api'
 import CLoading from '../../components/CLoading'
-
-import { add, minus, asyncAdd } from '../../actions/counter'
-import { getPlayListDetail } from '../../actions/song'
+import { getRecommendPlayList, getRecommendDj } from '../../actions/song'
 
 import './index.scss'
 
@@ -25,31 +23,26 @@ type PageStateProps = {
   counter: {
     num: number
   },
-  song: {
-    
-  }
+  recommendPlayList: Array<{
+    name: string,
+    picUrl: string,
+    playCount: number
+  }>,
+  recommendDj: Array<{
+    name: string,
+    picUrl: string
+  }>,
 }
 
 type PageDispatchProps = {
-  add: () => void
-  dec: () => void
-  asyncAdd: () => any,
-  getPlayListDetail: (object) => any
+  getRecommendPlayList: () => any,
+  getRecommendDj: () => any
 }
 
 type PageOwnProps = {}
 
 type PageState = {
   current: number,
-  recommend_playlist: Array<{
-    name: string,
-    picUrl: string,
-    playCount: number
-  }>,
-  recommend_djprogram: Array<{
-    name: string,
-    picUrl: string
-  }>,
   showLoading: boolean
 }
 
@@ -59,21 +52,15 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ counter, song }) => ({
-  counter,
-  song
+@connect(({ song }) => ({
+  recommendPlayList: song.recommendPlayList,
+  recommendDj: song.recommendDj
 }), (dispatch) => ({
-  add () {
-    dispatch(add())
+  getRecommendPlayList () {
+    dispatch(getRecommendPlayList())
   },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  },
-  getPlayListDetail (payload) {
-    dispatch(getPlayListDetail(payload))
+  getRecommendDj () {
+    dispatch(getRecommendDj())
   }
 }))
 class Index extends Component<IProps, PageState> {
@@ -93,14 +80,15 @@ class Index extends Component<IProps, PageState> {
     super(props)
     this.state = {
       current: 0,
-      recommend_playlist: [],
-      recommend_djprogram: [],
       showLoading: true
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
+    this.setState({
+      showLoading: false
+    })
   }
 
   componentWillMount() {
@@ -127,12 +115,7 @@ class Index extends Component<IProps, PageState> {
    * 获取推荐歌单
    */
   getPersonalized() {
-    api.get('/personalized').then((res) => {
-      this.setState({
-        recommend_playlist: res.data.result,
-        showLoading: false
-      })
-    })
+    this.props.getRecommendPlayList()
   }
 
   /**
@@ -148,11 +131,7 @@ class Index extends Component<IProps, PageState> {
    * 获取推荐电台
    */
   getDjprogram() {
-    api.get('/personalized/djprogram').then((res) => {
-      this.setState({
-        recommend_djprogram: res.data.result
-      })
-    })
+    this.props.getRecommendDj()
   }
 
   /**
@@ -171,7 +150,8 @@ class Index extends Component<IProps, PageState> {
   }
 
   render () {
-    const { recommend_playlist, recommend_djprogram, showLoading } = this.state
+    const { recommendPlayList, recommendDj } = this.props
+    const { showLoading } = this.state
     return (
       <View className='index_container'>
         <CLoading fullPage={true} hide={!showLoading} />
@@ -181,7 +161,7 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className='recommend_playlist__content'>
             {
-              recommend_playlist.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              recommendPlayList.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
@@ -205,7 +185,7 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className='recommend_playlist__content'>
             {
-              recommend_djprogram.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              recommendDj.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'
@@ -230,4 +210,4 @@ class Index extends Component<IProps, PageState> {
   }
 }
 
-export default Index as ComponentClass<PageOwnProps, PageState>
+export default Index as ComponentClass<IProps, PageState>

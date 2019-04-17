@@ -17,6 +17,20 @@ export default {
       error: any,
       xhrFields: object,
     }
+    const setCookie = (res: {
+      cookies: Array<{
+        name: string,
+        value: string
+      }>
+    }) => {
+      if (res.cookies && res.cookies.length > 0) {
+        let cookies = ''
+        res.cookies.forEach(cookie => {
+          cookies += `${cookie.name}=${cookie.value};`
+        });
+        Taro.setStorageSync('cookies', cookies)
+      }
+    }
     const option: OptionType = {
       url: url.indexOf('http') !== -1 ? url : baseUrl + url,
       data: data,
@@ -27,27 +41,14 @@ export default {
       },
       xhrFields: { withCredentials: true },
       success(res) {
-        console.log('res', res)
-        if (res.cookies && res.cookies.length > 0) {
-          let cookies = ''
-          res.cookies.forEach(cookie => {
-            cookies += `${cookie.name}=${cookie.value};`
-          });
-          Taro.setStorageSync('cookies', cookies)
-        }
+        setCookie(res)
         if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
           return logError('api', '请求资源不存在')
         } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
           return logError('api', '服务端出现了问题')
         } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
-          // Taro.setStorageSync('Authorization', '')
-          // Taro.clearStorage()
-          // Taro.navigateTo({
-          //     url: '/pages/login/index'
-          // })
           return logError('api', '没有权限访问')
         } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-          // Taro.setStorageSync('Authorization', '')
           // Taro.clearStorage()
           // Taro.navigateTo({
           //   url: '/pages/login/index'
