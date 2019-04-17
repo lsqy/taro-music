@@ -119,6 +119,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+      .song__operation__mode {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        left: 30px;
+        top: 10px;
+      }
       .song__operation__prev {
         width: 60px;
         height: 60px;

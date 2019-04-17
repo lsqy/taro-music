@@ -3,7 +3,10 @@ import {
   GETPLAYLISTDETAIL,
   GETRECOMMENDPLAYLIST,
   GETRECOMMENDDJ,
-  GETRECOMMENDNEWSONG
+  GETRECOMMENDNEWSONG,
+  GETRECOMMEND,
+  GETSONGINFO,
+  CHANGEPLAYMODE
 } from '../constants/song'
 import api from '../services/api'
 
@@ -88,7 +91,7 @@ export const getRecommendNewSong = () => {
 }
 
 // 获取推荐精彩节目
-export const GETRECOMMEND = () => {
+export const getRecommend = () => {
   return dispatch => {
     api.get('/personalized/recommend').then((res) => {
       let recommend = res.data.result
@@ -101,5 +104,37 @@ export const GETRECOMMEND = () => {
     })
   }
 }
+
+// 获取歌曲详情信息
+export const getSongInfo = (payload) => {
+  const { id } = payload
+  return dispatch => {
+    api.get('/song/detail', {
+      ids: id
+    }).then((res) => {
+      let songInfo = res.data.songs[0]
+      api.get('/song/url', {
+        id
+      }).then((res) => {
+        songInfo.url = res.data.data[0].url
+        dispatch({
+          type: GETSONGINFO,
+          payload: {
+            currentSongInfo: songInfo
+          }
+        })
+      })
+    })
+  }
+}
+
+// 切换播放模式
+export const changePlayMode = (payload) => {
+  return {
+    type: CHANGEPLAYMODE,
+    payload
+  }
+}
+
 
 

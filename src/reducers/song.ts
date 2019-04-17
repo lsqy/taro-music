@@ -1,7 +1,56 @@
-import { GETSONGDETAIL, GETPLAYLISTDETAIL, GETRECOMMENDPLAYLIST, GETRECOMMENDDJ, GETRECOMMENDNEWSONG, GETRECOMMEND } from '../constants/song'
+import { 
+  GETSONGDETAIL, 
+  GETPLAYLISTDETAIL, 
+  GETRECOMMENDPLAYLIST, 
+  GETRECOMMENDDJ, 
+  GETRECOMMENDNEWSONG, 
+  GETRECOMMEND,
+  GETSONGINFO,
+  CHANGEPLAYMODE
+} from '../constants/song'
 
-const INITIAL_STATE = {
+interface State {
   // 歌单详情
+  playListDetailInfo: {
+    coverImgUrl: string,
+    name: string,
+    playCount: number,
+    tags: Array<{}>,
+    creator: {
+      avatarUrl: string,
+      nickname: string
+    },
+    tracks: Array<{}>
+  },
+  // 可播放歌曲列表
+  canPlayList: Array<{
+    id: number
+  }>,
+  // 歌单详情中歌曲是否有版权播放
+  playListDetailPrivileges: Array<{}>,
+  // 推荐歌单
+  recommendPlayList: Array<{}>,
+  // 推荐歌单
+  recommendDj: Array<{}>,
+  // 推荐新音乐
+  recommendNewSong: Array<{}>,
+  // 推荐精彩节目
+  recommend: Array<{}>,
+  // 我创建的歌单
+  myCreateList: Array<{}>,
+  // 我收藏的歌单
+  myCollectList: Array<{}>,
+  // 当前播放的歌曲id
+  currentSongId: string,
+  // 当前播放的歌曲详情
+  currentSongInfo: {},
+  // 当前播放的歌曲在播放列表中的索引,默认第一首
+  currentSongIndex: number,
+  // 播放模式
+  playMode: 'loop' | 'one' | 'shuffle'
+}
+
+const INITIAL_STATE: State = {
   playListDetailInfo: {
     coverImgUrl: '',
     name: '',
@@ -13,18 +62,18 @@ const INITIAL_STATE = {
     },
     tracks: []
   },
-  // 可播放歌曲列表
   canPlayList: [],
-  // 歌单详情中歌曲是否有版权播放
   playListDetailPrivileges: [],
-  // 推荐歌单
   recommendPlayList: [],
-  // 推荐歌单
   recommendDj: [],
-  // 推荐新音乐
   recommendNewSong: [],
-  // 推荐精彩节目
-  recommend: []
+  recommend: [],
+  myCreateList: [],
+  myCollectList: [],
+  currentSongId: '',
+  currentSongInfo: {},
+  currentSongIndex: 0,
+  playMode: 'loop'
 }
 
 export default function song (state = INITIAL_STATE, action) {
@@ -74,6 +123,21 @@ export default function song (state = INITIAL_STATE, action) {
         ...state,
         recommend
       }
+    // 获取歌曲详情  
+    case GETSONGINFO:  
+      const { currentSongInfo } = action.payload
+      let currentSongIndex = state.canPlayList.findIndex(item => item.id === currentSongInfo.id)
+      return {
+        ...state,
+        currentSongInfo,
+        currentSongIndex
+      }
+    case CHANGEPLAYMODE:
+      const { playMode } = action.payload
+      return {
+        ...state,
+        playMode
+      }  
     default:
       return state
   }

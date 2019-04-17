@@ -3,9 +3,13 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import api from '../../services/api'
 import CLoading from '../../components/CLoading'
-import { getRecommendPlayList, getRecommendDj } from '../../actions/song'
+import { 
+  getRecommendPlayList, 
+  getRecommendDj, 
+  getRecommendNewSong, 
+  getRecommend 
+} from '../../actions/song'
 
 import './index.scss'
 
@@ -32,11 +36,15 @@ type PageStateProps = {
     name: string,
     picUrl: string
   }>,
+  recommendNewSong: any,
+  recommend: any
 }
 
 type PageDispatchProps = {
   getRecommendPlayList: () => any,
-  getRecommendDj: () => any
+  getRecommendDj: () => any,
+  getRecommendNewSong: () => any,
+  getRecommend: () => any 
 }
 
 type PageOwnProps = {}
@@ -54,13 +62,21 @@ interface Index {
 
 @connect(({ song }) => ({
   recommendPlayList: song.recommendPlayList,
-  recommendDj: song.recommendDj
+  recommendDj: song.recommendDj,
+  recommendNewSong: song.recommendNewSong,
+  recommend: song.recommend
 }), (dispatch) => ({
   getRecommendPlayList () {
     dispatch(getRecommendPlayList())
   },
   getRecommendDj () {
     dispatch(getRecommendDj())
+  },
+  getRecommendNewSong () {
+    dispatch(getRecommendNewSong())
+  },
+  getRecommend () {
+    dispatch(getRecommend())
   }
 }))
 class Index extends Component<IProps, PageState> {
@@ -85,7 +101,7 @@ class Index extends Component<IProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log(this.props, nextProps)
+    console.log(this.props, nextProps)
     this.setState({
       showLoading: false
     })
@@ -122,9 +138,7 @@ class Index extends Component<IProps, PageState> {
    * 获取推荐新音乐
    */
   getNewsong() {
-    api.get('/personalized/newsong').then((res) => {
-      console.log('推荐新音乐', res)
-    })
+    this.props.getRecommendNewSong()
   }
 
   /**
@@ -138,9 +152,7 @@ class Index extends Component<IProps, PageState> {
    * 获取推荐节目
    */
   getRecommend() {
-    api.get('/program/recommend').then((res) => {
-      console.log('推荐节目', res)
-    })
+    this.props.getRecommend()
   }
 
   goDetail(item) {

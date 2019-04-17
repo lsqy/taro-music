@@ -6,37 +6,34 @@ import { connect } from '@tarojs/redux'
 import { parse_lrc } from '../../utils/common'
 import api from '../../services/api'
 import CLyric from '../../components/CLyric'
+import {
+  getSongInfo, 
+  changePlayMode
+} from '../../actions/song'
 import './index.scss'
 
 type PageStateProps = {
-  song: {
-    playListDetailInfo: {
-      coverImgUrl: string,
-      playCount: number,
-      name: string,
-      description?: string,
-      tags: Array<string | undefined>,
-      creator: {
-        avatarUrl: string,
-        nickname: string
-      },
-      tracks: Array<MusicItem>
+  currentSongInfo: {
+    name: string,
+    al: {
+      picUrl: string
     },
-    playListDetailPrivileges: Array<{
-      st: number
-    }>
-  }
+    url: string
+  },
+  canPlayList: Array<{
+    id: number
+  }>,
+  currentSongIndex: number,
+  playMode: string
+}
+
+type PageDispatchProps = {
+  getSongInfo: (object) => any,
+  changePlayMode: (object) => any
 }
 
 
 type PageState = {
-  songInfo: {
-    name: string,
-    al: {
-      picUrl: string
-    }
-  },
-  songUrl: string,
   isPlaying: boolean,
   lyric: string,
   showLyric: boolean,
@@ -57,12 +54,20 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
 @connect(({
   song
 }) => ({
-  song
+  currentSongInfo: song.currentSongInfo,
+  canPlayList: song.canPlayList,
+  currentSongIndex: song.currentSongIndex,
+  playMode: song.playMode
 }), (dispatch) => ({
-
+  getSongInfo (object) {
+    dispatch(getSongInfo(object))
+  },
+  changePlayMode (object) {
+    dispatch(changePlayMode(object))
+  },
 }))
 
-class Page extends Component<PageStateProps, PageState> {
+class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -78,13 +83,6 @@ class Page extends Component<PageStateProps, PageState> {
   constructor (props) {
     super(props)
     this.state = {
-      songInfo: {
-        name: '',
-        al: {
-          picUrl: ''
-        }
-      },
-      songUrl: '',
       isPlaying: true,
       lyric: '',
       showLyric: false,
@@ -100,6 +98,19 @@ class Page extends Component<PageStateProps, PageState> {
 
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
+    if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name) {
+      this.setSongInfo(nextProps.currentSongInfo)
+    }
+  }
+
+  setSongInfo(songInfo) {
+    const { name, al, url } = songInfo
+    Taro.setNavigationBarTitle({
+      title: name
+    })
+    backgroundAudioManager.title = name
+    backgroundAudioManager.coverImgUrl = al.picUrl
+    backgroundAudioManager.src = url
   }
 
   componentWillUnmount () { }
@@ -107,39 +118,16 @@ class Page extends Component<PageStateProps, PageState> {
   componentWillMount() {
     console.log('props', this.props)
     const { id } = this.$router.params
-    // const id = 1336856777
-    api.get('/song/detail', {
-      ids: id
-    }).then((res) => {
-      this.setState({
-        songInfo: res.data.songs[0]
-      })
-      Taro.setNavigationBarTitle({
-        title: res.data.songs[0].name
-      })
-      this.getSongUrl(res.data.songs[0].name, res.data.songs[0].al.picUrl)
+    // const id = 1341964346
+    this.props.getSongInfo({
+      id
     })
     this.getLyric()
   }
 
-  getSongUrl(name: string, picUrl: string) {
-    const { id } = this.$router.params
-    // const id = 1336856777
-    api.get('/song/url', {
-      id
-    }).then((res) => {
-      this.setState({
-        songUrl: res.data.data[0].url
-      })
-      backgroundAudioManager.title = name
-      backgroundAudioManager.coverImgUrl = picUrl
-      backgroundAudioManager.src = res.data.data[0].url
-    })
-  }
-
   getLyric() {
     const { id } = this.$router.params
-    // const id = 1336856777
+    // const id = 1341964346
     api.get('/lyric', {
       id
     }).then((res) => {
@@ -188,6 +176,74 @@ class Page extends Component<PageStateProps, PageState> {
         }
       })
     })
+    backgroundAudioManager.onEnded(() => {
+      const { playMode } = this.props
+      this.playByMode(playMode)
+    })
+  }
+
+  // 获取下一首
+  getNextSong() {
+    const { currentSongIndex, canPlayList, playMode } = this.props
+    let nextSongIndex = currentSongIndex + 1
+    if (playMode === 'shuffle') {
+      this.getShuffleSong()
+      return
+    }
+    if (currentSongIndex === canPlayList.length - 1) {
+      nextSongIndex = 0
+    }
+    this.props.getSongInfo({
+      id: canPlayList[nextSongIndex].id
+    })
+  }
+
+  // 获取上一首
+  getPrevSong() {
+    const { currentSongIndex, canPlayList, playMode } = this.props
+    let prevSongIndex = currentSongIndex - 1
+    if (playMode === 'shuffle') {
+      this.getShuffleSong()
+      return
+    }
+    if (currentSongIndex === 0) {
+      prevSongIndex = canPlayList.length - 1
+    }
+    this.props.getSongInfo({
+      id: canPlayList[prevSongIndex].id
+    })
+  }
+
+  // 循环播放当前歌曲
+  getCurrentSong() {
+    const { id } = this.$router.params
+    this.props.getSongInfo({
+      id
+    })
+  }
+
+  // 随机播放歌曲
+  getShuffleSong() {
+    const { canPlayList } = this.props
+    let nextSongIndex = Math.floor(Math.random()*(canPlayList.length - 1))
+    this.props.getSongInfo({
+      id: canPlayList[nextSongIndex].id
+    })
+  }
+
+  // 根据播放模式进行播放
+  playByMode(playMode: string) {
+    switch (playMode) {
+      case 'one':
+        this.getCurrentSong()
+        break
+      case 'shuffle':
+        this.getShuffleSong()
+        break
+      // 默认按列表顺序播放
+      default:
+        this.getNextSong()  
+    }
   }
 
   componentDidHide () { }
@@ -195,6 +251,35 @@ class Page extends Component<PageStateProps, PageState> {
   showLyric() {
     this.setState({
       showLyric: true
+    })
+  }
+
+  changePlayMode() {
+    let { playMode } = this.props
+    if (playMode === 'loop') {
+      playMode = 'one'
+      Taro.showToast({
+        title: '单曲循环',
+        icon: 'none',
+        duration: 2000
+      })
+    } else if (playMode === 'one') {
+      playMode = 'shuffle'
+      Taro.showToast({
+        title: '随机播放',
+        icon: 'none',
+        duration: 2000
+      })
+    } else {
+      playMode = 'loop'
+      Taro.showToast({
+        title: '列表循环',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+    this.props.changePlayMode({
+      playMode
     })
   }
 
@@ -206,12 +291,19 @@ class Page extends Component<PageStateProps, PageState> {
 
 
   render () {
-    const { songInfo, isPlaying, showLyric, lrc, lrcIndex } = this.state
+    const { currentSongInfo, playMode } = this.props
+    const { isPlaying, showLyric, lrc, lrcIndex } = this.state
+    let playModeImg = require('../../assets/images/song/icn_loop_mode.png')
+    if (playMode === 'one') {
+      playModeImg = require('../../assets/images/song/icn_one_mode.png')
+    } else if (playMode === 'shuffle') {
+      playModeImg = require('../../assets/images/song/icn_shuffle_mode.png')
+    }
     return (
       <View className='song_container'>
         <Image 
           className='song__bg'
-          src={songInfo.al.picUrl}
+          src={currentSongInfo.al.picUrl}
         />
         <View className={
           classnames({
@@ -237,7 +329,7 @@ class Page extends Component<PageStateProps, PageState> {
                   circling: true
                 })
               }>
-                <Image className='song__music__main__img__cover' src={songInfo.al.picUrl} />
+                <Image className='song__music__main__img__cover' src={currentSongInfo.al.picUrl} />
               </View>
             </View>
           </View>
@@ -255,12 +347,25 @@ class Page extends Component<PageStateProps, PageState> {
         <CLyric lrc={lrc} lrcIndex={lrcIndex} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
         <View className='song__bottom'>
           <View className='song__operation'>
-            <Image src={require('../../assets/images/ajh.png')} className='song__operation__prev'/>
+            <Image 
+              src={playModeImg} 
+              className='song__operation__mode'
+              onClick={this.changePlayMode.bind(this)}
+            />
+            <Image 
+              src={require('../../assets/images/ajh.png')} 
+              className='song__operation__prev'
+              onClick={this.getPrevSong.bind(this)}
+            />
             {
               isPlaying ? <Image src={require('../../assets/images/ajd.png')} className='song__operation__play' onClick={this.pauseMusic.bind(this)}/> :
               <Image src={require('../../assets/images/ajf.png')} className='song__operation__play' onClick={this.playMusic.bind(this)}/>
             }
-            <Image src={require('../../assets/images/ajb.png')} className='song__operation__next'/>
+            <Image 
+              src={require('../../assets/images/ajb.png')} 
+              className='song__operation__next'
+              onClick={this.getNextSong.bind(this)}
+            />
           </View>
         </View>
       </View>

@@ -58,13 +58,6 @@ type PageState = {
 
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
   config: Config = {
     navigationBarTitleText: '歌单详情'
   }
@@ -76,7 +69,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(`testtest-----${this.props}`, nextProps)
+    console.log(this.props, nextProps)
   }
 
   componentWillUnmount () { }
@@ -86,14 +79,6 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     Taro.setNavigationBarTitle({
       title: name
     })
-    // api.get('/playlist/detail', {
-    //   id
-    // }).then((res) => {
-    //   this.setState({
-    //     playListInfo: res.data.playlist,
-    //     privileges: res.data.privileges
-    //   })
-    // })
     this.props.getPlayListDetail({
       id
     })
@@ -117,19 +102,13 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     }
   }
 
-  loadMore() {
-    console.log('test')
-  }
-
-
   render () {
     const { playListDetailInfo, playListDetailPrivileges } = this.props.song
     return (
       <ScrollView 
         className='playList_container'  
         scrollY 
-        lowerThreshold={20}
-        onScrollToLower={this.loadMore.bind(this)}>
+        lowerThreshold={20}>
         <View className='playList__header'>
           <Image 
             className='playList__header__bg'
