@@ -16,6 +16,10 @@ export const GETSONGINFO: string = 'GETSONGINFO'
 export const CHANGEPLAYMODE: string = 'CHANGEPLAYMODE'
 // 喜欢或者取消喜欢音乐
 export const LIKEMUSIC: string = 'LIKEMUSIC'
+// 获取喜欢列表
+export const GETLIKEMUSICLIST: string = 'GETLIKEMUSICLIST'
+// 更新获取喜欢列表
+export const UPDATELIKEMUSICLIST: string = 'UPDATELIKEMUSICLIST'
 
 
 

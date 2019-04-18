@@ -6,12 +6,15 @@ import { connect } from '@tarojs/redux'
 import CLyric from '../../components/CLyric'
 import {
   getSongInfo, 
-  changePlayMode
+  changePlayMode,
+  getLikeMusicList,
+  likeMusic
 } from '../../actions/song'
 import './index.scss'
 
 type PageStateProps = {
   currentSongInfo: {
+    id: number,
     name: string,
     al: {
       picUrl: string
@@ -24,16 +27,24 @@ type PageStateProps = {
     id: number
   }>,
   currentSongIndex: number,
-  playMode: string
+  playMode: string,
+  likeMusicList: Array<number>
 }
 
 type PageDispatchProps = {
   getSongInfo: (object) => any,
-  changePlayMode: (object) => any
+  changePlayMode: (object) => any,
+  getLikeMusicList: (object) => any,
+  likeMusic: (object) => any,
 }
 
 
 type PageState = {
+  userInfo: {
+    account: {
+      id: number
+    }
+  },
   isPlaying: boolean,
   lyric: string,
   showLyric: boolean,
@@ -46,7 +57,9 @@ type PageState = {
       lrc_sec: number
     }>
   },
-  lrcIndex: number
+  lrcIndex: number,
+  star: boolean,
+  firstEnter: boolean
 }
 
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
@@ -57,7 +70,8 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
   currentSongInfo: song.currentSongInfo,
   canPlayList: song.canPlayList,
   currentSongIndex: song.currentSongIndex,
-  playMode: song.playMode
+  playMode: song.playMode,
+  likeMusicList: song.likeMusicList
 }), (dispatch) => ({
   getSongInfo (object) {
     dispatch(getSongInfo(object))
@@ -65,6 +79,12 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
   changePlayMode (object) {
     dispatch(changePlayMode(object))
   },
+  getLikeMusicList (object) {
+    dispatch(getLikeMusicList(object))
+  },
+  likeMusic (object) {
+    dispatch(likeMusic(object))
+  }
 }))
 
 class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
@@ -83,6 +103,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   constructor (props) {
     super(props)
     this.state = {
+      userInfo: Taro.getStorageSync('userInfo'),
       isPlaying: true,
       lyric: '',
       showLyric: false,
@@ -92,7 +113,9 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
         uncollected: false,
         lrclist: []
       },
-      lrcIndex: 0
+      lrcIndex: 0,
+      star: false,
+      firstEnter: true
     }
   }
 
@@ -100,7 +123,11 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     // console.log(this.props, nextProps)
     console.log('this.props.currentSongInfo.name', this.props.currentSongInfo.name)
     console.log('nextProps.currentSongInfo.name', nextProps.currentSongInfo.name)
-    if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name) {
+    this.setStar(nextProps.likeMusicList, nextProps.currentSongInfo.id)
+    if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name || this.state.firstEnter) {
+      this.setState({
+        firstEnter: false
+      })
       this.setSongInfo(nextProps.currentSongInfo)
     }
   }
@@ -129,6 +156,14 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     const { id } = this.$router.params
     // const id = 1341964346
     this.props.getSongInfo({
+      id
+    })
+    this.getLikeList()
+  }
+
+  getLikeList() {
+    const { id } = this.state.userInfo.account
+    this.props.getLikeMusicList({
       id
     })
   }
@@ -188,6 +223,12 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     }
     this.props.getSongInfo({
       id: canPlayList[nextSongIndex].id
+    })
+  }
+
+  setStar(likeList, id) {
+    this.setState({
+      star: likeList.indexOf(id) !== -1
     })
   }
 
@@ -281,13 +322,18 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   likeMusic() {
-
+    const { star } = this.state
+    const { id } = this.props.currentSongInfo
+    this.props.likeMusic({
+      like: !star,
+      id
+    })
   }
 
 
   render () {
     const { currentSongInfo, playMode } = this.props
-    const { isPlaying, showLyric, lrc, lrcIndex } = this.state
+    const { isPlaying, showLyric, lrc, lrcIndex, star } = this.state
     let playModeImg = require('../../assets/images/song/icn_loop_mode.png')
     if (playMode === 'one') {
       playModeImg = require('../../assets/images/song/icn_one_mode.png')
@@ -362,7 +408,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
               onClick={this.getNextSong.bind(this)}
             />
             <Image 
-              src={currentSongInfo.st ? require('../../assets/images/song/play_icn_love.png') : require('../../assets/images/song/play_icn_loved.png')} 
+              src={star ? require('../../assets/images/song/play_icn_loved.png') : require('../../assets/images/song/play_icn_love.png')} 
               className='song__operation__like'
               onClick={this.likeMusic.bind(this)}
             />

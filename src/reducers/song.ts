@@ -6,7 +6,9 @@ import {
   GETRECOMMENDNEWSONG, 
   GETRECOMMEND,
   GETSONGINFO,
-  CHANGEPLAYMODE
+  CHANGEPLAYMODE,
+  GETLIKEMUSICLIST,
+  UPDATELIKEMUSICLIST
 } from '../constants/song'
 
 interface State {
@@ -47,7 +49,9 @@ interface State {
   // 当前播放的歌曲在播放列表中的索引,默认第一首
   currentSongIndex: number,
   // 播放模式
-  playMode: 'loop' | 'one' | 'shuffle'
+  playMode: 'loop' | 'one' | 'shuffle',
+  // 喜欢列表
+  likeMusicList: Array<number>
 }
 
 const INITIAL_STATE: State = {
@@ -73,7 +77,8 @@ const INITIAL_STATE: State = {
   currentSongId: '',
   currentSongInfo: {},
   currentSongIndex: 0,
-  playMode: 'loop'
+  playMode: 'loop',
+  likeMusicList: []
 }
 
 export default function song (state = INITIAL_STATE, action) {
@@ -132,12 +137,35 @@ export default function song (state = INITIAL_STATE, action) {
         currentSongInfo,
         currentSongIndex
       }
+    // 切换播放模式  
     case CHANGEPLAYMODE:
       const { playMode } = action.payload
       return {
         ...state,
         playMode
       }  
+    // 获取喜欢列表  
+    case GETLIKEMUSICLIST:
+      const { likeMusicList } = action.payload
+      return {
+        ...state,
+        likeMusicList
+      }  
+    // 更新喜欢列表 
+    case UPDATELIKEMUSICLIST:
+      const { like, id } = action.payload
+      let list: Array<number> = []
+      if (like) {
+        list = state.likeMusicList.concat([id])
+      } else {
+        state.likeMusicList.forEach((item) => {
+          if (item !== id) list.push(item)
+        })
+      }
+      return {
+        ...state,
+        likeMusicList: list
+      }   
     default:
       return state
   }
