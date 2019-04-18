@@ -3,8 +3,6 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
-import { parse_lrc } from '../../utils/common'
-import api from '../../services/api'
 import CLyric from '../../components/CLyric'
 import {
   getSongInfo, 
@@ -19,7 +17,8 @@ type PageStateProps = {
       picUrl: string
     },
     url: string,
-    lrcInfo: any
+    lrcInfo: any,
+    st: number // 是否喜欢
   },
   canPlayList: Array<{
     id: number
@@ -131,22 +130,6 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     // const id = 1341964346
     this.props.getSongInfo({
       id
-    })
-    this.getLyric()
-  }
-
-  getLyric() {
-    const { id } = this.$router.params
-    // const id = 1341964346
-    api.get('/lyric', {
-      id
-    }).then((res) => {
-      const lrc = parse_lrc(res.data.lrc && res.data.lrc.lyric ? res.data.lrc.lyric : '');
-      res.data.lrclist = lrc.now_lrc;
-      res.data.scroll = lrc.scroll ? 1 : 0
-      this.setState({
-        lrc: res.data
-      });
     })
   }
 
@@ -297,6 +280,10 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     })
   }
 
+  likeMusic() {
+
+  }
+
 
   render () {
     const { currentSongInfo, playMode } = this.props
@@ -373,6 +360,11 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
               src={require('../../assets/images/ajb.png')} 
               className='song__operation__next'
               onClick={this.getNextSong.bind(this)}
+            />
+            <Image 
+              src={currentSongInfo.st ? require('../../assets/images/song/play_icn_love.png') : require('../../assets/images/song/play_icn_loved.png')} 
+              className='song__operation__like'
+              onClick={this.likeMusic.bind(this)}
             />
           </View>
         </View>

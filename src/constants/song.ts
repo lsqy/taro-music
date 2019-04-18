@@ -14,6 +14,8 @@ export const GETRECOMMEND: string = 'GETRECOMMEND'
 export const GETSONGINFO: string = 'GETSONGINFO'
 // 切换播放模式
 export const CHANGEPLAYMODE: string = 'CHANGEPLAYMODE'
+// 喜欢或者取消喜欢音乐
+export const LIKEMUSIC: string = 'LIKEMUSIC'
 
 
 

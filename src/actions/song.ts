@@ -6,7 +6,8 @@ import {
   GETRECOMMENDNEWSONG,
   GETRECOMMEND,
   GETSONGINFO,
-  CHANGEPLAYMODE
+  CHANGEPLAYMODE,
+  LIKEMUSIC
 } from '../constants/song'
 import api from '../services/api'
 import { parse_lrc } from '../utils/common'
@@ -142,6 +143,27 @@ export const changePlayMode = (payload) => {
   return {
     type: CHANGEPLAYMODE,
     payload
+  }
+}
+
+// 喜欢音乐
+export const likeMusic = (payload) => {
+  const { like, id } = payload
+  return dispatch => {
+    api.get('/like', {
+      id,
+      like
+    }).then((res) => {
+      let changeFlag = res.data.code
+      if (changeFlag === 200) {
+        dispatch({
+          type: LIKEMUSIC,
+          payload: {
+            st: like ? 0 : 1 
+          }
+        })
+      }
+    })
   }
 }
 
