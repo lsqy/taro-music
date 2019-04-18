@@ -18,7 +18,8 @@ type PageStateProps = {
     al: {
       picUrl: string
     },
-    url: string
+    url: string,
+    lrcInfo: any
   },
   canPlayList: Array<{
     id: number
@@ -97,26 +98,35 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
+    console.log('this.props.currentSongInfo.name', this.props.currentSongInfo.name)
+    console.log('nextProps.currentSongInfo.name', nextProps.currentSongInfo.name)
     if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name) {
       this.setSongInfo(nextProps.currentSongInfo)
     }
   }
 
   setSongInfo(songInfo) {
-    const { name, al, url } = songInfo
-    Taro.setNavigationBarTitle({
-      title: name
-    })
-    backgroundAudioManager.title = name
-    backgroundAudioManager.coverImgUrl = al.picUrl
-    backgroundAudioManager.src = url
+    try {
+      const { name, al, url, lrcInfo } = songInfo
+      Taro.setNavigationBarTitle({
+        title: name
+      })
+      backgroundAudioManager.title = name
+      backgroundAudioManager.coverImgUrl = al.picUrl
+      backgroundAudioManager.src = url
+      this.setState({
+        lrc: lrcInfo
+      });
+    } catch(err) {
+      console.log('err', err)
+      this.getNextSong()
+    }
   }
 
   componentWillUnmount () { }
 
   componentWillMount() {
-    console.log('props', this.props)
     const { id } = this.$router.params
     // const id = 1341964346
     this.props.getSongInfo({
@@ -216,10 +226,8 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   // 循环播放当前歌曲
   getCurrentSong() {
-    const { id } = this.$router.params
-    this.props.getSongInfo({
-      id
-    })
+    const { currentSongInfo } = this.props
+    this.setSongInfo(currentSongInfo)
   }
 
   // 随机播放歌曲

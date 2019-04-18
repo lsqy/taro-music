@@ -69,7 +69,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
   }
 
   componentWillUnmount () { }

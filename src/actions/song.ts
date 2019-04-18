@@ -9,6 +9,7 @@ import {
   CHANGEPLAYMODE
 } from '../constants/song'
 import api from '../services/api'
+import { parse_lrc } from '../utils/common'
 
 export const getSongDetail = (payload) => {
   return {
@@ -117,11 +118,19 @@ export const getSongInfo = (payload) => {
         id
       }).then((res) => {
         songInfo.url = res.data.data[0].url
-        dispatch({
-          type: GETSONGINFO,
-          payload: {
-            currentSongInfo: songInfo
-          }
+        api.get('/lyric', {
+          id
+        }).then((res) => {
+          const lrc = parse_lrc(res.data.lrc && res.data.lrc.lyric ? res.data.lrc.lyric : '');
+          res.data.lrclist = lrc.now_lrc;
+          res.data.scroll = lrc.scroll ? 1 : 0
+          songInfo.lrcInfo = res.data
+          dispatch({
+            type: GETSONGINFO,
+            payload: {
+              currentSongInfo: songInfo
+            }
+          })
         })
       })
     })
