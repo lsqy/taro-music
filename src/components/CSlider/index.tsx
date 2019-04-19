@@ -18,7 +18,7 @@ export default class CSlider extends Component<Props, {}> {
     const { percent } = this.props
     return (
       <View className='slider_components'>
-        <Slider value={percent} blockSize={20} activeColor='#d43c33' onChange={(e) => this.props.onChange(e)} onChanging={(e) => this.props.onChanging(e) } />
+        <Slider value={percent} blockSize={15} activeColor='#d43c33' onChange={(e) => this.props.onChange(e)} onChanging={(e) => this.props.onChanging(e) } />
       </View>
     )
   }

@@ -13,6 +13,7 @@ export default {
       data?: object | string,
       method?: any,
       header: object,
+      // mode: string,
       success: any,
       error: any,
       xhrFields: object,
@@ -39,6 +40,7 @@ export default {
         'content-type': contentType,
         cookie: Taro.getStorageSync('cookies')
       },
+      // mode: 'cors',
       xhrFields: { withCredentials: true },
       success(res) {
         setCookie(res)

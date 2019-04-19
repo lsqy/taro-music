@@ -74,6 +74,9 @@ class Login extends Component<{}, PageState> {
       api.get('/login/cellphone', {
           phone,
           password
+      // api.get('/login', {
+      //   email: phone,
+      //   password
       }).then((res) => {
           const { code } = res.data
           let tip = '登录成功'
@@ -118,7 +121,7 @@ class Login extends Component<{}, PageState> {
         <View className='login_content'>
             <View className='login_content__item'>
                 <AtIcon value='iphone' size='24' color='#ccc'></AtIcon>
-                <Input type='number' placeholder='手机号' className='login_content__input' onInput={ (e) : void => {this.handleChange('phone', e)} } />
+                <Input type='text' placeholder='手机号' className='login_content__input' onInput={ (e) : void => {this.handleChange('phone', e)} } />
             </View>
             <View className='login_content__item'>
                 <AtIcon value='lock' size='24' color='#ccc'></AtIcon>

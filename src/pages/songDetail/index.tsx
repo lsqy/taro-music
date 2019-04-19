@@ -168,10 +168,14 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   getLikeList() {
-    const { id } = this.state.userInfo.account
-    this.props.getLikeMusicList({
-      id
-    })
+    try {
+      const { id } = this.state.userInfo.account
+      this.props.getLikeMusicList({
+        id
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   pauseMusic() {
@@ -233,7 +237,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     const { value } = e.detail
     const { dt } = this.props.currentSongInfo
     let currentPosition = Math.floor((dt / 1000) * value / 100)
-    console.log('currentPosition', currentPosition)
+    // console.log('currentPosition', currentPosition)
     backgroundAudioManager.seek(currentPosition)
   }
 
@@ -242,7 +246,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     const { value } = e.detail
     const { dt } = this.props.currentSongInfo
     let currentPosition = Math.floor((dt / 1000) * value / 100)
-    console.log('currentPosition', currentPosition)
+    // console.log('currentPosition', currentPosition)
     backgroundAudioManager.seek(currentPosition)
   }
 
@@ -391,7 +395,6 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     } else if (playMode === 'shuffle') {
       playModeImg = require('../../assets/images/song/icn_shuffle_mode.png')
     }
-    console.log('playPercent', playPercent)
     return (
       <View className='song_container'>
         <Image 
