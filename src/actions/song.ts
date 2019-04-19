@@ -179,7 +179,7 @@ export const getLikeMusicList = (payload) => {
       dispatch({
         type: GETLIKEMUSICLIST,
         payload: {
-          likeMusicList: res.data.ids
+          likeMusicList: res.data.ids || []
         }
       })
     })

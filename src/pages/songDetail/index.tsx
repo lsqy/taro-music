@@ -4,6 +4,7 @@ import { View, Image } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLyric from '../../components/CLyric'
+import CSlider from '../../components/CSlider'
 import {
   getSongInfo, 
   changePlayMode,
@@ -21,6 +22,7 @@ type PageStateProps = {
     },
     url: string,
     lrcInfo: any,
+    dt: number, // 总时长，ms
     st: number // 是否喜欢
   },
   canPlayList: Array<{
@@ -59,7 +61,9 @@ type PageState = {
   },
   lrcIndex: number,
   star: boolean,
-  firstEnter: boolean
+  firstEnter: boolean,
+  playPercent: number,
+  switchStar: boolean // 是否切换过喜欢状态
 }
 
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
@@ -115,7 +119,9 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       },
       lrcIndex: 0,
       star: false,
-      firstEnter: true
+      firstEnter: true,
+      switchStar: false,
+      playPercent: 0 
     }
   }
 
@@ -187,20 +193,10 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     backgroundAudioManager.onTimeUpdate(() => {
       Taro.getBackgroundAudioPlayerState({
         success(res) {
-          const { lrc } = that.state
-          let lrcIndex = 0
           if (res.status !== 2) {
-            if (!lrc.scroll && lrc.lrclist && lrc.lrclist.length > 0) {
-              lrc.lrclist.forEach((item, index) => {
-                if (item.lrc_sec <= res.currentPosition) {
-                  lrcIndex = index
-                }
-              })
-            };
+            that.updateLrc(res.currentPosition)
+            that.updateProgress(res.currentPosition)
           }
-          that.setState({
-            lrcIndex
-          })
         }
       })
     })
@@ -208,6 +204,46 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       const { playMode } = this.props
       this.playByMode(playMode)
     })
+  }
+
+  updateLrc(currentPosition) {
+    const { lrc } = this.state
+    let lrcIndex = 0
+    if (!lrc.scroll && lrc.lrclist && lrc.lrclist.length > 0) {
+      lrc.lrclist.forEach((item, index) => {
+        if (item.lrc_sec <= currentPosition) {
+          lrcIndex = index
+        }
+      })
+    }
+    this.setState({
+      lrcIndex
+    })
+  }
+
+  updateProgress(currentPosition) {
+    const { dt } = this.props.currentSongInfo
+    this.setState({
+      playPercent: Math.floor(currentPosition * 1000 * 100 / dt)
+    })
+  }
+
+  percentChange(e) {
+    console.log(e)
+    const { value } = e.detail
+    const { dt } = this.props.currentSongInfo
+    let currentPosition = Math.floor((dt / 1000) * value / 100)
+    console.log('currentPosition', currentPosition)
+    backgroundAudioManager.seek(currentPosition)
+  }
+
+  percentChanging(e) {
+    // backgroundAudioManager.pause()
+    const { value } = e.detail
+    const { dt } = this.props.currentSongInfo
+    let currentPosition = Math.floor((dt / 1000) * value / 100)
+    console.log('currentPosition', currentPosition)
+    backgroundAudioManager.seek(currentPosition)
   }
 
   // 获取下一首
@@ -227,9 +263,21 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   setStar(likeList, id) {
+    const { switchStar } = this.state
+    const flag: boolean = likeList.indexOf(id) !== -1
     this.setState({
-      star: likeList.indexOf(id) !== -1
+      star: flag
     })
+    if (switchStar) {
+      this.setState({
+        switchStar: false
+      })
+      Taro.showToast({
+        title: flag ? '已添加到我喜欢的音乐' : '已取消喜欢',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   }
 
   // 获取上一首
@@ -328,18 +376,22 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       like: !star,
       id
     })
+    this.setState({
+      switchStar: true
+    })
   }
 
 
   render () {
     const { currentSongInfo, playMode } = this.props
-    const { isPlaying, showLyric, lrc, lrcIndex, star } = this.state
+    const { isPlaying, showLyric, lrc, lrcIndex, star, playPercent } = this.state
     let playModeImg = require('../../assets/images/song/icn_loop_mode.png')
     if (playMode === 'one') {
       playModeImg = require('../../assets/images/song/icn_one_mode.png')
     } else if (playMode === 'shuffle') {
       playModeImg = require('../../assets/images/song/icn_shuffle_mode.png')
     }
+    console.log('playPercent', playPercent)
     return (
       <View className='song_container'>
         <Image 
@@ -385,6 +437,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
             </View>
           </View>
         </View> 
+        <CSlider percent={playPercent} onChange={this.percentChange.bind(this)} onChanging={this.percentChanging.bind(this)} />
         <CLyric lrc={lrc} lrcIndex={lrcIndex} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
         <View className='song__bottom'>
           <View className='song__operation'>

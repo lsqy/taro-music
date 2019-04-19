@@ -101,7 +101,7 @@ class Index extends Component<IProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
     this.setState({
       showLoading: false
     })
@@ -161,9 +161,19 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
+  removeLoading() {
+    const { recommendPlayList, recommendDj } = this.props
+    if (recommendPlayList.length || recommendDj.length) {
+      this.setState({
+        showLoading: false
+      })
+    }
+  }
+
   render () {
     const { recommendPlayList, recommendDj } = this.props
     const { showLoading } = this.state
+    this.removeLoading()
     return (
       <View className='index_container'>
         <CLoading fullPage={true} hide={!showLoading} />
