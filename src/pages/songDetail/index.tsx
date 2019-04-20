@@ -237,7 +237,6 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     const { value } = e.detail
     const { dt } = this.props.currentSongInfo
     let currentPosition = Math.floor((dt / 1000) * value / 100)
-    // console.log('currentPosition', currentPosition)
     backgroundAudioManager.seek(currentPosition)
   }
 
