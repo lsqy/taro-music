@@ -204,11 +204,23 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
         }
       })
     })
+    backgroundAudioManager.onPause(() => {
+      that.setState({
+        isPlaying: false
+      })
+    })
+    backgroundAudioManager.onPlay(() => {
+      that.setState({
+        isPlaying: true
+      })
+    })
     backgroundAudioManager.onEnded(() => {
       const { playMode } = this.props
       this.playByMode(playMode)
     })
   }
+
+
 
   updateLrc(currentPosition) {
     const { lrc } = this.state

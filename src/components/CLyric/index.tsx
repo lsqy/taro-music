@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import './index.scss'
 type Props = {
   lrc: {
-    scroll: boolean,
+    scroll?: boolean,
     nolyric: boolean,
     uncollected: boolean,
     lrclist: Array<{
@@ -20,7 +20,17 @@ type Props = {
 
 
 export default class CLyric extends Component<Props, {}> {
-
+  static defaultProps = {
+    lrc: {
+      scroll: false,
+      nolyric: false,
+      uncollected: false,
+      lrclist: []
+    },
+    lrcIndex: 0,
+    showLyric: false
+  }
+  
   render() {
     const { lrc, lrcIndex, showLyric } = this.props
     const cls = classnames({
