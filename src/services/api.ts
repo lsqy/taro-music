@@ -27,7 +27,7 @@ export default {
       if (res.cookies && res.cookies.length > 0) {
         let cookies = ''
         res.cookies.forEach(cookie => {
-          cookies += `${cookie.name}=${cookie.value};`
+          cookies += `${cookie};`
         });
         Taro.setStorageSync('cookies', cookies)
       }
@@ -43,6 +43,7 @@ export default {
       // mode: 'cors',
       xhrFields: { withCredentials: true },
       success(res) {
+        console.log('res', res)
         setCookie(res)
         if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
           return logError('api', '请求资源不存在')
