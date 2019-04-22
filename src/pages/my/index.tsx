@@ -5,7 +5,6 @@ import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
-import { getSongDetail } from '../../actions/song'
 import './index.scss'
 
 type ListItemInfo = {
@@ -22,7 +21,6 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getSongDetail: (object) => void
 }
 
 
@@ -60,10 +58,7 @@ type PageState = {
 
 @connect(({ song }) => ({
   song
-}), (dispatch) => ({
-  getSongDetail (payload) {
-    dispatch(getSongDetail(payload))
-  }
+}), () => ({
 }))
 
 class Page extends Component<IProps, PageState> {
@@ -88,14 +83,11 @@ class Page extends Component<IProps, PageState> {
       userCreateList: [],
       userCollectList: []
     }
-    // this.props.getSongDetail({
-    //   id: 22112
-    // })
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
-  }
+  // componentWillReceiveProps (nextProps) {
+  //   console.log(this.props, nextProps)
+  // }
 
   componentWillUnmount () { }
 

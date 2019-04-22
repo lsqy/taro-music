@@ -108,7 +108,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     super(props)
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
-      isPlaying: true,
+      isPlaying: false,
       lyric: '',
       showLyric: false,
       lrc: {
@@ -148,7 +148,9 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       backgroundAudioManager.coverImgUrl = al.picUrl
       backgroundAudioManager.src = url
       this.setState({
-        lrc: lrcInfo
+        lrc: lrcInfo,
+        isPlaying: true,
+        firstEnter: false
       });
     } catch(err) {
       console.log('err', err)
@@ -159,11 +161,6 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   componentWillUnmount () { }
 
   componentWillMount() {
-    const { id } = this.$router.params
-    // const id = 1341964346
-    this.props.getSongInfo({
-      id
-    })
     this.getLikeList()
   }
 
@@ -194,6 +191,11 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   componentDidMount() {
     const that = this
+    const { id } = that.$router.params
+    // const id = 1341964346
+    this.props.getSongInfo({
+      id
+    })
     backgroundAudioManager.onTimeUpdate(() => {
       Taro.getBackgroundAudioPlayerState({
         success(res) {
@@ -216,7 +218,13 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     })
     backgroundAudioManager.onEnded(() => {
       const { playMode } = this.props
-      this.playByMode(playMode)
+      Taro.eventCenter.trigger('nextSong')
+      const routes = Taro.getCurrentPages()
+      const currentRoute = routes[routes.length - 1].route
+      // console.log('详情', Taro.getCurrentPages())
+      if (currentRoute === 'pages/songDetail/index') {
+        this.playByMode(playMode)
+      }
     })
   }
 
@@ -245,26 +253,23 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   percentChange(e) {
-    console.log(e)
+    // console.log(e)
     const { value } = e.detail
     const { dt } = this.props.currentSongInfo
     let currentPosition = Math.floor((dt / 1000) * value / 100)
     backgroundAudioManager.seek(currentPosition)
+    backgroundAudioManager.play()
   }
 
-  percentChanging(e) {
-    // backgroundAudioManager.pause()
-    const { value } = e.detail
-    const { dt } = this.props.currentSongInfo
-    let currentPosition = Math.floor((dt / 1000) * value / 100)
-    // console.log('currentPosition', currentPosition)
-    backgroundAudioManager.seek(currentPosition)
+  percentChanging() {
+    backgroundAudioManager.pause()
   }
 
   // 获取下一首
   getNextSong() {
     const { currentSongIndex, canPlayList, playMode } = this.props
     let nextSongIndex = currentSongIndex + 1
+    console.log('歌曲详情index', currentSongIndex)
     if (playMode === 'shuffle') {
       this.getShuffleSong()
       return

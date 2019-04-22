@@ -74,9 +74,6 @@ class Login extends Component<{}, PageState> {
       api.get('/login/cellphone', {
           phone,
           password
-      // api.get('/login', {
-      //   email: phone,
-      //   password
       }).then((res) => {
           const { code } = res.data
           let tip = '登录成功'
@@ -91,7 +88,6 @@ class Login extends Component<{}, PageState> {
           if (code === 200) {
             Taro.setStorageSync('userInfo', res.data)
             Taro.setStorageSync('userId', res.data.account.id)
-            Taro.setStorageSync('cookie', res.cookie)
             Taro.navigateTo({
               url: '/pages/index/index'
             })
