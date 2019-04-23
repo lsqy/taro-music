@@ -218,12 +218,13 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     })
     backgroundAudioManager.onEnded(() => {
       const { playMode } = this.props
-      Taro.eventCenter.trigger('nextSong')
       const routes = Taro.getCurrentPages()
       const currentRoute = routes[routes.length - 1].route
-      // console.log('详情', Taro.getCurrentPages())
+      // 如果在当前页面则直接调用下一首的逻辑，反之则触发nextSong事件
       if (currentRoute === 'pages/songDetail/index') {
         this.playByMode(playMode)
+      } else {
+        Taro.eventCenter.trigger('nextSong')
       }
     })
   }

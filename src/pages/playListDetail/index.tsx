@@ -131,7 +131,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   getNextSong() {
     const { currentSongIndex, canPlayList, playMode } = this.props
     let nextSongIndex = currentSongIndex + 1
-    console.log('歌单列表index', currentSongIndex)
+    // console.log('歌单列表index', currentSongIndex)
     if (playMode === 'shuffle') {
       this.getShuffleSong()
       return
@@ -198,7 +198,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillUnmount() {
-    // Taro.eventCenter.off('nextSong')
+    Taro.eventCenter.off('nextSong')
   }
 
   render () {
