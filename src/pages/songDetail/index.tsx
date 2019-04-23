@@ -11,26 +11,11 @@ import {
   getLikeMusicList,
   likeMusic
 } from '../../actions/song'
+import { songType } from '../../constants/commonType'
 import './index.scss'
 
 type PageStateProps = {
-  currentSongInfo: {
-    id: number,
-    name: string,
-    al: {
-      picUrl: string
-    },
-    url: string,
-    lrcInfo: any,
-    dt: number, // 总时长，ms
-    st: number // 是否喜欢
-  },
-  canPlayList: Array<{
-    id: number
-  }>,
-  currentSongIndex: number,
-  playMode: string,
-  likeMusicList: Array<number>
+  song: songType
 }
 
 type PageDispatchProps = {
@@ -71,11 +56,7 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
 @connect(({
   song
 }) => ({
-  currentSongInfo: song.currentSongInfo,
-  canPlayList: song.canPlayList,
-  currentSongIndex: song.currentSongIndex,
-  playMode: song.playMode,
-  likeMusicList: song.likeMusicList
+  song: song
 }), (dispatch) => ({
   getSongInfo (object) {
     dispatch(getSongInfo(object))
@@ -127,14 +108,14 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   componentWillReceiveProps (nextProps) {
     // console.log(this.props, nextProps)
-    console.log('this.props.currentSongInfo.name', this.props.currentSongInfo.name)
-    console.log('nextProps.currentSongInfo.name', nextProps.currentSongInfo.name)
-    this.setStar(nextProps.likeMusicList, nextProps.currentSongInfo.id)
-    if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name || this.state.firstEnter) {
+    console.log('this.props.song.currentSongInfo.name', this.props.song.currentSongInfo.name)
+    console.log('nextProps.song.currentSongInfo.name', nextProps.song.currentSongInfo.name)
+    this.setStar(nextProps.song.likeMusicList, nextProps.song.currentSongInfo.id)
+    if (this.props.song.currentSongInfo.name !== nextProps.song.currentSongInfo.name || this.state.firstEnter) {
       this.setState({
         firstEnter: false
       })
-      this.setSongInfo(nextProps.currentSongInfo)
+      this.setSongInfo(nextProps.song.currentSongInfo)
     }
   }
 
@@ -217,7 +198,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       })
     })
     backgroundAudioManager.onEnded(() => {
-      const { playMode } = this.props
+      const { playMode } = this.props.song
       const routes = Taro.getCurrentPages()
       const currentRoute = routes[routes.length - 1].route
       // 如果在当前页面则直接调用下一首的逻辑，反之则触发nextSong事件
@@ -247,7 +228,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   updateProgress(currentPosition) {
-    const { dt } = this.props.currentSongInfo
+    const { dt } = this.props.song.currentSongInfo
     this.setState({
       playPercent: Math.floor(currentPosition * 1000 * 100 / dt)
     })
@@ -256,7 +237,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   percentChange(e) {
     // console.log(e)
     const { value } = e.detail
-    const { dt } = this.props.currentSongInfo
+    const { dt } = this.props.song.currentSongInfo
     let currentPosition = Math.floor((dt / 1000) * value / 100)
     backgroundAudioManager.seek(currentPosition)
     backgroundAudioManager.play()
@@ -268,7 +249,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   // 获取下一首
   getNextSong() {
-    const { currentSongIndex, canPlayList, playMode } = this.props
+    const { currentSongIndex, canPlayList, playMode } = this.props.song
     let nextSongIndex = currentSongIndex + 1
     console.log('歌曲详情index', currentSongIndex)
     if (playMode === 'shuffle') {
@@ -303,7 +284,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   // 获取上一首
   getPrevSong() {
-    const { currentSongIndex, canPlayList, playMode } = this.props
+    const { currentSongIndex, canPlayList, playMode } = this.props.song
     let prevSongIndex = currentSongIndex - 1
     if (playMode === 'shuffle') {
       this.getShuffleSong()
@@ -319,13 +300,13 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   // 循环播放当前歌曲
   getCurrentSong() {
-    const { currentSongInfo } = this.props
+    const { currentSongInfo } = this.props.song
     this.setSongInfo(currentSongInfo)
   }
 
   // 随机播放歌曲
   getShuffleSong() {
-    const { canPlayList } = this.props
+    const { canPlayList } = this.props.song
     let nextSongIndex = Math.floor(Math.random()*(canPlayList.length - 1))
     this.props.getSongInfo({
       id: canPlayList[nextSongIndex].id
@@ -356,7 +337,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 
   changePlayMode() {
-    let { playMode } = this.props
+    let { playMode } = this.props.song
     if (playMode === 'loop') {
       playMode = 'one'
       Taro.showToast({
@@ -392,7 +373,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   likeMusic() {
     const { star } = this.state
-    const { id } = this.props.currentSongInfo
+    const { id } = this.props.song.currentSongInfo
     this.props.likeMusic({
       like: !star,
       id
@@ -404,7 +385,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
 
   render () {
-    const { currentSongInfo, playMode } = this.props
+    const { currentSongInfo, playMode } = this.props.song
     const { isPlaying, showLyric, lrc, lrcIndex, star, playPercent } = this.state
     let playModeImg = require('../../assets/images/song/icn_loop_mode.png')
     if (playMode === 'one') {

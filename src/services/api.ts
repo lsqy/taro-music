@@ -56,7 +56,7 @@ export default {
       // mode: 'cors',
       xhrFields: { withCredentials: true },
       success(res) {
-        console.log('res', res)
+        // console.log('res', res)
         setCookie(res)
         if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
           return logError('api', '请求资源不存在')

@@ -5,52 +5,13 @@ import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import { getSongInfo, getPlayListDetail } from '../../actions/song'
+import { injectPlaySong } from '../../utils/decorators'
+import { songType } from '../../constants/commonType'
 import './index.scss'
 
-type MusicItem = {
-  name: string,
-  id: number,
-  ar: Array<{
-    name: string
-  }>,
-  al: {
-    name: string
-  },
-  copyright: number
-}
 
 type PageStateProps = {
-  playListDetailInfo: {
-    coverImgUrl: string,
-    playCount: number,
-    name: string,
-    description?: string,
-    tags: Array<string | undefined>,
-    creator: {
-      avatarUrl: string,
-      nickname: string
-    },
-    tracks: Array<MusicItem>
-  },
-  playListDetailPrivileges: Array<{
-    st: number
-  }>,
-  currentSongInfo: {
-    id: number,
-    name: string,
-    al: {
-      picUrl: string
-    },
-    url: string,
-    lrcInfo: any,
-    dt: number, // 总时长，ms
-    st: number // 是否喜欢
-  },
-  canPlayList: Array<{
-    id: number
-  }>,
-  currentSongIndex: number,
-  playMode: string
+  song: songType,
 }
 
 type PageDispatchProps = {
@@ -61,15 +22,11 @@ type PageDispatchProps = {
 type PageState = {
 }
 
+@injectPlaySong()
 @connect(({
   song
 }) => ({
-  playListDetailInfo: song.playListDetailInfo,
-  playListDetailPrivileges: song.playListDetailPrivileges,
-  currentSongInfo: song.currentSongInfo,
-  canPlayList: song.canPlayList,
-  currentSongIndex: song.currentSongIndex,
-  playMode: song.playMode
+  song: song
 }), (dispatch) => ({
   getPlayListDetail (payload) {
     dispatch(getPlayListDetail(payload))
@@ -78,7 +35,6 @@ type PageState = {
     dispatch(getSongInfo(object))
   }
 }))
-
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
   config: Config = {
@@ -88,12 +44,6 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   constructor (props) {
     super(props)
     this.state = {
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (this.props.currentSongInfo.name !== nextProps.currentSongInfo.name) {
-      this.setSongInfo(nextProps.currentSongInfo)
     }
   }
 
@@ -107,76 +57,8 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     })
   }
 
-  setSongInfo(songInfo) {
-    try {
-      const backgroundAudioManager = Taro.getBackgroundAudioManager()
-      const { name, al, url } = songInfo
-      backgroundAudioManager.title = name
-      backgroundAudioManager.coverImgUrl = al.picUrl
-      backgroundAudioManager.src = url
-    } catch(err) {
-      console.log('err', err)
-      this.getNextSong()
-    }
-  }
-
   componentDidMount() {
-    Taro.eventCenter.on('nextSong', () => {
-      const { playMode } = this.props
-      this.playByMode(playMode)
-    })
-  }
-
-   // 获取下一首
-  getNextSong() {
-    const { currentSongIndex, canPlayList, playMode } = this.props
-    let nextSongIndex = currentSongIndex + 1
-    // console.log('歌单列表index', currentSongIndex)
-    if (playMode === 'shuffle') {
-      this.getShuffleSong()
-      return
-    }
-    if (playMode === 'one') {
-      this.getCurrentSong()
-      return
-    }
-
-    if (currentSongIndex === canPlayList.length - 1) {
-      nextSongIndex = 0
-    }
-    this.props.getSongInfo({
-      id: canPlayList[nextSongIndex].id
-    })
-  }
-
-  // 随机播放歌曲
-  getShuffleSong() {
-    const { canPlayList } = this.props
-    let nextSongIndex = Math.floor(Math.random()*(canPlayList.length - 1))
-    this.props.getSongInfo({
-      id: canPlayList[nextSongIndex].id
-    })
-  }
-
-  // 循环播放当前歌曲
-  getCurrentSong() {
-    const { currentSongInfo } = this.props
-    this.setSongInfo(currentSongInfo)
-  }
-
-  // 根据播放模式进行播放
-  playByMode(playMode: string) {
-    switch (playMode) {
-      case 'one':
-        this.getCurrentSong()
-        break
-      case 'shuffle':
-        this.getShuffleSong()
-        break
-      // 默认按列表顺序播放
-      default:
-        this.getNextSong()  
-    }
+    console.log('test before did')
   }
 
   componentDidShow () {
@@ -197,12 +79,8 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     }
   }
 
-  componentWillUnmount() {
-    Taro.eventCenter.off('nextSong')
-  }
-
   render () {
-    const { playListDetailInfo, playListDetailPrivileges } = this.props
+    const { playListDetailInfo, playListDetailPrivileges } = this.props.song
     return (
       <ScrollView 
         className='playList_container'  
