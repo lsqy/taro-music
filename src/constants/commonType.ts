@@ -7,7 +7,8 @@ export type MusicItemType = {
   al: {
     name: string
   },
-  copyright: number
+  copyright: number,
+  st?: number
 }
 
 export type currentSongInfoType = {

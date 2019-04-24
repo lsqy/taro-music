@@ -37,7 +37,8 @@ class App extends Component {
       'pages/myFocus/index',
       'pages/myEvents/index',
       'pages/login/index',
-      'pages/playListDetail/index'
+      'pages/playListDetail/index',
+      'pages/recentPlay/index',
     ],
     window: {
       backgroundTextStyle: 'light',

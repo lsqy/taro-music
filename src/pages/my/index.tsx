@@ -207,7 +207,7 @@ class Page extends Component<IProps, PageState> {
               className='user_brief__item__img'
               src={require('../../assets/images/my/recent_play.png')}
             />
-            <View className='user_brief__item__text'>
+            <View className='user_brief__item__text' onClick={this.jumpPage.bind(this, 'recentPlay')}>
               <Text>
                 最近播放
               </Text>
