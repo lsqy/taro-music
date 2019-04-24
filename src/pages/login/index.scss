@@ -1,3 +1,5 @@
+@import '../../base.scss';
+
 .login_container {
     .login_content {
         padding: 20px 10px;
@@ -16,7 +18,7 @@
         margin-top: 40px;
         border-radius: 44px;
         color: #ffffff;
-        background-color: #d43c33;
+        background-color: $primary-color;
         border: none;
     }
 }

@@ -133,6 +133,22 @@ export const getSongInfo = (payload) => {
               currentSongInfo: songInfo
             }
           })
+        }).catch((err) => {
+          console.log('获取歌词失败', err)
+          dispatch({
+            type: GETSONGINFO,
+            payload: {
+              currentSongInfo: songInfo
+            }
+          })
+        })
+      }).catch((err) => {
+        console.log('获取歌曲url失败', err)
+        dispatch({
+          type: GETSONGINFO,
+          payload: {
+            currentSongInfo: songInfo
+          }
         })
       })
     })

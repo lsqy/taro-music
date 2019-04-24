@@ -65,10 +65,10 @@ export default {
         } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
           return logError('api', '没有权限访问')
         } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-          // Taro.clearStorage()
-          // Taro.navigateTo({
-          //   url: '/pages/login/index'
-          // })
+          Taro.clearStorage()
+          Taro.navigateTo({
+            url: '/pages/login/index'
+          })
           return logError('api', '请先登录')
         } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
           return res.data
