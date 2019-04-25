@@ -9,8 +9,7 @@ import {
   getSongInfo, 
   changePlayMode,
   getLikeMusicList,
-  likeMusic,
-  updatePlayStatus
+  likeMusic
 } from '../../actions/song'
 import { songType } from '../../constants/commonType'
 import './index.scss'
@@ -24,7 +23,6 @@ type PageDispatchProps = {
   changePlayMode: (object) => any,
   getLikeMusicList: (object) => any,
   likeMusic: (object) => any,
-  updatePlayStatus: (object) => any
 }
 
 
@@ -34,6 +32,7 @@ type PageState = {
       id: number
     }
   },
+  isPlaying: boolean,
   lyric: string,
   showLyric: boolean,
   lrc: {
@@ -70,9 +69,6 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
   },
   likeMusic (object) {
     dispatch(likeMusic(object))
-  },
-  updatePlayStatus (object) {
-    dispatch(updatePlayStatus(object))
   }
 }))
 
@@ -93,6 +89,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     super(props)
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
+      isPlaying: false,
       lyric: '',
       showLyric: false,
       lrc: {
@@ -133,9 +130,9 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       backgroundAudioManager.src = url
       this.setState({
         lrc: lrcInfo,
+        isPlaying: true,
         firstEnter: false
       });
-      this.updatePlayStatus(true)
     } catch(err) {
       console.log('err', err)
       this.getNextSong()
@@ -161,12 +158,16 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   pauseMusic() {
     backgroundAudioManager.pause()
-    this.updatePlayStatus(false)
+    this.setState({
+      isPlaying: false
+    })
   }
 
   playMusic() {
     backgroundAudioManager.play()
-    this.updatePlayStatus(true)
+    this.setState({
+      isPlaying: true
+    })
   }
 
   componentDidMount() {
@@ -187,10 +188,14 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       })
     })
     backgroundAudioManager.onPause(() => {
-      that.updatePlayStatus(false)
+      that.setState({
+        isPlaying: false
+      })
     })
     backgroundAudioManager.onPlay(() => {
-      that.updatePlayStatus(true)
+      that.setState({
+        isPlaying: true
+      })
     })
     backgroundAudioManager.onEnded(() => {
       const { playMode } = this.props.song
@@ -378,16 +383,9 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     })
   }
 
-  updatePlayStatus(isPlaying: boolean) {
-    this.props.updatePlayStatus({
-      isPlaying
-    })
-  }
-
-
   render () {
-    const { currentSongInfo, playMode, isPlaying } = this.props.song
-    const { showLyric, lrc, lrcIndex, star, playPercent } = this.state
+    const { currentSongInfo, playMode } = this.props.song
+    const { isPlaying, showLyric, lrc, lrcIndex, star, playPercent } = this.state
     let playModeImg = require('../../assets/images/song/icn_loop_mode.png')
     if (playMode === 'one') {
       playModeImg = require('../../assets/images/song/icn_one_mode.png')
