@@ -20,6 +20,8 @@ export const LIKEMUSIC: string = 'LIKEMUSIC'
 export const GETLIKEMUSICLIST: string = 'GETLIKEMUSICLIST'
 // 更新获取喜欢列表
 export const UPDATELIKEMUSICLIST: string = 'UPDATELIKEMUSICLIST'
+// 更新播放状态
+export const UPDATEPLAYSTATUS: string = 'UPDATEPLAYSTATUS'
 
 
 

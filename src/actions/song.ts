@@ -8,7 +8,8 @@ import {
   GETSONGINFO,
   CHANGEPLAYMODE,
   GETLIKEMUSICLIST,
-  UPDATELIKEMUSICLIST
+  UPDATELIKEMUSICLIST,
+  UPDATEPLAYSTATUS
 } from '../constants/song'
 import api from '../services/api'
 import { parse_lrc } from '../utils/common'
@@ -159,6 +160,14 @@ export const getSongInfo = (payload) => {
 export const changePlayMode = (payload) => {
   return {
     type: CHANGEPLAYMODE,
+    payload
+  }
+}
+
+// 更新播放状态
+export const updatePlayStatus = (payload) => {
+  return {
+    type: UPDATEPLAYSTATUS,
     payload
   }
 }

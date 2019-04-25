@@ -45,6 +45,8 @@ export type songType = {
   canPlayList: Array<{
     id: number
   }>,
+  // 是否正在播放
+  isPlaying: boolean,
   // 推荐歌单
   recommendPlayList: Array<{}>,
   // 推荐歌单
