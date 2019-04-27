@@ -77,7 +77,7 @@ class Page extends Component<{}, PageState> {
       <View className='recentPlay_container'>
         <AtTabs current={currentTab} tabList={tabList} onClick={this.switchTab.bind(this)}>
           <AtTabsPane current={currentTab} index={0} >
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;' >标签页一的内容</View>
+                          
           </AtTabsPane>
           <AtTabsPane current={currentTab} index={1}>
             <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
