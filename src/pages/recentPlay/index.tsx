@@ -1,9 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import api from '../../services/api'
 import { MusicItemType } from '../../constants/commonType'
+import CLoading from '../../components/CLoading'
 import './index.scss'
 
 
@@ -49,12 +50,22 @@ class Page extends Component<{}, PageState> {
   }
 
   componentWillMount() {
+    this.getData()
+  }
+
+  getData() {
+    const { currentTab } = this.state
     const userId = Taro.getStorageSync('userId')
     api.get('/user/record', {
       uid: userId,
-      type: 0
+      type: currentTab === 0 ? 1 : 0
     }).then((res) => {
-      console.log('res', res)
+      const dataType = currentTab === 0 ? 'weekData' : 'allData'
+      if (res.data && res.data[dataType] && res.data[dataType].length > 0) {
+        this.setState({
+          list: res.data[dataType]
+        })
+      }
     })
   }
 
@@ -67,23 +78,54 @@ class Page extends Component<{}, PageState> {
 
   switchTab(val) {
     this.setState({
-      currentTab: val
+      currentTab: val,
+      list: []
+    }, () => {
+      this.getData()
     })
   }
 
   render () {
     const { list, currentTab, tabList } = this.state
     return (
-      <View className='recentPlay_container'>
-        <AtTabs current={currentTab} tabList={tabList} onClick={this.switchTab.bind(this)}>
+      <ScrollView scrollY className='recentPlay_container'>
+        <AtTabs current={currentTab} swipeable={false} tabList={tabList} onClick={this.switchTab.bind(this)}>
           <AtTabsPane current={currentTab} index={0} >
-                          
+            {
+              list.length === 0 ? 
+                <CLoading /> :
+              list.map((item, index) => <View key={index} className='recentPlay__music'>
+                <View className='recentPlay__music__info'>
+                  <View className='recentPlay__music__info__name'>
+                  {item.song.name}
+                  </View>
+                  <View className='recentPlay__music__info__desc'>
+                    {item.song.ar[0] ? item.song.ar[0].name : ''} - {item.song.al.name}
+                  </View>
+                </View>
+                <View className='fa fa-ellipsis-v recentPlay__music__icon'></View>
+              </View>)
+            }     
           </AtTabsPane>
           <AtTabsPane current={currentTab} index={1}>
-            <View style='padding: 100px 50px;background-color: #FAFBFC;text-align: center;'>标签页二的内容</View>
+            {
+              list.length === 0 ? 
+                <CLoading /> :
+              list.map((item, index) => <View key={index} className='recentPlay__music'>
+                <View className='recentPlay__music__info'>
+                  <View className='recentPlay__music__info__name'>
+                  {item.song.name}
+                  </View>
+                  <View className='recentPlay__music__info__desc'>
+                    {item.song.ar[0] ? item.song.ar[0].name : ''} - {item.song.al.name}
+                  </View>
+                </View>
+                <View className='fa fa-ellipsis-v recentPlay__music__icon'></View>
+              </View>)
+            } 
           </AtTabsPane>
         </AtTabs>
-      </View>
+      </ScrollView>
     )
   }
 }
