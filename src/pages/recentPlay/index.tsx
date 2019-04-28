@@ -31,6 +31,7 @@ class Page extends Component<{}, PageState> {
   config: Config = {
     navigationBarTitleText: '最近播放'
   }
+  
 
   constructor (props) {
     super(props)
