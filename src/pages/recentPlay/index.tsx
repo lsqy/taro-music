@@ -11,8 +11,7 @@ import { injectPlaySong } from '../../utils/decorators'
 import './index.scss'
 
 type PageStateProps = {
-  song: songType,
-  recentTab: number
+  song: songType
 }
 
 type PageDispatchProps = {
@@ -34,11 +33,9 @@ type PageState = {
 
 @injectPlaySong()
 @connect(({
-  song,
-  recentTab
+  song
 }) => ({
-  song: song,
-  recentTab
+  song: song
 }), (dispatch) => ({
   getSongInfo (object) {
     dispatch(getSongInfo(object))
@@ -73,7 +70,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
         title: '全部'
       }],
       list: [],
-      currentTab: props.recentTab || 0
+      currentTab: props.song.recentTab || 0
     }
   }
 
@@ -119,7 +116,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
   playSong(songId, canPlay) {
     if (canPlay) {
-      this.saveData()
+      this.saveData(songId)
       Taro.navigateTo({
         url: `/pages/songDetail/index?id=${songId}`
       })
@@ -131,10 +128,24 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     }
   }
 
-  saveData() {
+  saveData(songId) {
     const { list, currentTab } = this.state
+    const tempList = list.map((item) => {
+      let temp: any = {}
+      temp.name = item.song.name
+      temp.id = item.song.song.id
+      temp.ar = item.song.ar
+      temp.al = item.song.al
+      temp.copyright = item.song.copyright
+      temp.st = item.song.st
+      return temp
+    })
+    const canPlayList = tempList.filter((item, index) => {
+      return item.st !== -200
+    })
     this.props.updateCanplayList({
-      canPlayList: list
+      canPlayList,
+      currentSongId: songId
     })
     this.props.updateRecentTab({
       recentTab: currentTab

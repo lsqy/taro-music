@@ -1,3 +1,5 @@
+import recentPlay from "src/pages/recentPlay";
+
 export type MusicItemType = {
   name: string,
   id: number,
@@ -68,5 +70,6 @@ export type songType = {
   // 播放模式
   playMode: 'loop' | 'one' | 'shuffle',
   // 喜欢列表
-  likeMusicList: Array<number>
+  likeMusicList: Array<number>,
+  recentTab: number
 }

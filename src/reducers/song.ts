@@ -48,7 +48,9 @@ interface State {
   // 当前播放的歌曲id
   currentSongId: string,
   // 当前播放的歌曲详情
-  currentSongInfo: {},
+  currentSongInfo: {
+    id?: number
+  },
   // 当前播放的歌曲在播放列表中的索引,默认第一首
   currentSongIndex: number,
   // 播放模式
@@ -180,9 +182,12 @@ export default function song (state = INITIAL_STATE, action) {
         isPlaying
       }
     case UPDATECANPLAYLIST:
+      console.log('action.payload', action.payload)
+      currentSongIndex = action.payload.canPlayList.findIndex(item => item.id === action.payload.currentSongId)
       return {
         ...state,
-        canPlayList: action.payload.canPlayList
+        canPlayList: action.payload.canPlayList,
+        currentSongIndex
       } 
     case UPDATERECENTTAB:
       const { recentTab } = action.payload
