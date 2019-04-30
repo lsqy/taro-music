@@ -9,7 +9,9 @@ import {
   CHANGEPLAYMODE,
   GETLIKEMUSICLIST,
   UPDATELIKEMUSICLIST,
-  UPDATEPLAYSTATUS
+  UPDATEPLAYSTATUS,
+  UPDATECANPLAYLIST,
+  UPDATERECENTTAB
 } from '../constants/song'
 import api from '../services/api'
 import { parse_lrc } from '../utils/common'
@@ -208,6 +210,22 @@ export const getLikeMusicList = (payload) => {
         }
       })
     })
+  }
+}
+
+// 更新播放列表
+export const updateCanplayList = (payload) => {
+  return {
+    type: UPDATECANPLAYLIST,
+    payload
+  }
+}
+
+// 更新最近播放tab
+export const updateRecentTab = (payload) => {
+  return {
+    type: UPDATERECENTTAB,
+    payload
   }
 }
 

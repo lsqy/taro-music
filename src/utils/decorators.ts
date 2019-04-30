@@ -18,7 +18,7 @@ export function injectPlaySong() {
           const { playMode } = this.props.song
           this.playByMode(playMode)
         })
-        return super.componentDidMount() && super.componentDidMount()
+        return super.componentDidMount && super.componentDidMount()
       }
     
       setSongInfo(songInfo) {

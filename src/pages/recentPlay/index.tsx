@@ -3,10 +3,23 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { View, ScrollView } from '@tarojs/components'
 import api from '../../services/api'
-import { MusicItemType } from '../../constants/commonType'
+import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
+import { getSongInfo, updateCanplayList, updateRecentTab } from '../../actions/song'
+import { MusicItemType, songType } from '../../constants/commonType'
+import { injectPlaySong } from '../../utils/decorators'
 import './index.scss'
 
+type PageStateProps = {
+  song: songType,
+  recentTab: number
+}
+
+type PageDispatchProps = {
+  getSongInfo: (object) => any,
+  updateCanplayList: (object) => any,
+  updateRecentTab: (object) => any
+}
 
 type PageState = {
   tabList: Array<{
@@ -19,7 +32,25 @@ type PageState = {
   currentTab: number
 }
 
-class Page extends Component<{}, PageState> {
+@injectPlaySong()
+@connect(({
+  song,
+  recentTab
+}) => ({
+  song: song,
+  recentTab
+}), (dispatch) => ({
+  getSongInfo (object) {
+    dispatch(getSongInfo(object))
+  },
+  updateCanplayList (object) {
+    dispatch(updateCanplayList(object))
+  },
+  updateRecentTab (object) {
+    dispatch(updateRecentTab(object))
+  }
+}))
+class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -42,7 +73,7 @@ class Page extends Component<{}, PageState> {
         title: '全部'
       }],
       list: [],
-      currentTab: 0
+      currentTab: props.recentTab || 0
     }
   }
 
@@ -50,7 +81,7 @@ class Page extends Component<{}, PageState> {
     console.log(this.props, nextProps)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getData()
   }
 
@@ -86,6 +117,30 @@ class Page extends Component<{}, PageState> {
     })
   }
 
+  playSong(songId, canPlay) {
+    if (canPlay) {
+      this.saveData()
+      Taro.navigateTo({
+        url: `/pages/songDetail/index?id=${songId}`
+      })
+    } else {
+      Taro.showToast({
+        title: '暂无版权',
+        icon: 'none'
+      })
+    }
+  }
+
+  saveData() {
+    const { list, currentTab } = this.state
+    this.props.updateCanplayList({
+      canPlayList: list
+    })
+    this.props.updateRecentTab({
+      recentTab: currentTab
+    })
+  }
+
   render () {
     const { list, currentTab, tabList } = this.state
     return (
@@ -96,7 +151,7 @@ class Page extends Component<{}, PageState> {
               list.length === 0 ? 
                 <CLoading /> :
               list.map((item, index) => <View key={index} className='recentPlay__music'>
-                <View className='recentPlay__music__info'>
+                <View className='recentPlay__music__info' onClick={this.playSong.bind(this, item.song.id, item.song.st !== -200)}>
                   <View className='recentPlay__music__info__name'>
                   {item.song.name}
                   </View>
@@ -113,7 +168,7 @@ class Page extends Component<{}, PageState> {
               list.length === 0 ? 
                 <CLoading /> :
               list.map((item, index) => <View key={index} className='recentPlay__music'>
-                <View className='recentPlay__music__info'>
+                <View className='recentPlay__music__info' onClick={this.playSong.bind(this, item.song.id, item.song.st !== -200)}>
                   <View className='recentPlay__music__info__name'>
                   {item.song.name}
                   </View>

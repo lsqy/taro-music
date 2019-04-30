@@ -22,6 +22,7 @@ export const GETLIKEMUSICLIST: string = 'GETLIKEMUSICLIST'
 export const UPDATELIKEMUSICLIST: string = 'UPDATELIKEMUSICLIST'
 // 更新播放状态
 export const UPDATEPLAYSTATUS: string = 'UPDATEPLAYSTATUS'
-
-
-
+// 更新可播放列表
+export const UPDATECANPLAYLIST: string = 'UPDATECANPLAYLIST'
+// 更新最近播放tab
+export const UPDATERECENTTAB: string = 'UPDATERECENTTAB'

@@ -9,7 +9,9 @@ import {
   CHANGEPLAYMODE,
   GETLIKEMUSICLIST,
   UPDATELIKEMUSICLIST,
-  UPDATEPLAYSTATUS
+  UPDATEPLAYSTATUS,
+  UPDATECANPLAYLIST,
+  UPDATERECENTTAB
 } from '../constants/song'
 
 interface State {
@@ -53,7 +55,8 @@ interface State {
   playMode: 'loop' | 'one' | 'shuffle',
   // 喜欢列表
   likeMusicList: Array<number>,
-  isPlaying: boolean
+  isPlaying: boolean,
+  recentTab: number
 }
 
 const INITIAL_STATE: State = {
@@ -81,7 +84,8 @@ const INITIAL_STATE: State = {
   currentSongIndex: 0,
   playMode: 'loop',
   likeMusicList: [],
-  isPlaying: false
+  isPlaying: false,
+  recentTab: 0
 }
 
 export default function song (state = INITIAL_STATE, action) {
@@ -174,7 +178,18 @@ export default function song (state = INITIAL_STATE, action) {
       return {
         ...state,
         isPlaying
-      }    
+      }
+    case UPDATECANPLAYLIST:
+      return {
+        ...state,
+        canPlayList: action.payload.canPlayList
+      } 
+    case UPDATERECENTTAB:
+      const { recentTab } = action.payload
+      return {
+        ...state,
+        recentTab
+      }   
     default:
       return state
   }
