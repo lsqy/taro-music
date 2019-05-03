@@ -9,7 +9,6 @@ import { injectPlaySong } from '../../utils/decorators'
 import { songType } from '../../constants/commonType'
 import './index.scss'
 
-
 type PageStateProps = {
   song: songType,
 }
