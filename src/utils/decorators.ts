@@ -89,5 +89,5 @@ export function injectPlaySong() {
         return super.componentWillUnmount && super.componentWillUnmount()
       }
     }
-  }
+  } as any
 }
