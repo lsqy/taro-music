@@ -32,5 +32,4 @@ npm i
 
 npm run dev:weapp
 
-
 ```
