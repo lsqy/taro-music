@@ -152,6 +152,9 @@ class Page extends Component<IProps, PageState> {
 
   signOut() {
     Taro.clearStorage()
+    api.get('/logout').then((res) => {
+      console.log('退出登陆', res)
+    })
     Taro.redirectTo({
       url: '/pages/login/index'
     })
