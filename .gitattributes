@@ -1,4 +1,4 @@
-*.ts linguist-language=typescript
-*.tsx linguist-language=typescript
-*.scss linguist-language=typescript
-*.html linguist-language=typescript
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+*.scss linguist-language=TypeScript
+*.html linguist-language=TypeScript
