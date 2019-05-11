@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import classnames from 'classnames'
 import { View, Image } from '@tarojs/components'
 
 import './index.scss'
 type Props = {
-    isFixed: boolean
+  isFixed: boolean
 }
 
 
