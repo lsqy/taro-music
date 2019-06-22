@@ -58,13 +58,28 @@ npm run dev:weapp
 - [] 评论列表
 
 ### 效果图预览
+
+> 下面简要列出几张效果图
+
+- 登陆页面
 ![](http://img.lsqy.tech/hexo/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png)
+- 我的页面
 ![](http://img.lsqy.tech/hexo/%E6%88%91%E7%9A%84%E9%A1%B5%E9%9D%A2.png)
+- 推荐歌单
 ![](http://img.lsqy.tech/hexo/%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95.png)
+- 歌单详情
 ![](http://img.lsqy.tech/hexo/%E6%AD%8C%E5%8D%95%E8%AF%A6%E6%83%85.png)
+- 歌曲播放
 ![](http://img.lsqy.tech/hexo/%E6%AD%8C%E6%9B%B2%E6%92%AD%E6%94%BE.png)
+- 歌词显示
 ![](http://img.lsqy.tech/hexo/%E6%AD%8C%E8%AF%8D%E6%98%BE%E7%A4%BA.png)
+- 歌词显示
 ![](http://img.lsqy.tech/hexo/%E5%85%B3%E6%B3%A8%E5%88%97%E8%A1%A8.png)
-![](http://img.lsqy.tech/hexo/%E6%AD%8C%E5%8D%95%E8%AF%A6%E6%83%85.png)
-![](http://img.lsqy.tech/hexo/%E6%AD%8C%E6%9B%B2%E6%92%AD%E6%94%BE.png)
-![](http://img.lsqy.tech/hexo/%E6%AD%8C%E8%AF%8D%E6%98%BE%E7%A4%BA.png)
+- 关注列表
+![](http://img.lsqy.tech/hexo/%E5%85%B3%E6%B3%A8%E5%88%97%E8%A1%A8.png)
+- 粉丝列表
+![](http://img.lsqy.tech/hexo/%E7%B2%89%E4%B8%9D%E5%88%97%E8%A1%A8.png)
+
+### 有待完善部分
+
+还有一些功能点以及细节都还有待进一步完善，目前先把大致主要的功能进行了下实现，当然如果发现什么问题，欢迎能够提交`issues`,发现之后我会及时进行更正。
