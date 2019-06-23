@@ -144,6 +144,13 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  showToast() {
+    Taro.showToast({
+      title: '暂未实现，敬请期待',
+      icon: 'none'
+    })
+  }
+
   jumpPage(name) {
     Taro.navigateTo({
       url: `/pages/${name}/index`
@@ -185,7 +192,7 @@ class Page extends Component<IProps, PageState> {
           <AtIcon prefixClass='fa' value='sign-out' size='30' color='#d43c33' className='exit_icon' onClick={this.signOut.bind(this)}></AtIcon>
         </View>
         <View className='user_count'>
-          <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myEvents')}>
+          <View className='user_count__sub' onClick={this.showToast.bind(this)}>
             <View className='user_count__sub--num'>
               {userInfo.profile.eventCount}
             </View>
@@ -222,7 +229,7 @@ class Page extends Component<IProps, PageState> {
               className='user_brief__item__img'
               src={require('../../assets/images/my/my_radio.png')}
             />
-            <View className='user_brief__item__text'>
+            <View className='user_brief__item__text' onClick={this.showToast.bind(this)}>
               <Text>
                 我的电台
               </Text>
@@ -234,7 +241,7 @@ class Page extends Component<IProps, PageState> {
               className='user_brief__item__img'
               src={require('../../assets/images/my/my_collection_icon.png')}
             />
-            <View className='user_brief__item__text'>
+            <View className='user_brief__item__text' onClick={this.showToast.bind(this)}>
               <Text>
                 我的收藏
               </Text>

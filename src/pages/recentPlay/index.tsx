@@ -139,7 +139,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
       temp.st = item.song.st
       return temp
     })
-    const canPlayList = tempList.filter((item, index) => {
+    const canPlayList = tempList.filter((item) => {
       return item.st !== -200
     })
     this.props.updateCanplayList({
