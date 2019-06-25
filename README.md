@@ -1,6 +1,6 @@
 ## taro-music
 
-> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+redux`,目前主要是着重小程序端的展示.
+> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示.
 
 ### 快速开始
 
