@@ -67,7 +67,7 @@ npm run dev:weapp
 
 - 我的页面
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.png"/>
+<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.jpg"/>
 
 - 推荐歌单
 
