@@ -15,6 +15,7 @@ export const baseUrl: string = 'http://localhost:3000'
 
 ```
 启动后端接口服务
+
 git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
 
 cd NeteaseCloudMusicApi
@@ -24,6 +25,7 @@ npm i
 npm run start
 
 接下来启动前端项目
+
 git clone https://github.com/lsqy/taro-music.git
 
 cd taro-music
