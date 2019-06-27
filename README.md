@@ -1,6 +1,6 @@
 ## taro-music
 
-> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+redux`,目前主要是着重小程序端的展示.
+> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示.
 
 ### 快速开始
 
@@ -59,6 +59,11 @@ npm run dev:weapp
 - [x] 喜欢/取消喜欢某首歌曲
 - [ ] 评论列表
 
+### todo
+
+- 统一的播放组件，方便进行切换页面后可以随时进入到播放页面
+- 复用的评论列表
+
 ### 效果图预览
 
 > 下面简要列出几张效果图
@@ -69,7 +74,7 @@ npm run dev:weapp
 
 - 我的页面
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.png"/>
+<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.jpg"/>
 
 - 推荐歌单
 
