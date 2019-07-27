@@ -4,6 +4,7 @@ import { View, Image, Text, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
+import CMusic from '../../components/CMusic'
 import { getSongInfo, getPlayListDetail } from '../../actions/song'
 import { injectPlaySong } from '../../utils/decorators'
 import { songType } from '../../constants/commonType'
@@ -79,12 +80,13 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   render () {
-    const { playListDetailInfo, playListDetailPrivileges } = this.props.song
+    const { playListDetailInfo, playListDetailPrivileges, currentSongInfo } = this.props.song
     return (
       <ScrollView 
         className='playList_container'  
         scrollY 
         lowerThreshold={20}>
+        <CMusic musicInfo={ currentSongInfo }/>
         <View className='playList__header'>
           <Image 
             className='playList__header__bg'

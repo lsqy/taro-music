@@ -14,7 +14,9 @@ import {
   UPDATERECENTTAB
 } from '../constants/song'
 
-interface State {
+import { songType } from '../constants/commonType'
+
+/* interface State {
   // 歌单详情
   playListDetailInfo: {
     coverImgUrl: string,
@@ -59,9 +61,9 @@ interface State {
   likeMusicList: Array<number>,
   isPlaying: boolean,
   recentTab: number
-}
+} */
 
-const INITIAL_STATE: State = {
+const INITIAL_STATE: songType = {
   playListDetailInfo: {
     coverImgUrl: '',
     name: '',
@@ -82,7 +84,17 @@ const INITIAL_STATE: State = {
   myCreateList: [],
   myCollectList: [],
   currentSongId: '',
-  currentSongInfo: {},
+  currentSongInfo: {
+    id: 0,
+    name: '',
+    al: {
+      picUrl: ''
+    },
+    url: '',
+    lrcInfo: '',
+    dt: 0, // 总时长，ms
+    st: 0 // 是否喜欢
+  },
   currentSongIndex: 0,
   playMode: 'loop',
   likeMusicList: [],
@@ -100,7 +112,7 @@ export default function song (state = INITIAL_STATE, action) {
     // 获取歌单详情
     case GETPLAYLISTDETAIL: 
       const { playListDetailInfo, playListDetailPrivileges } = action.payload
-      let canPlayList = playListDetailInfo.tracks.filter((item, index) => {
+      let canPlayList = playListDetailInfo.tracks.filter((_, index) => {
         return playListDetailPrivileges[index].st !== -200
       })
       return {

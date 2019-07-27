@@ -1,7 +1,10 @@
 
 import Taro from '@tarojs/taro'
-
-//  装饰器可以自己本身是个函数，或者可以是执行后是一个函数，这样可以传入需要的参数，如果本身是一个函数则使用的时候直接@injectPlaySong，如果想带参数则@injectPlaySong(params)
+ 
+/**
+ * 装饰器可以自己本身是个函数，或者可以是执行后是一个函数，这样可以传入需要的参数，如果本身是一个函数则使用的时候直接@injectPlaySong，如果想带参数则@injectPlaySong(params)
+ * 该装饰器主要是为了解决在离开当前播放页到其他页面后可以继续播放的问题
+ */
 export function injectPlaySong() {
   return function songDecorator(constructor) {
     return class PlaySong extends constructor {

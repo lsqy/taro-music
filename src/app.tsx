@@ -2,7 +2,7 @@ import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/redux'
 
-import Index from './pages/index'
+import AppContainer from './pages/app'
 
 import configStore from './store'
 
@@ -30,9 +30,9 @@ class App extends Component {
   config: Config = {
     pages: [
       // 'pages/songDetail/index',
+      'pages/my/index',
       'pages/index/index',
       'pages/songDetail/index',
-      'pages/my/index',
       'pages/myFans/index',
       'pages/myFocus/index',
       'pages/myEvents/index',
@@ -64,7 +64,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <Index />
+        <AppContainer />
       </Provider>
     )
   }

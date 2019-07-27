@@ -1,5 +1,3 @@
-import recentPlay from "src/pages/recentPlay";
-
 export type MusicItemType = {
   name: string,
   id: number,
@@ -8,6 +6,9 @@ export type MusicItemType = {
   }>,
   al: {
     name: string
+  },
+  song: {
+    id: number
   },
   copyright: number,
   st?: number

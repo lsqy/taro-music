@@ -1,0 +1,41 @@
+.music_components {
+  position: fixed;
+  width: 96%;
+  padding: 10px;
+  bottom: 20px;
+  left: 2%;
+  background: #8d949a;
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  border-radius: 10px;
+  align-items: center;
+  .music__pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .music__name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.circling {
+  animation: circling 20s infinite linear;
+  &.z-pause {
+      animation-play-state: paused;
+  }
+}
+
+@keyframes circling {
+  0% { 
+      transform: rotate(0deg) 
+  }
+  to { 
+      transform: rotate(1turn) 
+  }
+}

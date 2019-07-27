@@ -9,3 +9,18 @@ page {
 .at-tabs__item-underline {
     background-color: $primary-color;
 }
+.circling {
+    animation: circling 20s infinite linear;
+    &.z-pause {
+        animation-play-state: paused;
+    }
+}
+
+@keyframes circling {
+    0% { 
+        transform: rotate(0deg) 
+    }
+    to { 
+        transform: rotate(1turn) 
+    }
+}

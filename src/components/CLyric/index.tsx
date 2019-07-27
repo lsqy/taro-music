@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import classnames from 'classnames'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 
 import './index.scss'
 type Props = {
