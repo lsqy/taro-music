@@ -11,7 +11,8 @@ import {
   UPDATELIKEMUSICLIST,
   UPDATEPLAYSTATUS,
   UPDATECANPLAYLIST,
-  UPDATERECENTTAB
+  UPDATERECENTTAB,
+  RESETPLAYLIST
 } from '../constants/song'
 import api from '../services/api'
 import { parse_lrc } from '../utils/common'
@@ -27,6 +28,9 @@ export const getSongDetail = (payload) => {
 export const getPlayListDetail = (payload) => {
   const { id } = payload
   return dispatch => {
+    dispatch({
+      type: RESETPLAYLIST,
+    })
     api.get('/playlist/detail', {
       id
     }).then((res) => {

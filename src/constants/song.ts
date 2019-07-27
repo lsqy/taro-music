@@ -26,3 +26,5 @@ export const UPDATEPLAYSTATUS: string = 'UPDATEPLAYSTATUS'
 export const UPDATECANPLAYLIST: string = 'UPDATECANPLAYLIST'
 // 更新最近播放tab
 export const UPDATERECENTTAB: string = 'UPDATERECENTTAB'
+// 重置播放列表
+export const RESETPLAYLIST: string = 'RESETPLAYLIST'

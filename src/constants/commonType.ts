@@ -17,8 +17,12 @@ export type MusicItemType = {
 export type currentSongInfoType = {
   id: number,
   name: string,
+  ar: Array<{
+    name: string
+  }>,
   al: {
-    picUrl: string
+    picUrl: string,
+    name: string
   },
   url: string,
   lrcInfo: any,

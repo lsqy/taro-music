@@ -9,7 +9,8 @@ import {
   getSongInfo, 
   changePlayMode,
   getLikeMusicList,
-  likeMusic
+  likeMusic,
+  updatePlayStatus
 } from '../../actions/song'
 import { songType } from '../../constants/commonType'
 import './index.scss'
@@ -23,6 +24,7 @@ type PageDispatchProps = {
   changePlayMode: (object) => any,
   getLikeMusicList: (object) => any,
   likeMusic: (object) => any,
+  updatePlayStatus: (object) => any
 }
 
 
@@ -69,6 +71,9 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager()
   },
   likeMusic (object) {
     dispatch(likeMusic(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
   }
 }))
 
@@ -89,7 +94,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     super(props)
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
-      isPlaying: false,
+      isPlaying: props.song.isPlaying,
       lyric: '',
       showLyric: false,
       lrc: {
@@ -139,7 +144,12 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     }
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount () { 
+    // 更新下播放状态
+    this.props.updatePlayStatus({
+      isPlaying: this.state.isPlaying
+    })
+  }
 
   componentWillMount() {
     this.getLikeList()

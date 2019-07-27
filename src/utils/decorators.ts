@@ -14,6 +14,11 @@ export function injectPlaySong() {
         }
         return super.componentWillReceiveProps && super.componentWillReceiveProps()
       }
+
+      componentWillMount() {
+        Taro.eventCenter.off('nextSong')
+        return super.componentWillMount && super.componentWillMount()
+      }
     
       componentDidMount() {
         console.log('test @injectPlaySong')
@@ -88,7 +93,7 @@ export function injectPlaySong() {
       }
   
       componentWillUnmount() {
-        Taro.eventCenter.off('nextSong')
+        // Taro.eventCenter.off('nextSong')
         return super.componentWillUnmount && super.componentWillUnmount()
       }
     }

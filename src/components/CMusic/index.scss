@@ -10,17 +10,35 @@
   display: flex;
   border-radius: 10px;
   align-items: center;
+  z-index: 10000;
+  &.isHome {
+    bottom: 120px;
+  }
   .music__pic {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     margin-right: 10px;
   }
-  .music__name {
+  .music__info {
     flex: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    .music__info__name {
+      width: 100%;
+      font-size: 28px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .music__info__desc {
+      width: 100%;
+      font-size: 22px;
+      margin-top: 10px;
+      color: #ccc;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
   }
 }
 

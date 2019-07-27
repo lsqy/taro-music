@@ -4,11 +4,17 @@ import { View, Image, Text } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
+import CMusic from '../../components/CMusic'
+import { injectPlaySong } from '../../utils/decorators'
+import { songType } from '../../constants/commonType'
 import { 
   getRecommendPlayList, 
   getRecommendDj, 
   getRecommendNewSong, 
-  getRecommend 
+  getRecommend,
+  getSongInfo, 
+  getPlayListDetail, 
+  updatePlayStatus
 } from '../../actions/song'
 
 import './index.scss'
@@ -24,6 +30,7 @@ import './index.scss'
 // #endregion
 
 type PageStateProps = {
+  song: songType,
   counter: {
     num: number
   },
@@ -44,7 +51,10 @@ type PageDispatchProps = {
   getRecommendPlayList: () => any,
   getRecommendDj: () => any,
   getRecommendNewSong: () => any,
-  getRecommend: () => any 
+  getRecommend: () => any,
+  getPlayListDetail: (object) => any,
+  getSongInfo: (object) => any,
+  updatePlayStatus: (object) => any
 }
 
 type PageOwnProps = {}
@@ -60,7 +70,9 @@ interface Index {
   props: IProps;
 }
 
+@injectPlaySong()
 @connect(({ song }) => ({
+  song: song,
   recommendPlayList: song.recommendPlayList,
   recommendDj: song.recommendDj,
   recommendNewSong: song.recommendNewSong,
@@ -77,6 +89,15 @@ interface Index {
   },
   getRecommend () {
     dispatch(getRecommend())
+  },
+  getPlayListDetail (payload) {
+    dispatch(getPlayListDetail(payload))
+  },
+  getSongInfo (object) {
+    dispatch(getSongInfo(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
   }
 }))
 class Index extends Component<IProps, PageState> {
@@ -101,7 +122,7 @@ class Index extends Component<IProps, PageState> {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log(this.props, nextProps)
+    console.log(this.props, nextProps)
     this.setState({
       showLoading: false
     })
@@ -177,6 +198,7 @@ class Index extends Component<IProps, PageState> {
     return (
       <View className='index_container'>
         <CLoading fullPage={true} hide={!showLoading} />
+        <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='recommend_playlist'>
           <View className='recommend_playlist__title'>
             推荐歌单

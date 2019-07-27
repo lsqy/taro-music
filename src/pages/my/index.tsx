@@ -5,6 +5,10 @@ import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
+import CMusic from '../../components/CMusic'
+import { injectPlaySong } from '../../utils/decorators'
+import { getSongInfo, getPlayListDetail, updatePlayStatus } from '../../actions/song'
+import { songType } from '../../constants/commonType'
 import './index.scss'
 
 type ListItemInfo = {
@@ -15,18 +19,16 @@ type ListItemInfo = {
 }
 
 type PageStateProps = {
-  song: {
-    name: string
-  }
+  song: songType,
 }
 
 type PageDispatchProps = {
+  getPlayListDetail: (object) => any,
+  getSongInfo: (object) => any,
+  updatePlayStatus: (object) => any
 }
 
-
-type PageOwnProps = {}
-
-type IProps = PageStateProps & PageDispatchProps & PageOwnProps
+type IProps = PageStateProps & PageDispatchProps 
 
 interface Page {
   props: IProps;
@@ -55,10 +57,21 @@ type PageState = {
 // interface Page {
 //   props: PageStateProps;
 // }
-
-@connect(({ song }) => ({
+@injectPlaySong()
+@connect(({
   song
-}), () => ({
+}) => ({
+  song: song
+}), (dispatch) => ({
+  getPlayListDetail (payload) {
+    dispatch(getPlayListDetail(payload))
+  },
+  getSongInfo (object) {
+    dispatch(getSongInfo(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
+  }
 }))
 
 class Page extends Component<IProps, PageState> {
@@ -177,6 +190,7 @@ class Page extends Component<IProps, PageState> {
     const { userInfo, userLevel, userCreateList, userCollectList } = this.state
     return (
       <View className='my_container'>
+        <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='header'>
           <View className='header__left'>
             <Image src={userInfo.profile.avatarUrl} className='header__img' />
@@ -308,4 +322,4 @@ class Page extends Component<IProps, PageState> {
   }
 }
 
-export default Page as ComponentClass<PageOwnProps, PageState>
+export default Page as ComponentClass<PageDispatchProps, PageState>

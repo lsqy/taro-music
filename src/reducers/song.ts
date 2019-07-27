@@ -11,7 +11,8 @@ import {
   UPDATELIKEMUSICLIST,
   UPDATEPLAYSTATUS,
   UPDATECANPLAYLIST,
-  UPDATERECENTTAB
+  UPDATERECENTTAB,
+  RESETPLAYLIST
 } from '../constants/song'
 
 import { songType } from '../constants/commonType'
@@ -87,8 +88,10 @@ const INITIAL_STATE: songType = {
   currentSongInfo: {
     id: 0,
     name: '',
+    ar: [],
     al: {
-      picUrl: ''
+      picUrl: '',
+      name: ''
     },
     url: '',
     lrcInfo: '',
@@ -120,6 +123,13 @@ export default function song (state = INITIAL_STATE, action) {
         playListDetailInfo,
         playListDetailPrivileges,
         canPlayList
+      }  
+    case RESETPLAYLIST:
+      return {
+        ...state,
+        playListDetailInfo: INITIAL_STATE.playListDetailInfo,
+        playListDetailPrivileges: [],
+        canPlayList: []
       }
     // 获取推荐歌单  
     case GETRECOMMENDPLAYLIST:

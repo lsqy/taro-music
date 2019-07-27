@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import CMusic from '../../components/CMusic'
-import { getSongInfo, getPlayListDetail } from '../../actions/song'
+import { getSongInfo, getPlayListDetail, updatePlayStatus } from '../../actions/song'
 import { injectPlaySong } from '../../utils/decorators'
 import { songType } from '../../constants/commonType'
 import './index.scss'
@@ -16,7 +16,8 @@ type PageStateProps = {
 
 type PageDispatchProps = {
   getPlayListDetail: (object) => any,
-  getSongInfo: (object) => any
+  getSongInfo: (object) => any,
+  updatePlayStatus: (object) => any
 }
 
 type PageState = {
@@ -33,6 +34,9 @@ type PageState = {
   },
   getSongInfo (object) {
     dispatch(getSongInfo(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
   }
 }))
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
@@ -80,13 +84,13 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   render () {
-    const { playListDetailInfo, playListDetailPrivileges, currentSongInfo } = this.props.song
+    const { playListDetailInfo, playListDetailPrivileges } = this.props.song
     return (
       <ScrollView 
         className='playList_container'  
         scrollY 
         lowerThreshold={20}>
-        <CMusic musicInfo={ currentSongInfo }/>
+        <CMusic songInfo={ this.props.song } onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='playList__header'>
           <Image 
             className='playList__header__bg'
