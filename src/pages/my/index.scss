@@ -1,5 +1,8 @@
 .my_container {
   padding-bottom: 120px;
+  &.hasMusicBox {
+    padding-bottom: 220px;
+  }
   .header {
     display: flex;
     align-items: center;

@@ -4,10 +4,12 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { View, ScrollView } from '@tarojs/components'
 import api from '../../services/api'
 import { connect } from '@tarojs/redux'
+import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
-import { getSongInfo, updateCanplayList, updateRecentTab } from '../../actions/song'
-import { MusicItemType, songType } from '../../constants/commonType'
+import CMusic from '../../components/CMusic'
+import { getSongInfo, updatePlayStatus, updateCanplayList, updateRecentTab } from '../../actions/song'
 import { injectPlaySong } from '../../utils/decorators'
+import { MusicItemType, songType } from '../../constants/commonType'
 import './index.scss'
 
 type PageStateProps = {
@@ -17,7 +19,8 @@ type PageStateProps = {
 type PageDispatchProps = {
   getSongInfo: (object) => any,
   updateCanplayList: (object) => any,
-  updateRecentTab: (object) => any
+  updateRecentTab: (object) => any,
+  updatePlayStatus: (object) => any
 }
 
 type PageState = {
@@ -45,6 +48,9 @@ type PageState = {
   },
   updateRecentTab (object) {
     dispatch(updateRecentTab(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
   }
 }))
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
@@ -132,7 +138,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     const tempList = list.map((item) => {
       let temp: any = {}
       temp.name = item.song.name
-      temp.id = item.song.song.id
+      temp.id = item.song.id
       temp.ar = item.song.ar
       temp.al = item.song.al
       temp.copyright = item.song.copyright
@@ -151,10 +157,21 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     })
   }
 
+  showMore() {
+    Taro.showToast({
+      title: '暂未实现，敬请期待',
+      icon: 'none'
+    })
+  }
+
   render () {
     const { list, currentTab, tabList } = this.state
     return (
-      <ScrollView scrollY className='recentPlay_container'>
+      <ScrollView scrollY className={classnames({
+        recentPlay_container: true,
+        hasMusicBox: !!this.props.song.currentSongInfo.name
+      })}>
+        <CMusic songInfo={ this.props.song } onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <AtTabs current={currentTab} swipeable={false} tabList={tabList} onClick={this.switchTab.bind(this)}>
           <AtTabsPane current={currentTab} index={0} >
             {
@@ -166,12 +183,12 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
                   {item.song.name}
                   </View>
                   <View className='recentPlay__music__info__desc'>
-                    {item.song.ar[0] ? item.song.ar[0].name : ''} - {item.song.al.name}
+                    {`${item.song.ar[0] ? item.song.ar[0].name : ''} - ${item.song.al.name}`}
                   </View>
                 </View>
-                <View className='fa fa-ellipsis-v recentPlay__music__icon'></View>
+                <View className='fa fa-ellipsis-v recentPlay__music__icon' onClick={this.showMore.bind(this)}></View>
               </View>)
-            }     
+            }  
           </AtTabsPane>
           <AtTabsPane current={currentTab} index={1}>
             {
@@ -183,10 +200,10 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
                   {item.song.name}
                   </View>
                   <View className='recentPlay__music__info__desc'>
-                    {item.song.ar[0] ? item.song.ar[0].name : ''} - {item.song.al.name}
+                    {`${item.song.ar[0] ? item.song.ar[0].name : ''} - ${item.song.al.name}`}
                   </View>
                 </View>
-                <View className='fa fa-ellipsis-v recentPlay__music__icon'></View>
+                <View className='fa fa-ellipsis-v recentPlay__music__icon' onClick={this.showMore.bind(this)}></View>
               </View>)
             } 
           </AtTabsPane>

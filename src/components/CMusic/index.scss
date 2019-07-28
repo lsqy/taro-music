@@ -1,3 +1,4 @@
+@import '../../base.scss';
 .music_components {
   position: fixed;
   width: 96%;
@@ -8,6 +9,7 @@
   color: #ffffff;
   box-sizing: border-box;
   display: flex;
+  align-items: center;
   border-radius: 10px;
   align-items: center;
   z-index: 10000;
@@ -40,8 +42,30 @@
       white-space: nowrap;
     }
   }
+  .music__icon--play {
+    padding: 0 10px;
+  }
+  .music__playlist {
+    color: #323232;
+    .music__playlist__item {
+      display: flex;
+      padding: 15px 10px;
+      align-items: center;
+      &.current {
+        color: $primary-color
+      }
+      .music__playlist__item__info {
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .music__playlist__item__close {
+        padding: 6px;
+      }
+    }
+  }
 }
-
 .circling {
   animation: circling 20s infinite linear;
   &.z-pause {

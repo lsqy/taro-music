@@ -1,13 +1,14 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { AtTabBar, AtIcon } from 'taro-ui'
+import classnames from 'classnames'
 import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
 import CMusic from '../../components/CMusic'
 import { injectPlaySong } from '../../utils/decorators'
-import { getSongInfo, getPlayListDetail, updatePlayStatus } from '../../actions/song'
+import { getSongInfo, updatePlayStatus } from '../../actions/song'
 import { songType } from '../../constants/commonType'
 import './index.scss'
 
@@ -23,7 +24,6 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  getPlayListDetail: (object) => any,
   getSongInfo: (object) => any,
   updatePlayStatus: (object) => any
 }
@@ -63,9 +63,6 @@ type PageState = {
 }) => ({
   song: song
 }), (dispatch) => ({
-  getPlayListDetail (payload) {
-    dispatch(getPlayListDetail(payload))
-  },
   getSongInfo (object) {
     dispatch(getSongInfo(object))
   },
@@ -189,7 +186,10 @@ class Page extends Component<IProps, PageState> {
   render () {
     const { userInfo, userLevel, userCreateList, userCollectList } = this.state
     return (
-      <View className='my_container'>
+      <View className={classnames({
+        my_container: true,
+        hasMusicBox: !!this.props.song.currentSongInfo.name
+      })}>
         <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='header'>
           <View className='header__left'>

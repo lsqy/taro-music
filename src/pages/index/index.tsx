@@ -3,6 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
+import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
 import CMusic from '../../components/CMusic'
 import { injectPlaySong } from '../../utils/decorators'
@@ -13,7 +14,6 @@ import {
   getRecommendNewSong, 
   getRecommend,
   getSongInfo, 
-  getPlayListDetail, 
   updatePlayStatus
 } from '../../actions/song'
 
@@ -52,7 +52,6 @@ type PageDispatchProps = {
   getRecommendDj: () => any,
   getRecommendNewSong: () => any,
   getRecommend: () => any,
-  getPlayListDetail: (object) => any,
   getSongInfo: (object) => any,
   updatePlayStatus: (object) => any
 }
@@ -89,9 +88,6 @@ interface Index {
   },
   getRecommend () {
     dispatch(getRecommend())
-  },
-  getPlayListDetail (payload) {
-    dispatch(getPlayListDetail(payload))
   },
   getSongInfo (object) {
     dispatch(getSongInfo(object))
@@ -140,6 +136,10 @@ class Index extends Component<IProps, PageState> {
   componentDidShow () { }
 
   componentDidHide () { }
+
+  componentDidMount() {
+    this.removeLoading()
+  }
 
   switchTab (value) {
     if (value !== 1) return
@@ -192,11 +192,15 @@ class Index extends Component<IProps, PageState> {
   }
 
   render () {
-    const { recommendPlayList, recommendDj } = this.props
+    const { recommendPlayList, recommendDj, song } = this.props
     const { showLoading } = this.state
-    this.removeLoading()
     return (
-      <View className='index_container'>
+      <View className={
+        classnames({
+          index_container: true,
+          hasMusicBox: !!song.currentSongInfo.name
+        })
+      }>
         <CLoading fullPage={true} hide={!showLoading} />
         <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='recommend_playlist'>

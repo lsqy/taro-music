@@ -1,5 +1,8 @@
 .playList_container {
   height: 100%;
+  &.hasMusicBox {
+    padding-bottom: 120px;
+  }
   .playList__header {
     position: relative;
     width: 100%;

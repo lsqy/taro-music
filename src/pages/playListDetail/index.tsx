@@ -84,10 +84,15 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   render () {
-    const { playListDetailInfo, playListDetailPrivileges } = this.props.song
+    const { playListDetailInfo, playListDetailPrivileges, currentSongInfo } = this.props.song
     return (
       <ScrollView 
-        className='playList_container'  
+        className={
+          classnames({
+            playList_container: true,
+            hasMusicBox: !!currentSongInfo.name
+          })
+        }  
         scrollY 
         lowerThreshold={20}>
         <CMusic songInfo={ this.props.song } onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
@@ -165,7 +170,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
                         {track.ar[0] ? track.ar[0].name : ''} - {track.al.name}
                       </View>
                     </View>
-                    <View className='at-icon at-icon-play'></View>
+                    <Text className='at-icon at-icon-chevron-right'></Text>
                   </View>
                 </View>)
               }

@@ -1,17 +1,12 @@
 .recentPlay_container {
   width: 100%;
   height: 100%;
-  .at-tabs__header {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
+  &.hasMusicBox {
+    padding-bottom: 120px;
   }
   .at-tabs {
-    padding-top: 88px;
     height: 100%;
     overflow-y: scroll;
-    box-sizing: border-box;
   }
   .recentPlay__music {
     padding: 10px 30px;

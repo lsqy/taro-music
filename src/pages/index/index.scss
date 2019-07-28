@@ -1,6 +1,9 @@
 @import '../../base.scss';
 .index_container {
     padding-bottom: 120px;
+    &.hasMusicBox {
+        padding-bottom: 220px;
+    }
     .index_header {
         position: fixed;
         top: 0;

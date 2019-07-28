@@ -11,7 +11,8 @@ export type MusicItemType = {
     id: number
   },
   copyright: number,
-  st?: number
+  st?: number,
+  current?: boolean
 }
 
 export type currentSongInfoType = {
@@ -49,9 +50,7 @@ export type songType = {
     st: number
   }>,
   // 可播放歌曲列表
-  canPlayList: Array<{
-    id: number
-  }>,
+  canPlayList: Array<MusicItemType>,
   // 是否正在播放
   isPlaying: boolean,
   // 推荐歌单

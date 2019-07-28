@@ -163,10 +163,18 @@ export default function song (state = INITIAL_STATE, action) {
     case GETSONGINFO:  
       const { currentSongInfo } = action.payload
       let currentSongIndex = state.canPlayList.findIndex(item => item.id === currentSongInfo.id)
+      state.canPlayList.map((item, index) => {
+        item.current = false
+        if (currentSongIndex === index) {
+          item.current = true
+        }
+        return item
+      })
       return {
         ...state,
         currentSongInfo,
-        currentSongIndex
+        currentSongIndex,
+        canPlayList: state.canPlayList
       }
     // 切换播放模式  
     case CHANGEPLAYMODE:
@@ -204,8 +212,14 @@ export default function song (state = INITIAL_STATE, action) {
         isPlaying
       }
     case UPDATECANPLAYLIST:
-      console.log('action.payload', action.payload)
       currentSongIndex = action.payload.canPlayList.findIndex(item => item.id === action.payload.currentSongId)
+      // action.payload.canPlayList.map((item, index) => {
+      //   item.current = false
+      //   if (currentSongIndex === index) {
+      //     item.current = true
+      //   }
+      //   return item
+      // })
       return {
         ...state,
         canPlayList: action.payload.canPlayList,

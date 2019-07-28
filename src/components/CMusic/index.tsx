@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { AtIcon } from 'taro-ui'
+import { AtIcon, AtFloatLayout } from 'taro-ui'
 import classnames from 'classnames'
 import { songType } from '../../constants/commonType'
 import './index.scss'
@@ -10,11 +10,20 @@ type Props = {
   onUpdatePlayStatus: (object) => any
 }
 
+type State = {
+  isOpened: boolean
+}
+
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
 
-export default class CMusic extends Component<Props, {}> {
-
+export default class CMusic extends Component<Props, State> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isOpened: false
+    }
+  }
   goDetail() {
     const { id } = this.props.songInfo.currentSongInfo
     Taro.navigateTo({
@@ -37,8 +46,32 @@ export default class CMusic extends Component<Props, {}> {
     }
   }
 
+  showPlayList() {
+    this.setState({
+      isOpened: true
+    })
+  }
+
+  closePlayList() {
+    this.setState({
+      isOpened: false
+    })
+  }
+
+  playSong(id) {
+    Taro.navigateTo({
+      url: `/pages/songDetail/index?id=${id}`
+    })
+  }
+
+  removeSong() {
+
+  }
+
   render() {
-    const { currentSongInfo, isPlaying } = this.props.songInfo
+    if (!this.props.songInfo) return
+    const { currentSongInfo, isPlaying, canPlayList } = this.props.songInfo
+    const { isOpened } = this.state
     if (!currentSongInfo.name) return <View></View>
     return (
       <View className={
@@ -65,7 +98,27 @@ export default class CMusic extends Component<Props, {}> {
             {currentSongInfo.ar[0] ? currentSongInfo.ar[0].name : ''}  - {currentSongInfo.al.name}
           </View>
         </View>
-        <AtIcon value={isPlaying ? 'pause' : 'play'} size='30' color='#FFF' className="music__icon" onClick={this.switchPlayStatus.bind(this)}></AtIcon>
+        <View className='music__icon--play'>
+          <AtIcon value={isPlaying ? 'pause' : 'play'} size='30' color='#FFF' onClick={this.switchPlayStatus.bind(this)}></AtIcon>
+        </View>
+        <AtIcon value='playlist' size='28' color='#FFF' className="icon_playlist" onClick={this.showPlayList.bind(this)}></AtIcon>
+        <AtFloatLayout isOpened={isOpened} scrollY onClose={this.closePlayList.bind(this)}>
+          <View className='music__playlist'>
+            {
+              canPlayList.map((item, index) => <View key={index} className={classnames({
+                music__playlist__item: true,
+                current: item.current
+              })}>
+              <View className='music__playlist__item__info' onClick={this.playSong.bind(this, item.id)}>
+                {`${item.name} - ${item.ar[0] ? item.ar[0].name : ''}`}
+              </View>
+              <View className='music__playlist__item__close'>
+                <AtIcon value='chevron-right' size='16' color='#ccc' />
+              </View>
+            </View>)
+            }
+          </View>
+        </AtFloatLayout>
       </View>
     )
   }
