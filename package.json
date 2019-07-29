@@ -16,7 +16,7 @@
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
-    "commit": "git-cz",
+    "commit": "git-cz"
   },
   "author": "",
   "license": "MIT",
