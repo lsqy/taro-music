@@ -1,6 +1,6 @@
 ## taro-music
 
-> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示.
+> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用
 
 ### 快速开始
 
@@ -63,51 +63,73 @@ npm run dev:weapp
 ### todo
 
 - 复用的评论列表
+- 搜索功能
+- `react-hooks`重构部分功能
 
 ### 效果图预览
 
 > 下面简要列出几张效果图
 
 - 登陆页面
-
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png"/>
+  
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png"/>
+</div>
 
 - 我的页面
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.png"/>
+</div>
 
 - 推荐歌单
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/推荐歌单.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/推荐歌单.png"/>
+</div>
 
 - 歌单详情
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单详情.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单详情.png"/>
+</div>
 
 - 正在播放列表
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单播放列表.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单播放列表.png"/>
+</div>
 
 - 歌曲播放
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌曲播放.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌曲播放.png"/>
+</div>
 
 - 歌词显示
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌词显示.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌词显示.png"/>
+</div>
 
 - 最近播放
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/最近播放.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/最近播放.png"/>
+</div>
 
 - 关注列表
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/关注列表.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/关注列表.png"/>
+</div>
 
 - 粉丝列表
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/粉丝列表.png"/>
+<div align=center>
+  <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/粉丝列表.png"/>
+</div>
 
 ### 有待完善部分
 
-还有一些功能点以及细节都还有待进一步完善，目前先把大致主要的功能进行了下实现，当然如果发现什么问题，欢迎能够提交`issues`,发现之后我会及时进行更正,感谢大家支持🙏。
+还有一些功能点以及细节都还有待进一步完善，目前先把大致主要的功能进行了下实现，当然如果发现什么问题，欢迎能够提交`issues`,发现之后我会及时进行更正,欢迎 `star` 和 `fork`，感谢大家支持🙏。

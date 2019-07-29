@@ -20,6 +20,7 @@ export default class CUserListItem extends Component<Props, {}> {
 
   render() {
     const { userInfo } = this.props
+    if (!userInfo) return null
     return (
         <View className='userListItem_components'>
             <Image 
