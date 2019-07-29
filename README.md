@@ -74,7 +74,7 @@ npm run dev:weapp
 
 - 我的页面
 
-<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.jpg"/>
+<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/我的页面.png"/>
 
 - 推荐歌单
 
@@ -83,6 +83,10 @@ npm run dev:weapp
 - 歌单详情
 
 <image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单详情.png"/>
+
+- 正在播放列表
+
+<image width="340" src="https://github.com/lsqy/taro-music/raw/master/screenshot/歌单播放列表.png"/>
 
 - 歌曲播放
 
