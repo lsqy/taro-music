@@ -113,8 +113,8 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   componentWillReceiveProps (nextProps) {
     // console.log(this.props, nextProps)
-    console.log('this.props.song.currentSongInfo.name', this.props.song.currentSongInfo.name)
-    console.log('nextProps.song.currentSongInfo.name', nextProps.song.currentSongInfo.name)
+    // console.log('this.props.song.currentSongInfo.name', this.props.song.currentSongInfo.name)
+    // console.log('nextProps.song.currentSongInfo.name', nextProps.song.currentSongInfo.name)
     this.setStar(nextProps.song.likeMusicList, nextProps.song.currentSongInfo.id)
     if (this.props.song.currentSongInfo.name !== nextProps.song.currentSongInfo.name || this.state.firstEnter) {
       this.setState({
