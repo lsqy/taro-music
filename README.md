@@ -70,16 +70,16 @@ npm run dev:weapp
 
 > 下面简要列出几张效果图
 
-- 登陆页面
-  
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png"/>
-</div>
-
 - 我的页面
 
 <div align="center">
   <image width="340" src="http://img.lsqy.tech/hexo/%E6%88%91%E7%9A%84%E9%A1%B5%E9%9D%A2.png"/>
+</div>
+
+- 登陆页面
+  
+<div align="center">
+  <image width="340" src="http://img.lsqy.tech/hexo/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png"/>
 </div>
 
 - 推荐歌单
