@@ -7,7 +7,7 @@
 首先需要在src目录下创建一个config.ts,可以根据自己的需要将其替换成线上地址，接口服务是使用的[NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/)
 
 ```
-export const baseUrl: string = 'http://localhost:3000'
+export const baseUrl: string = 'http://localhost:3000' // 这里的配置的这个url是后端服务的请求地址
 
 ```
 
@@ -59,6 +59,29 @@ npm run dev:weapp
 - [x] 喜欢/取消喜欢某首歌曲
 - [ ] 评论列表
 - [x] 统一的播放组件，方便进行切换页面后可以随时进入到播放页面
+
+### 目录结构简要介绍
+
+> 这里主要介绍下`src`目录，因为开发主要是在这个目录下进行的
+
+```
+- src
+ - actions // `redux`中的相关异步操作在这里进行
+ - assets // 静态资源目录，这里引入了所需的图片资源，以及`fontawesome`字体图标资源
+ - components // 封装的项目中可复用的组件，目前只是抽象了`CLoading`(加载效果组件)、`CLyric`(歌词组件)、`CMusic`(正在播放组件)、`CSlide`(滑块组件)、`CTitle`、`CUserListItem`
+ - constants // 项目中的常量定义，目前定义了`typescript`的公共定义、`reducers`的名称定义、状态码的定义
+ - pages // 项目中的业务页面都在这个目录中
+ - reducers // `redux`中的相关同步操作在这里进行
+ - services // 可复用的服务可以放在这个目录中，目前只是封装了接口请求的公共服务，可以根据自己项目的需要进行其他服务的扩充
+ - store // redux的初始文件
+ - utils // 可以复用的工具方法可以放到这个目录当中，目前封装了格式化、歌词解析的相关方法
+  - decorators // 抽象的装饰器，主要为了解决在切换页面之后仍然可以继续保持播放状态，因为目前`taro`不支持全局组件
+ - app.scss // 全局样式
+ - app.tsx // 全局入口文件
+ - base.scss // 基础样式
+ - config.ts // 项目的全局配置，目前只是配置了`baseUrl`是后端服务的基准请求地址
+
+```
 
 ### todo
 
