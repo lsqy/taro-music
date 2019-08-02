@@ -1,4 +1,6 @@
 *.ts linguist-language=typescript
 *.tsx linguist-language=typescript
 *.scss linguist-language=typescript
+*.less linguist-language=typescript
+*.css linguist-language=typescript
 *.html linguist-language=typescript
