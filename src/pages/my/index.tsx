@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { AtTabBar, AtIcon } from 'taro-ui'
+import { AtTabBar, AtIcon, AtSearchBar } from 'taro-ui'
 import classnames from 'classnames'
 import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
@@ -51,7 +51,8 @@ type PageState = {
     userLevel: number,
     current: number,
     userCreateList: Array<ListItemInfo>,
-    userCollectList: Array<ListItemInfo>
+    userCollectList: Array<ListItemInfo>,
+    searchValue: string
 }
 
 // interface Page {
@@ -91,7 +92,8 @@ class Page extends Component<IProps, PageState> {
       userLevel: 0,
       current: 1,
       userCreateList: [],
-      userCollectList: []
+      userCollectList: [],
+      searchValue: ''
     }
   }
 
@@ -161,6 +163,16 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  goSearch() {
+    Taro.showToast({
+      title: '正在开发，敬请期待',
+      icon: 'none'
+    })
+    // Taro.navigateTo({
+    //   url: `/pages/search/index`
+    // })
+  }
+
   jumpPage(name) {
     Taro.navigateTo({
       url: `/pages/${name}/index`
@@ -184,13 +196,21 @@ class Page extends Component<IProps, PageState> {
   }
 
   render () {
-    const { userInfo, userLevel, userCreateList, userCollectList } = this.state
+    const { userInfo, userLevel, userCreateList, userCollectList, searchValue } = this.state
     return (
       <View className={classnames({
         my_container: true,
         hasMusicBox: !!this.props.song.currentSongInfo.name
       })}>
         <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
+        <View onClick={this.goSearch.bind(this)}>
+          <AtSearchBar
+            actionName='搜一下'
+            disabled={true}
+            value={searchValue}
+            onChange={this.goSearch.bind(this)}
+          />
+        </View>
         <View className='header'>
           <View className='header__left'>
             <Image src={userInfo.profile.avatarUrl} className='header__img' />
