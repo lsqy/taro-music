@@ -17,53 +17,6 @@ import {
 
 import { songType } from '../constants/commonType'
 
-/* interface State {
-  // 歌单详情
-  playListDetailInfo: {
-    coverImgUrl: string,
-    name: string,
-    playCount: number,
-    tags: Array<{}>,
-    creator: {
-      avatarUrl: string,
-      nickname: string
-    },
-    tracks: Array<{}>
-  },
-  // 可播放歌曲列表
-  canPlayList: Array<{
-    id: number
-  }>,
-  // 歌单详情中歌曲是否有版权播放
-  playListDetailPrivileges: Array<{}>,
-  // 推荐歌单
-  recommendPlayList: Array<{}>,
-  // 推荐歌单
-  recommendDj: Array<{}>,
-  // 推荐新音乐
-  recommendNewSong: Array<{}>,
-  // 推荐精彩节目
-  recommend: Array<{}>,
-  // 我创建的歌单
-  myCreateList: Array<{}>,
-  // 我收藏的歌单
-  myCollectList: Array<{}>,
-  // 当前播放的歌曲id
-  currentSongId: string,
-  // 当前播放的歌曲详情
-  currentSongInfo: {
-    id?: number
-  },
-  // 当前播放的歌曲在播放列表中的索引,默认第一首
-  currentSongIndex: number,
-  // 播放模式
-  playMode: 'loop' | 'one' | 'shuffle',
-  // 喜欢列表
-  likeMusicList: Array<number>,
-  isPlaying: boolean,
-  recentTab: number
-} */
-
 const INITIAL_STATE: songType = {
   playListDetailInfo: {
     coverImgUrl: '',
