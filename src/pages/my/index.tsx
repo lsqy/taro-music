@@ -164,13 +164,13 @@ class Page extends Component<IProps, PageState> {
   }
 
   goSearch() {
-    // Taro.showToast({
-    //   title: '正在开发，敬请期待',
-    //   icon: 'none'
-    // })
-    Taro.navigateTo({
-      url: `/pages/search/index`
+    Taro.showToast({
+      title: '正在开发，敬请期待',
+      icon: 'none'
     })
+    // Taro.navigateTo({
+    //   url: `/pages/search/index`
+    // })
   }
 
   jumpPage(name) {
