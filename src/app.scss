@@ -15,6 +15,15 @@ page {
         animation-play-state: paused;
     }
 }
+.flex {
+    display: flex;
+}
+.flex-align-center {
+    align-items: center
+}
+.flex-between {
+    justify-content: space-between;
+}
 
 @keyframes circling {
     0% { 
