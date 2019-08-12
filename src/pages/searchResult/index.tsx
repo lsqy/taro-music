@@ -6,6 +6,18 @@ import './index.scss'
 
 
 type PageState = {
+  keywords: string,
+  songList: Array<{
+    id: number,
+    name: string,
+    album: {
+      id: number,
+      name: string
+    },
+    artists: Array<{
+      name: string
+    }>
+  }>
 }
 
 class Page extends Component<{}, PageState> {
@@ -23,8 +35,19 @@ class Page extends Component<{}, PageState> {
 
   constructor (props) {
     super(props)
+    const { keywords } = this.$router.params
     this.state = {
+      keywords,
+      songList: []
     }
+  }
+
+  componentWillMount() {
+    const { keywords } = this.state
+    Taro.setNavigationBarTitle({
+      title: keywords
+    })
+    this.getResult(keywords)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -36,26 +59,68 @@ class Page extends Component<{}, PageState> {
   componentDidShow () {
    }
 
-  componentDidMount() {
-    this.getResult()
-  }
-
   componentDidHide () { }
 
-  getResult() {
-    api.get('/search/suggest', {
-      keywords: '天空',
-      type: 'mobile'
+  getResult(keywords) {
+    api.get('/search', {
+      keywords,
+      type: 1
     }).then((res) => {
       console.log('res', res)
+      if (res.data && res.data.result) {
+        this.setState({
+          songList: res.data.result.songs
+        })
+      }
+    })
+  }
+
+  playSong(songId) {
+    api.get('/check/music', {
+      id: songId
+    }).then((res) => {
+      if (res.data.success) {
+        Taro.navigateTo({
+          url: `/pages/songDetail/index?id=${songId}`
+        })
+      } else {
+        Taro.showToast({
+          title: res.data.message,
+          icon: 'none'
+        })
+      }
+    })
+  }
+
+  showMore() {
+    Taro.showToast({
+      title: '暂未实现，敬请期待',
+      icon: 'none'
     })
   }
 
 
   render () {
+    const { songList } = this.state
     return (
       <View className='seaechResult_container'>
-        sgdghsdghd
+        <View>
+          {
+            songList.map((item, index) => (
+              <View key={index} className='seaechResult__music'>
+                <View className='seaechResult__music__info' onClick={this.playSong.bind(this, item.id)}>
+                  <View className='seaechResult__music__info__name'>
+                  {item.name}
+                  </View>
+                  <View className='seaechResult__music__info__desc'>
+                    {`${item.artists[0] ? item.artists[0].name : ''} - ${item.album.name}`}
+                  </View>
+                </View>
+                <View className='fa fa-ellipsis-v seaechResult__music__icon' onClick={this.showMore.bind(this)}></View>
+              </View>
+            ))
+          }
+        </View>
       </View>
     )
   }
