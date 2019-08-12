@@ -58,12 +58,20 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
-  searchTextChange() {
-
+  searchTextChange(val) {
+    this.setState({
+      searchValue: val
+    })
   }
 
   searchResult() {
-    
+    this.goResult(this.state.searchValue)
+  }
+
+  goResult(keywords) {
+    Taro.navigateTo({
+      url: `/pages/searchResult/index?keywords=${keywords}`
+    })
   }
 
   getHotSearch() {
@@ -111,7 +119,7 @@ class Page extends Component<{}, PageState> {
             </View>
             <View className='search__hot__list'>
               {
-                hotList.map((item, index) => <View className='search__hot__list__item flex flex-align-center'>
+                hotList.map((item, index) => <View className='search__hot__list__item flex flex-align-center' key={index} onClick={this.goResult.bind(this, item.searchWord)}>
                   <View className={
                     classnames({
                       search__hot__list__item__index: true,
