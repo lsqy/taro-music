@@ -2,6 +2,7 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import classnames from 'classnames'
+import CLoading from '../../components/CLoading'
 import { connect } from '@tarojs/redux'
 import CMusic from '../../components/CMusic'
 import { injectPlaySong } from '../../utils/decorators'
@@ -167,6 +168,9 @@ class Page extends Component<IProps, PageState> {
             ))
           }
         </View>
+        {
+          songList.length === 0 ? <CLoading /> : ''
+        }
       </View>
     )
   }
