@@ -95,7 +95,10 @@ class Page extends Component<{}, PageState> {
           value={searchValue}
           onChange={this.searchTextChange.bind(this)}
           onActionClick={this.searchResult.bind(this)}
+          onConfirm={this.searchResult.bind(this)}
+          focus={true}
           className='search__input'
+          fixed={true}
         />
         <ScrollView className='search_content' scrollY>
           {

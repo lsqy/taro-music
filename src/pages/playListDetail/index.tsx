@@ -62,7 +62,6 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentDidMount() {
-    console.log('test before did')
   }
 
   componentDidShow () {
@@ -86,15 +85,14 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   render () {
     const { playListDetailInfo, playListDetailPrivileges, currentSongInfo } = this.props.song
     return (
-      <ScrollView 
+      <View 
         className={
           classnames({
             playList_container: true,
             hasMusicBox: !!currentSongInfo.name
           })
         }  
-        scrollY 
-        lowerThreshold={20}>
+        >
         <CMusic songInfo={ this.props.song } onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View className='playList__header'>
           <Image 
@@ -176,7 +174,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
               }
           </View>
         </View>
-      </ScrollView>
+      </View>
     )
   }
 }

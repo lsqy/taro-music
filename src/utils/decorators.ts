@@ -33,6 +33,11 @@ export function injectPlaySong() {
         try {
           const backgroundAudioManager = Taro.getBackgroundAudioManager()
           const { name, al, url } = songInfo
+          console.log('url', url)
+          // if (!url) {
+          //   this.getNextSong() 
+          //   return
+          // }
           backgroundAudioManager.title = name
           backgroundAudioManager.coverImgUrl = al.picUrl
           backgroundAudioManager.src = url
