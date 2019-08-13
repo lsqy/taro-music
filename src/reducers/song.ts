@@ -166,13 +166,6 @@ export default function song (state = INITIAL_STATE, action) {
       }
     case UPDATECANPLAYLIST:
       currentSongIndex = action.payload.canPlayList.findIndex(item => item.id === action.payload.currentSongId)
-      // action.payload.canPlayList.map((item, index) => {
-      //   item.current = false
-      //   if (currentSongIndex === index) {
-      //     item.current = true
-      //   }
-      //   return item
-      // })
       return {
         ...state,
         canPlayList: action.payload.canPlayList,

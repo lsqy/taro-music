@@ -167,7 +167,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   render () {
     const { list, currentTab, tabList } = this.state
     return (
-      <ScrollView scrollY className={classnames({
+      <View className={classnames({
         recentPlay_container: true,
         hasMusicBox: !!this.props.song.currentSongInfo.name
       })}>
@@ -208,7 +208,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             } 
           </AtTabsPane>
         </AtTabs>
-      </ScrollView>
+      </View>
     )
   }
 }

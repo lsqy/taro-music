@@ -1,4 +1,7 @@
 .seaechResult_container {
+  &.hasMusicBox {
+    padding-bottom: 120px;
+  }
   .seaechResult__music {
     padding: 10px 30px;
     display: flex;

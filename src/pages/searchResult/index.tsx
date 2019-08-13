@@ -1,9 +1,27 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import classnames from 'classnames'
+import CLoading from '../../components/CLoading'
+import { connect } from '@tarojs/redux'
+import CMusic from '../../components/CMusic'
+import { injectPlaySong } from '../../utils/decorators'
+import { updateCanplayList, getSongInfo, updatePlayStatus } from '../../actions/song'
+import { songType } from '../../constants/commonType'
 import api from '../../services/api'
 import './index.scss'
 
+type PageStateProps = {
+  song: songType,
+}
+
+type PageDispatchProps = {
+  updateCanplayList: (object) => any,
+  getSongInfo: (object) => any,
+  updatePlayStatus: (object) => any
+}
+
+type IProps = PageStateProps & PageDispatchProps 
 
 type PageState = {
   keywords: string,
@@ -20,7 +38,23 @@ type PageState = {
   }>
 }
 
-class Page extends Component<{}, PageState> {
+@injectPlaySong()
+@connect(({
+  song
+}) => ({
+  song: song
+}), (dispatch) => ({
+  updateCanplayList (object) {
+    dispatch(updateCanplayList(object))
+  },
+  getSongInfo (object) {
+    dispatch(getSongInfo(object))
+  },
+  updatePlayStatus (object) {
+    dispatch(updatePlayStatus(object))
+  }
+}))
+class Page extends Component<IProps, PageState> {
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -45,7 +79,7 @@ class Page extends Component<{}, PageState> {
   componentWillMount() {
     const { keywords } = this.state
     Taro.setNavigationBarTitle({
-      title: keywords
+      title: `${keywords}的搜索结果`
     })
     this.getResult(keywords)
   }
@@ -70,6 +104,13 @@ class Page extends Component<{}, PageState> {
       if (res.data && res.data.result) {
         this.setState({
           songList: res.data.result.songs
+        })
+        res.data.result.songs = res.data.result.songs.map((item) => {
+          item.ar = item.artists
+          return item
+        })
+        this.props.updateCanplayList({
+          canPlayList: res.data.result.songs
         })
       }
     })
@@ -103,7 +144,13 @@ class Page extends Component<{}, PageState> {
   render () {
     const { songList } = this.state
     return (
-      <View className='seaechResult_container'>
+      <View className={
+        classnames({
+          seaechResult_container: true,
+          hasMusicBox: !!this.props.song.currentSongInfo.name
+        })
+      }>
+        <CMusic songInfo={ this.props.song } onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
         <View>
           {
             songList.map((item, index) => (
@@ -121,6 +168,9 @@ class Page extends Component<{}, PageState> {
             ))
           }
         </View>
+        {
+          songList.length === 0 ? <CLoading /> : ''
+        }
       </View>
     )
   }

@@ -1,6 +1,7 @@
 import { ComponentClass } from 'react'
 import { AtSearchBar, AtIcon } from 'taro-ui'
 import Taro, { Component, Config } from '@tarojs/taro'
+import CLoading from '../../components/CLoading'
 import classnames from 'classnames'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import api from '../../services/api'
@@ -95,7 +96,10 @@ class Page extends Component<{}, PageState> {
           value={searchValue}
           onChange={this.searchTextChange.bind(this)}
           onActionClick={this.searchResult.bind(this)}
+          onConfirm={this.searchResult.bind(this)}
+          focus={true}
           className='search__input'
+          fixed={true}
         />
         <ScrollView className='search_content' scrollY>
           {
@@ -117,6 +121,9 @@ class Page extends Component<{}, PageState> {
                 热搜榜
               </Text>
             </View>
+            {
+              hotList.length === 0 ? <CLoading /> : ''
+            }
             <View className='search__hot__list'>
               {
                 hotList.map((item, index) => <View className='search__hot__list__item flex flex-align-center' key={index} onClick={this.goResult.bind(this, item.searchWord)}>

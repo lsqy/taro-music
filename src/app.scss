@@ -25,6 +25,11 @@ page {
     justify-content: space-between;
 }
 
+// reset taro ui
+.at-search-bar__action {
+    background-color: $primary-color;
+}
+
 @keyframes circling {
     0% { 
         transform: rotate(0deg) 

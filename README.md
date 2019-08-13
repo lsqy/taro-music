@@ -86,8 +86,16 @@ npm run dev:weapp
 ### todo
 
 - 复用的评论列表
-- 搜索功能
+- 搜索功能 *已完成部分功能*
 - `react-hooks`重构部分功能
+
+### 最近更新
+
+- 加入搜索功能
+
+<div align="center">
+  <image width="340" src="http://img.lsqy.tech/hexo/%E6%90%9C%E7%B4%A2.png"/>
+</div>
 
 ### 效果图预览
 
