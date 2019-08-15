@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: lsqy
  * @Date: 2019-08-14 09:35:50
- * @LastEditTime: 2019-08-14 09:37:11
+ * @LastEditTime: 2019-08-15 09:50:08
  * @LastEditors: Please set LastEditors
  -->
 ## taro-music
@@ -94,6 +94,9 @@ npm run dev:weapp
 
 - 复用的评论列表
 - 搜索功能 *已完成部分功能*
+- 个人主页支持跳转
+- 歌手页面
+- 视频播放
 - `react-hooks`重构部分功能
 
 ### 最近更新
