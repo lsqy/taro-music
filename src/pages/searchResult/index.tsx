@@ -152,7 +152,7 @@ class Page extends Component<IProps, PageState> {
     super(props)
     const { keywords } = this.$router.params
     this.state = {
-      keywords: '海阔天空',
+      keywords,
       songList: [],
       activeTab: 0,
       tabList: [
