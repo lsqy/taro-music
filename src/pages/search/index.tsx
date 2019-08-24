@@ -4,6 +4,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import CLoading from '../../components/CLoading'
 import classnames from 'classnames'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { getKeywordInHistory, setKeywordInHistory, clearKeywordInHistory } from '../../utils/common'
 import api from '../../services/api'
 import './index.scss'
 
@@ -17,9 +18,7 @@ type PageState = {
     content: string,
     iconType: number
   }>,
-  historyList: Array<{
-    searchWord: string
-  }>
+  historyList: Array<string>
 }
 
 class Page extends Component<{}, PageState> {
@@ -55,7 +54,11 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentDidShow () {
-   }
+    console.log('getKeywordInHistory()', getKeywordInHistory())
+    this.setState({
+      historyList: getKeywordInHistory()
+    })
+  }
 
   componentDidHide () { }
 
@@ -70,9 +73,17 @@ class Page extends Component<{}, PageState> {
   }
 
   goResult(keywords) {
+    setKeywordInHistory(keywords)
     Taro.navigateTo({
       url: `/pages/searchResult/index?keywords=${keywords}`
     })
+  }
+
+  clearKeywordInHistory() {
+    this.setState({
+      historyList: []
+    })
+    clearKeywordInHistory()
   }
 
   getHotSearch() {
@@ -108,11 +119,13 @@ class Page extends Component<{}, PageState> {
                 <Text className='search__history__title__label'>
                   搜索历史
                 </Text>
-                <AtIcon prefixClass='fa' value='trash-o' size='20' color='#cccccc' className='search__history__title__icon'></AtIcon>
+                <AtIcon prefixClass='fa' value='trash-o' size='20' color='#cccccc' className='search__history__title__icon' onClick={this.clearKeywordInHistory.bind(this)}></AtIcon>
               </View>
-              <View className='search__history__list'>
-
-              </View>
+              <ScrollView className='search__history__list' scrollX>
+                {
+                  historyList.map((keyword, index) => <Text className='search__history__list__item' key={index}>{keyword}</Text>)
+                }
+              </ScrollView>
             </View> : ''
           }
           <View className='search__hot'>

@@ -11,6 +11,11 @@
     height: 100%;
     box-sizing: border-box;
   }
+  .search__history__list {
+    width: 100%;
+    height: 60px;
+    overflow-x: auto;
+  }
   .search__history__title {
     display: flex;
     justify-content: space-between;
@@ -21,6 +26,15 @@
     .search__history__title__icon {
       padding: 15px;
     }
+  }
+  .search__history__list__item {
+    padding: 10px 30px;
+    font-size: 24px;
+    background-color: #f8f8f8;
+    color: #616161;
+    border-radius: 30px;
+    margin-right: 20px;
+    float: left;
   }
   .search__hot {
     margin-top: 10px;
