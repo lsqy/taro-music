@@ -1,3 +1,9 @@
+import Taro from '@tarojs/taro'
+
+Taro.getStorage({
+  key: 'keywordsList'
+})
+
 export const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -48,4 +54,26 @@ export const parse_lrc = (lrc_content: string) => {
     now_lrc: now_lrc,
     scroll: scroll
   };
+}
+
+// 存储搜索关键字
+export const setKeywordInHistory = keyword => {
+  const keywordsList: Array<string> = Taro.getStorageSync('keywordsList') || []
+  console.log('keywordsList', keywordsList)
+  const index = keywordsList.findIndex((item) => item === keyword)
+  if (index !== -1) {
+    keywordsList.splice(index, 1)
+  }
+  keywordsList.unshift(keyword)
+  Taro.setStorage({ key: 'keywordsList', data: keywordsList })
+}
+
+// 获取搜索关键字
+export const getKeywordInHistory = () : Array<string> => {
+  return Taro.getStorageSync('keywordsList')
+}
+
+// 清除搜索关键字
+export const clearKeywordInHistory = () => {
+  Taro.removeStorageSync('keywordsList')
 }
