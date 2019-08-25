@@ -1,6 +1,13 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: lsqy
+ * @Date: 2019-08-14 09:35:50
+ * @LastEditTime: 2019-08-15 09:50:08
+ * @LastEditors: Please set LastEditors
+ -->
 ## taro-music
 
-> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序～
+> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序，此项目会持续更新，欢迎`watch`和`star`～
 
 ### 快速开始
 
@@ -87,6 +94,9 @@ npm run dev:weapp
 
 - 复用的评论列表
 - 搜索功能 *已完成部分功能*
+- 个人主页支持跳转
+- 歌手页面
+- 视频播放
 - `react-hooks`重构部分功能
 
 ### 最近更新
@@ -105,7 +115,7 @@ npm run dev:weapp
 - 我的页面
 
 <div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%88%91%E7%9A%84%E9%A1%B5%E9%9D%A2.png"/>
+  <image width="340" src="https://oscimg.oschina.net/oscnet/eba8689c2fb3d031a3f2d0c5b541f622764.jpg"/>
 </div>
 
 - 登陆页面
