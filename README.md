@@ -101,10 +101,11 @@ npm run dev:weapp
 
 ### 最近更新
 
-- 加入搜索功能（有待进一步完善）
+- 加入搜索功能（进一步完善中）
+- 加入了视频播放（进一步完善中）
 
 <div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%90%9C%E7%B4%A2.png"/>
+  <image width="900" src="https://oscimg.oschina.net/oscnet/593c5fbb8302492750ce20ad4a61086f417.jpg"/>
 </div>
 
 ### 效果图预览

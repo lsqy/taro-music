@@ -9,6 +9,7 @@ import api from '../../services/api'
 import CMusic from '../../components/CMusic'
 import { injectPlaySong } from '../../utils/decorators'
 import { getSongInfo, updatePlayStatus } from '../../actions/song'
+import { formatCount } from '../../utils/common'
 import { songType } from '../../constants/commonType'
 import './index.scss'
 
@@ -151,7 +152,7 @@ class Page extends Component<IProps, PageState> {
   
   switchTab (value) {
     if (value !== 0) return
-    Taro.reLaunch({
+    Taro.navigateTo({
       url: '/pages/index/index'
     })
   }
@@ -299,7 +300,7 @@ class Page extends Component<IProps, PageState> {
                 />
                 <View className='user_playlist__item__info'>
                   <View className='user_playlist__item__info__name'>{item.name}</View>
-                  <View className='user_playlist__item__info__count'>{item.trackCount}首, 播放{item.playCount < 10000 ? item.playCount : `${(item.playCount/10000).toFixed(1)}万`}次</View>
+                  <View className='user_playlist__item__info__count'>{item.trackCount}首, 播放{formatCount(item.playCount)}次</View>
                 </View>
               </View>)
             }
@@ -321,7 +322,7 @@ class Page extends Component<IProps, PageState> {
                 />
                 <View className='user_playlist__item__info'>
                   <View className='user_playlist__item__info__name'>{item.name}</View>
-                  <View className='user_playlist__item__info__count'>{item.trackCount}首, 播放{item.playCount < 10000 ? item.playCount : `${(item.playCount/10000).toFixed(1)}万`}次</View>
+                  <View className='user_playlist__item__info__count'>{item.trackCount}首, 播放{formatCount(item.playCount)}次</View>
                 </View>
               </View>)
             }

@@ -1,0 +1,46 @@
+.videoDetail_container {
+  .videoDetail__play {
+    width: 100%;
+    height: 420px;
+  }
+  .videoDetail__play__container {
+    padding: 20px 30px;
+    .videoDetail__play__title {
+      font-size: 36px;
+    }
+    .videoDetail__play__playtime {
+      font-size: 20px;
+      color: #bbbbbb;
+      margin-right: 30px;
+      float: left;
+      margin-top: 30px;
+    }
+    .videoDetail__play__tag {
+      float: left;
+      padding: 6px 20px;
+      font-size: 22px;
+      background-color: #f8f8f8;
+      color: #616161;
+      border-radius: 20px;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+    .videoDetail__play__desc {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .videoDetail__play__user {
+      display: flex;
+      align-items: center;
+      font-size: 28px;
+      padding: 20px 0;
+      border-top: 1px solid #dedede;
+      .videoDetail__play__user__cover {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+    }
+  }
+}

@@ -143,7 +143,7 @@ class Index extends Component<IProps, PageState> {
 
   switchTab (value) {
     if (value !== 1) return
-    Taro.reLaunch({
+    Taro.navigateTo({
       url: '/pages/my/index'
     })
   }

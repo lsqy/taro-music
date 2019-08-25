@@ -4,7 +4,7 @@ Taro.getStorage({
   key: 'keywordsList'
 })
 
-export const formatNumber = n => {
+export const formatNumber = (n: number | string) : string => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
@@ -57,7 +57,7 @@ export const parse_lrc = (lrc_content: string) => {
 }
 
 // 存储搜索关键字
-export const setKeywordInHistory = keyword => {
+export const setKeywordInHistory = (keyword: string) => {
   const keywordsList: Array<string> = Taro.getStorageSync('keywordsList') || []
   console.log('keywordsList', keywordsList)
   const index = keywordsList.findIndex((item) => item === keyword)
@@ -76,4 +76,21 @@ export const getKeywordInHistory = () : Array<string> => {
 // 清除搜索关键字
 export const clearKeywordInHistory = () => {
   Taro.removeStorageSync('keywordsList')
+}
+
+// 格式化播放次数
+export const formatCount = (times) => {
+  let formatTime: any = 0
+  times = times ? Number(times) : 0
+  switch (true) {
+    case times > 100000000 :
+      formatTime = `${(times / 100000000).toFixed(1)}亿`
+      break
+    case times > 100000 :
+        formatTime = `${(times / 10000).toFixed(1)}万`
+        break  
+    default:
+      formatTime = times    
+  }
+  return formatTime
 }
