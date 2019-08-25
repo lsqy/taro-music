@@ -1,5 +1,6 @@
 @import '../../base.scss';
 .searchResult_container {
+  height: 100%;
   &.hasMusicBox {
     padding-bottom: 120px;
   }
@@ -7,6 +8,28 @@
     padding: 88px 36px 24px 36px;
     height: 100%;
     box-sizing: border-box;
+    overflow-y: auto;
+    .at-tabs__header {
+      position: absolute;
+      background: #ffffff;
+      z-index: 10;
+    }
+    .at-tabs {
+      // overflow-y: auto;
+      position: relative;
+    }
+    .at-tabs-pane--active {
+      height: 100%;
+    }
+    .at-tabs__body {
+      height: 100%;
+      padding-top: 88px;
+      box-sizing: border-box;
+      // overflow-x: hidden;
+    }
+    .search_content__scroll {
+      height: 100%;
+    }
     .search_content__title {
       font-size: 38px;
       font-weight: 700;
@@ -74,6 +97,45 @@
         display: flex;
       }
       .search_content__playList__item__info__desc__nickname {
+        margin: 0 10px;
+      }
+    }
+  }
+  .search_content__video__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    .search_content__video__item__cover--wrap {
+      position: relative;
+      font-size: 20px;
+      color: #ffffff;
+      .search_content__video__item__cover--playtime {
+        position: absolute;
+        right: 30px;
+        top: 5px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .search_content__video__item__cover {
+      width: 200px;
+      height: 120px;
+      border-radius: 10px;
+      margin-right: 20px;
+      display: block;
+    }
+    .search_content__video__item__info {
+      flex: 1;
+      .search_content__video__item__info__title {
+        margin-bottom: 10px;
+        font-size: 28px;
+      }
+      .search_content__video__item__info__desc {
+        font-size: 20px;
+        color: #bbbbbb;
+        display: flex;
+      }
+      .search_content__video__item__info__desc__nickname {
         margin: 0 10px;
       }
     }

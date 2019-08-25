@@ -1,14 +1,16 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, ScrollView } from '@tarojs/components'
 import { AtSearchBar, AtTabs, AtTabsPane, AtIcon } from 'taro-ui'
 import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
 import { connect } from '@tarojs/redux'
 import CMusic from '../../components/CMusic'
+import CWhiteSpace from '../../components/CWhiteSpace'
 import { injectPlaySong } from '../../utils/decorators'
 import { updateCanplayList, getSongInfo, updatePlayStatus } from '../../actions/song'
 import { songType } from '../../constants/commonType'
+import { setKeywordInHistory, formatCount, formatNumber } from '../../utils/common'
 import api from '../../services/api'
 import './index.scss'
 
@@ -27,6 +29,87 @@ type IProps = PageStateProps & PageDispatchProps
 type PageState = {
   keywords: string,
   activeTab: number,
+  totalInfo: {
+    loading: boolean,
+    songInfo: { // 单曲
+      songs: Array<{
+        id: number,
+        name: string,
+        al: {
+          id: number,
+          name: string
+        },
+        ar: Array<{
+          name: string
+        }>
+      }>,
+      more: boolean,
+      moreText?: string
+    },
+    videoInfo: { // 视频
+      videos: Array<{
+        title: string,
+        vid: string,
+        coverUrl: string,
+        creator: Array<{
+          userName: string
+        }>,
+        durationms: number,
+        playTime: number
+      }>,
+      more: boolean,
+      moreText: string
+    },
+    userListInfo: { // 用户
+      users: Array<{
+        name: string,
+        id: number,
+        picUrl: string
+      }>,
+      more: boolean,
+      moreText: string
+    },
+    djRadioInfo: { // 电台
+      djRadios: Array<{
+        name: string,
+        id: number,
+        picUrl: string
+      }>,
+      more: boolean,
+      moreText: string
+    },
+    playListInfo: { // 歌单
+      playLists: Array<{
+        name: string,
+        id: number,
+        coverImgUrl: string,
+        trackCount: number,
+        playCount: number,
+        creator: {
+          nickname: string
+        }
+      }>,
+      more: boolean,
+      moreText?: string
+    },
+    albumInfo: { // 专辑
+      albums: Array<{
+        name: string,
+        id: number
+      }>,
+      more: boolean,
+      moreText: string
+    },
+    artistInfo: { // 歌手
+      artists: Array<{
+        name: string,
+        id: number,
+        picUrl: string
+      }>,
+      more: boolean,
+      moreText: string
+    },
+  },
   songList: Array<{
     id: number,
     name: string,
@@ -79,16 +162,20 @@ type PageState = {
       }
     }>,
     more: boolean,
-    moreText: string
+    moreText?: string
   },
   videoInfo: { // 视频
     videos: Array<{
-      name: string,
-      id: number,
-      picUrl: string
+      title: string,
+      vid: string,
+      coverUrl: string,
+      creator: Array<{
+        userName: string
+      }>,
+      durationms: number,
+      playTime: number
     }>,
     more: boolean,
-    moreText: string
   },
   userListInfo: { // 用户
     users: Array<{
@@ -112,7 +199,7 @@ type PageState = {
       }>
     }>,
     more: boolean,
-    moreText: string
+    moreText?: string
   },
   sim_query: Array<{
     keyword: string,
@@ -152,9 +239,48 @@ class Page extends Component<IProps, PageState> {
     super(props)
     const { keywords } = this.$router.params
     this.state = {
-      keywords: '海阔天空',
+      // keywords: '海阔天空',
+      keywords,
       songList: [],
       activeTab: 0,
+      totalInfo: {
+        loading: true,
+        userListInfo: {
+          users: [],
+          more: false,
+          moreText: ''
+        },
+        videoInfo: {
+          videos: [],
+          more: false,
+          moreText: ''
+        },
+        playListInfo: {
+          playLists: [],
+          more: false,
+          moreText: ''
+        },
+        songInfo: {
+          songs: [],
+          more: false,
+          moreText: ''
+        },
+        albumInfo: {
+          albums: [],
+          more: false,
+          moreText: ''
+        },
+        djRadioInfo: {
+          djRadios: [],
+          more: false,
+          moreText: ''
+        },
+        artistInfo: {
+          artists: [],
+          more: false,
+          moreText: ''
+        },
+      },
       tabList: [
         {
           title: '综合'
@@ -163,8 +289,12 @@ class Page extends Component<IProps, PageState> {
           title: '单曲'
         },
         {
+          title: '歌单'
+        },
+        {
           title: '视频'
-        },{
+        },
+        {
           title: '歌手'
         },
         {
@@ -179,37 +309,36 @@ class Page extends Component<IProps, PageState> {
       ],
       userListInfo: {
         users: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       videoInfo: {
         videos: [],
-        more: false,
-        moreText: ''
+        more: true,
       },
       playListInfo: {
         playLists: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       songInfo: {
         songs: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       albumInfo: {
         albums: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       djRadioInfo: {
         djRadios: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       artistInfo: {
         artists: [],
-        more: false,
+        more: true,
         moreText: ''
       },
       sim_query: []
@@ -221,7 +350,7 @@ class Page extends Component<IProps, PageState> {
     Taro.setNavigationBarTitle({
       title: `${keywords}的搜索结果`
     })
-    this.getResult(keywords)
+    this.getResult()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -235,49 +364,26 @@ class Page extends Component<IProps, PageState> {
 
   componentDidHide () { }
 
-  getResult(keywords) {
+  getResult() {
+    const { keywords } = this.state
     api.get('/search', {
       keywords,
       type: 1018
     }).then((res) => {
-      console.log('res', res)
       const result = res.data.result
       if (result) {
-        if (result.album) {
-          this.setState({
-            albumInfo: result.album
-          })
-        }
-        if (result.artist) {
-          this.setState({
-            artistInfo: result.artist
-          })
-        }
-        if (result.djRadio) {
-          this.setState({
-            djRadioInfo: result.djRadio
-          })
-        }
-        if (result.playList) {
-          this.setState({
-            playListInfo: result.playList
-          })
-        }
-        if (result.song) {
-          this.setState({
-            songInfo: result.song
-          })
-        }
-        if (result.user) {
-          this.setState({
-            userListInfo: result.user
-          })
-        }
-        if (result.video) {
-          this.setState({
+        this.setState({
+          totalInfo: {
+            loading: false,
+            albumInfo: result.album,
+            artistInfo: result.artist,
+            djRadioInfo: result.djRadio,
+            playListInfo: result.playList,
+            songInfo: result.song,
+            userListInfo: result.user,
             videoInfo: result.video
-          })
-        }
+          }
+        })
         if (result.sim_query && result.sim_query.sim_querys) {
           this.setState({
             sim_query: result.sim_query.sim_querys
@@ -308,6 +414,83 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  goVideoDetail(videoId) {
+    Taro.navigateTo({
+      url: `/pages/videoDetail/index?id=${videoId}`
+    })
+  }
+
+  // 获取单曲列表
+  getSongList() {
+    const { keywords, songInfo } = this.state
+    if (!songInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1,
+      limit: 30,
+      offset: songInfo.songs.length
+    }).then(({ data }) => {
+      console.log('getSongList=>data', data)
+      if (data.result && data.result.songs) {
+        let tempSongList = data.result.songs.map((item) => {
+          item.al = item.album
+          item.ar = item.artists
+          return item
+        })
+        this.setState({
+          songInfo: {
+            songs: songInfo.songs.concat(tempSongList),
+            more: songInfo.songs.concat(data.result.songs).length < data.result.songCount
+          }
+        })
+      }
+    })
+  }
+
+  // 获取歌单列表
+  getPlayList() {
+    const { keywords, playListInfo } = this.state
+    if (!playListInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1000,
+      limit: 30,
+      offset: playListInfo.playLists.length
+    }).then(({ data }) => {
+      console.log('getPlayList=>data', data)
+      if (data.result && data.result.playlists) {
+        this.setState({
+          playListInfo: {
+            playLists: playListInfo.playLists.concat(data.result.playlists),
+            more: playListInfo.playLists.concat(data.result.playlists).length < data.result.playlistCount
+          }
+        })
+      }
+    })
+  }
+
+  // 获取视频列表
+  getVideoList() {
+    const { keywords, videoInfo } = this.state
+    if (!videoInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1014,
+      limit: 30,
+      offset: videoInfo.videos.length
+    }).then(({ data }) => {
+      console.log('getVideoList=>data', data)
+      if (data.result && data.result.videos) {
+        this.setState({
+          videoInfo: {
+            videos: videoInfo.videos.concat(data.result.videos),
+            more: videoInfo.videos.concat(data.result.videos).length < data.result.videoCount
+          }
+        })
+      }
+    })
+  }
+
   goPlayListDetail(item) {
     Taro.navigateTo({
       url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
@@ -328,25 +511,57 @@ class Page extends Component<IProps, PageState> {
   }
 
   searchResult() {
-
+    setKeywordInHistory(this.state.keywords)
+    this.getResult()
+    this.setState({
+      songInfo: {
+        songs: [],
+        more: false,
+        moreText: ''
+      }
+    })
   }
 
   switchTab(activeTab) {
-    if (activeTab !== 0) {
+    console.log('activeTab', activeTab)
+    if (activeTab !== 0 && activeTab !== 1 && activeTab !== 2  && activeTab !== 3 ) {
       Taro.showToast({
         title: '正在开发，敬请期待',
         icon: 'none'
       })
       return
     }
+    switch (activeTab) {
+      case 0:
+        this.getResult()
+        break 
+      case 1:
+        this.getSongList()
+        break
+      case 2:
+        this.getPlayList()
+        break
+      case 3:
+        this.getVideoList()
+        break  
+    }
     this.setState({
       activeTab
     })
   }
 
+  formatDuration(ms: number) {
+    // @ts-ignore
+    let minutes: string = formatNumber(parseInt(ms / 60000))
+    // @ts-ignore
+    let seconds: string = formatNumber(parseInt((ms / 1000) % 60))
+    return `${minutes}:${seconds}`
+  }
+
 
   render () {
-    const { songList, keywords, activeTab, tabList, songInfo, playListInfo } = this.state
+    const { songList, keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo } = this.state
+    console.log('playListInfo', playListInfo)
     return (
       <View className={
         classnames({
@@ -372,14 +587,14 @@ class Page extends Component<IProps, PageState> {
             onClick={this.switchTab.bind(this)}>
             <AtTabsPane current={activeTab} index={0}>
               {
-                songInfo.songs.length === 0 ? <CLoading /> : 
-                <View>
+                totalInfo.loading ? <CLoading /> : 
+                <ScrollView scrollY className='search_content__scroll'>
                   <View>
                     <View className='search_content__title'>
                       单曲
                     </View>
                     {
-                      songInfo.songs.map((item, index) => (
+                      totalInfo.songInfo.songs.map((item, index) => (
                         <View key={index} className='searchResult__music'>
                           <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
                             <View className='searchResult__music__info__name'>
@@ -393,9 +608,11 @@ class Page extends Component<IProps, PageState> {
                         </View>
                       ))
                     }
-                    <View className='search_content__more'>
-                      {songInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                    </View>
+                    {
+                      totalInfo.songInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 1)}>
+                        {totalInfo.songInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                      </View>  : ''
+                    }
                   </View>
                   <View>
                     <View className='search_content__title'>
@@ -403,7 +620,7 @@ class Page extends Component<IProps, PageState> {
                     </View>
                     <View>
                       {
-                        playListInfo.playLists.map((item, index) => (
+                        totalInfo.playListInfo.playLists.map((item, index) => (
                           <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
                             <View>
                               <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
@@ -420,29 +637,139 @@ class Page extends Component<IProps, PageState> {
                                   by {item.creator.nickname}
                                 </Text>
                                 <Text>
-                                  {item.playCount}次
+                                  {formatCount(item.playCount)}次
                                 </Text>
                               </View>
                             </View>
                           </View>
                         ))
                       }
-                    <View className='search_content__more'>
-                      {playListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                    </View>  
+                      {
+                        totalInfo.playListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 2)}>
+                          {totalInfo.playListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                        </View>  : ''
+                      }
                     </View>
                   </View>
-                </View>
+                  <View>
+                    <View className='search_content__title'>
+                      视频
+                    </View>
+                    <View>
+                      {
+                        totalInfo.videoInfo.videos.map((item, index) => (
+                          <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
+                            <View className='search_content__video__item__cover--wrap'>
+                              <View className='search_content__video__item__cover--playtime'>
+                                <Text className='at-icon at-icon-play'></Text>
+                                <Text>{formatCount(item.playTime)}</Text>
+                              </View>
+                              <Image src={item.coverUrl} className='search_content__video__item__cover'/>
+                            </View>
+                            <View className='search_content__video__item__info'>
+                              <View className='search_content__video__item__info__title'>
+                                {item.title}
+                              </View>
+                              <View className='search_content__video__item__info__desc'>
+                                <Text>{this.formatDuration(item.durationms)},</Text>
+                                <Text className='search_content__video__item__info__desc__nickname'>
+                                  by {item.creator[0].userName}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        ))
+                      }
+                      {
+                        totalInfo.videoInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 3)}>
+                          {totalInfo.videoInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                        </View>  : ''
+                      }
+                    </View>
+                  </View>
+                </ScrollView>
               }
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={1}>
-              <View style='font-size:18px;text-align:center;height:100px;'>标签页二的内容</View>
+              <ScrollView scrollY onScrollToLower={this.getSongList.bind(this)} className='search_content__scroll'>
+              {
+                songInfo.songs.map((item, index) => (
+                  <View key={index} className='searchResult__music'>
+                    <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
+                      <View className='searchResult__music__info__name'>
+                      {item.name}
+                      </View>
+                      <View className='searchResult__music__info__desc'>
+                        {`${item.ar[0] ? item.ar[0].name : ''} - ${item.al.name}`}
+                      </View>
+                    </View>
+                    <View className='fa fa-ellipsis-v searchResult__music__icon' onClick={this.showMore.bind(this)}></View>
+                  </View>
+                ))
+              }
+              { songInfo.more ? <CLoading /> : ''}
+              </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={2}>
-              <View style='font-size:18px;text-align:center;height:100px;'>标签页三的内容</View>
+              <ScrollView scrollY onScrollToLower={this.getPlayList.bind(this)} className='search_content__scroll'>
+                <CWhiteSpace size='sm' color='#fff'/>
+                {
+                  playListInfo.playLists.map((item, index) => (
+                    <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
+                      <View>
+                        <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
+                      </View>
+                      <View className='search_content__playList__item__info'>
+                        <View className='search_content__playList__item__info__title'>
+                          {item.name}
+                        </View>
+                        <View className='search_content__playList__item__info__desc'>
+                          <Text>
+                            {item.trackCount}首音乐
+                          </Text>
+                          <Text className='search_content__playList__item__info__desc__nickname'>
+                            by {item.creator.nickname}
+                          </Text>
+                          <Text>
+                            {formatCount(item.playCount)}次
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  ))
+                }
+                { playListInfo.more ? <CLoading /> : ''}
+              </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={3}>
-              <View style='font-size:18px;text-align:center;height:100px;'>标签页四的内容</View>
+              <ScrollView scrollY onScrollToLower={this.getVideoList.bind(this)} className='search_content__scroll'>
+                  <CWhiteSpace size='sm' color='#fff'/>
+                  {
+                    videoInfo.videos.map((item, index) => (
+                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
+                        <View className='search_content__video__item__cover--wrap'>
+                          <View className='search_content__video__item__cover--playtime'>
+                            <Text className='at-icon at-icon-play'></Text>
+                            <Text>{formatCount(item.playTime)}</Text>
+                          </View>
+                          <Image src={item.coverUrl} className='search_content__video__item__cover'/>
+                        </View>
+                        <View className='search_content__video__item__info'>
+                          <View className='search_content__video__item__info__title'>
+                            {item.title}
+                          </View>
+                          <View className='search_content__video__item__info__desc'>
+                            <Text>{this.formatDuration(item.durationms)},</Text>
+                            <Text className='search_content__video__item__info__desc__nickname'>
+                              by {item.creator[0].userName}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    ))
+                  }
+                  { videoInfo.more ? <CLoading /> : ''}
+                </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={4}>
               <View style='font-size:18px;text-align:center;height:100px;'>标签页五的内容</View>

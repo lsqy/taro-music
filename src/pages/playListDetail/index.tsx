@@ -1,12 +1,13 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text, ScrollView } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import classnames from 'classnames'
 import { connect } from '@tarojs/redux'
 import CLoading from '../../components/CLoading'
 import CMusic from '../../components/CMusic'
 import { getSongInfo, getPlayListDetail, updatePlayStatus } from '../../actions/song'
 import { injectPlaySong } from '../../utils/decorators'
+import { formatCount } from '../../utils/common'
 import { songType } from '../../constants/commonType'
 import './index.scss'
 
@@ -108,9 +109,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             <View className='playList__header__cover__num'>
               <Text className='at-icon at-icon-sound'></Text>
               {
-                playListDetailInfo.playCount < 10000 ?
-                playListDetailInfo.playCount : 
-                `${Number(playListDetailInfo.playCount/10000).toFixed(1)}万`
+                formatCount(playListDetailInfo.playCount)
               }
             </View>
           </View>

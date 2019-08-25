@@ -1,0 +1,19 @@
+.whiteSpace_components {
+  width: 100%;
+  height: 20px;
+  &.xs {
+    height: 10px;
+  }
+  &.sm {
+    height: 20px;
+  }
+  &.md {
+    height: 30px;
+  }
+  &.lg {
+    height: 40px;
+  }
+  &.xl {
+    height: 50px;
+  }
+}
