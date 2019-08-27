@@ -376,7 +376,8 @@ class Page extends Component<IProps, PageState> {
       if (!result.data || !res.data.result) {
         this.setState({
           totalInfo: Object.assign(this.state.totalInfo, {
-            loading: false
+            loading: false,
+            noData: true
           })
         })
         return
@@ -385,6 +386,7 @@ class Page extends Component<IProps, PageState> {
         this.setState({
           totalInfo: {
             loading: false,
+            noData: false,
             albumInfo: result.album,
             artistInfo: result.artist,
             djRadioInfo: result.djRadio,
@@ -655,6 +657,9 @@ class Page extends Component<IProps, PageState> {
             tabList={tabList}
             onClick={this.switchTab.bind(this)}>
             <AtTabsPane current={activeTab} index={0}>
+              {
+                totalInfo.noData ? <View>暂无数据</View> : ''
+              }
               {
                 totalInfo.loading ? <CLoading /> : 
                 <ScrollView scrollY className='search_content__scroll'>
