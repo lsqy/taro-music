@@ -31,6 +31,7 @@ type PageState = {
   activeTab: number,
   totalInfo: {
     loading: boolean,
+    noData: boolean,
     songInfo: { // 单曲
       songs: Array<{
         id: number,
@@ -62,9 +63,11 @@ type PageState = {
     },
     userListInfo: { // 用户
       users: Array<{
-        name: string,
-        id: number,
-        picUrl: string
+        nickname: string,
+        userId: number,
+        avatarUrl: string,
+        gender: number,
+        signature: string
       }>,
       more: boolean,
       moreText: string
@@ -171,9 +174,11 @@ type PageState = {
   },
   userListInfo: { // 用户
     users: Array<{
-      name: string,
-      id: number,
-      picUrl: string
+      nickname: string,
+      userId: number,
+      avatarUrl: string,
+      gender: number,
+      signature: string
     }>,
     more: boolean
   },
@@ -234,6 +239,7 @@ class Page extends Component<IProps, PageState> {
       activeTab: 0,
       totalInfo: {
         loading: true,
+        noData: false,
         userListInfo: {
           users: [],
           more: false,
@@ -367,6 +373,14 @@ class Page extends Component<IProps, PageState> {
       type: 1018
     }).then((res) => {
       const result = res.data.result
+      if (!result.data || !res.data.result) {
+        this.setState({
+          totalInfo: Object.assign(this.state.totalInfo, {
+            loading: false
+          })
+        })
+        return
+      }
       if (result) {
         this.setState({
           totalInfo: {
@@ -516,6 +530,28 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  // 获取用户列表
+  getUserList() {
+    const { keywords, userListInfo } = this.state
+    if (!userListInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1002,
+      limit: 30,
+      offset: userListInfo.users.length
+    }).then(({ data }) => {
+      console.log('getUserList=>data', data)
+      if (data.result && data.result.userprofiles) {
+        this.setState({
+          userListInfo: {
+            users: userListInfo.users.concat(data.result.userprofiles),
+            more: userListInfo.users.concat(data.result.userprofiles).length < data.result.userprofileCount
+          }
+        })
+      }
+    })
+  }
+
   goPlayListDetail(item) {
     Taro.navigateTo({
       url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
@@ -551,7 +587,7 @@ class Page extends Component<IProps, PageState> {
 
   switchTab(activeTab) {
     console.log('activeTab', activeTab)
-    if (activeTab !== 0 && activeTab !== 1 && activeTab !== 2  && activeTab !== 3 && activeTab !== 4 ) {
+    if (activeTab !== 0 && activeTab !== 1 && activeTab !== 2  && activeTab !== 3 && activeTab !== 4 && activeTab !== 7) {
       Taro.showToast({
         title: '正在开发，敬请期待',
         icon: 'none'
@@ -574,6 +610,9 @@ class Page extends Component<IProps, PageState> {
       case 4:
         this.getArtistList()
         break  
+      case 7:
+        this.getUserList()
+        break   
     }
     this.setState({
       activeTab
@@ -590,7 +629,7 @@ class Page extends Component<IProps, PageState> {
 
 
   render () {
-    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo } = this.state
+    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo } = this.state
     console.log('playListInfo', playListInfo)
     return (
       <View className={
@@ -747,8 +786,28 @@ class Page extends Component<IProps, PageState> {
                           {totalInfo.artistInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
                         </View>  : ''
                       }
+                    </View>                    
+                  </View> 
+                  <View>
+                    <View className='search_content__title'>
+                      用户
                     </View>
-                  </View>    
+                    <View>
+                      {
+                        totalInfo.userListInfo.users.map((item, index) => (
+                          <View className='search_content__artist__item' key={index}>
+                            <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
+                            <Text>{item.nickname}</Text>
+                          </View>
+                        ))
+                      }
+                      {
+                        totalInfo.userListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 7)}>
+                          {totalInfo.userListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                        </View>  : ''
+                      }
+                    </View>                    
+                  </View>                     
                 </ScrollView>
               }
             </AtTabsPane>
@@ -849,6 +908,23 @@ class Page extends Component<IProps, PageState> {
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={5}>
               <View style='font-size:18px;text-align:center;height:100px;'>标签页六的内容</View>
+            </AtTabsPane>
+            <AtTabsPane current={activeTab} index={6}>
+              <View style='font-size:18px;text-align:center;height:100px;'>标签页七的内容</View>
+            </AtTabsPane>
+            <AtTabsPane current={activeTab} index={7}>
+              <ScrollView scrollY onScrollToLower={this.getUserList.bind(this)} className='search_content__scroll'>
+                <CWhiteSpace size='sm' color='#fff'/>
+                {
+                  userListInfo.users.map((item, index) => (
+                    <View className='search_content__artist__item' key={index}>
+                      <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
+                      <Text>{item.nickname}</Text>
+                    </View>
+                  ))
+                }
+                { userListInfo.more ? <CLoading /> : ''}
+              </ScrollView>
             </AtTabsPane>
           </AtTabs>
         </View>
