@@ -10,7 +10,7 @@ import CWhiteSpace from '../../components/CWhiteSpace'
 import { injectPlaySong } from '../../utils/decorators'
 import { updateCanplayList, getSongInfo, updatePlayStatus } from '../../actions/song'
 import { songType } from '../../constants/commonType'
-import { setKeywordInHistory, formatCount, formatNumber } from '../../utils/common'
+import { setKeywordInHistory, formatCount, formatNumber, formatTimeStampToTime } from '../../utils/common'
 import api from '../../services/api'
 import './index.scss'
 
@@ -76,7 +76,8 @@ type PageState = {
       djRadios: Array<{
         name: string,
         id: number,
-        picUrl: string
+        picUrl: string,
+        desc: string
       }>,
       more: boolean,
       moreText: string
@@ -98,7 +99,13 @@ type PageState = {
     albumInfo: { // 专辑
       albums: Array<{
         name: string,
-        id: number
+        id: number,
+        publishTime: number,
+        picUrl: string,
+        artist: {
+          name: string
+        },
+        containedSong: string
       }>,
       more: boolean,
       moreText: string
@@ -107,7 +114,8 @@ type PageState = {
       artists: Array<{
         name: string,
         id: number,
-        picUrl: string
+        picUrl: string,
+        alias: Array<string>
       }>,
       more: boolean,
       moreText: string
@@ -125,7 +133,13 @@ type PageState = {
   albumInfo: { // 专辑
     albums: Array<{
       name: string,
-      id: number
+      id: number,
+      publishTime: number,
+      picUrl: string,
+      artist: {
+        name: string
+      },
+      containedSong: string
     }>,
     more: boolean
   },
@@ -133,7 +147,8 @@ type PageState = {
     artists: Array<{
       name: string,
       id: number,
-      picUrl: string
+      picUrl: string,
+      alias: Array<string>
     }>,
     more: boolean,
   },
@@ -141,7 +156,8 @@ type PageState = {
     djRadios: Array<{
       name: string,
       id: number,
-      picUrl: string
+      picUrl: string,
+      desc: string
     }>,
     more: boolean
   },
@@ -570,6 +586,50 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  // 获取专辑列表
+  getAlbumList() {
+    const { keywords, albumInfo } = this.state
+    if (!albumInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 10,
+      limit: 30,
+      offset: albumInfo.albums.length
+    }).then(({ data }) => {
+      console.log('getUserList=>data', data)
+      if (data.result && data.result.albums) {
+        this.setState({
+          albumInfo: {
+            albums: albumInfo.albums.concat(data.result.albums),
+            more: albumInfo.albums.concat(data.result.albums).length < data.result.albumCount
+          }
+        })
+      }
+    })
+  }
+
+  // 获取电台列表
+  getDjRadioList() {
+    const { keywords, djRadioInfo } = this.state
+    if (!djRadioInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1009,
+      limit: 30,
+      offset: djRadioInfo.djRadios.length
+    }).then(({ data }) => {
+      console.log('getUserList=>data', data)
+      if (data.result && data.result.djRadios) {
+        this.setState({
+          djRadioInfo: {
+            djRadios: djRadioInfo.djRadios.concat(data.result.djRadios),
+            more: djRadioInfo.djRadios.concat(data.result.djRadios).length < data.result.djRadiosCount
+          }
+        })
+      }
+    })
+  }
+
   goPlayListDetail(item) {
     Taro.navigateTo({
       url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
@@ -644,15 +704,15 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  showTip() {
+    Taro.showToast({
+      title: '正在开发，敬请期待',
+      icon: 'none'
+    })
+  }
+
   switchTab(activeTab) {
     console.log('activeTab', activeTab)
-    if (activeTab !== 0 && activeTab !== 1 && activeTab !== 2  && activeTab !== 3 && activeTab !== 4 && activeTab !== 7) {
-      Taro.showToast({
-        title: '正在开发，敬请期待',
-        icon: 'none'
-      })
-      return
-    }
     switch (activeTab) {
       case 0:
         this.getResult()
@@ -669,6 +729,12 @@ class Page extends Component<IProps, PageState> {
       case 4:
         this.getArtistList()
         break  
+      case 5:
+        this.getAlbumList()
+        break    
+      case 6:
+        this.getDjRadioList()
+        break 
       case 7:
         this.getUserList()
         break   
@@ -688,8 +754,7 @@ class Page extends Component<IProps, PageState> {
 
 
   render () {
-    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo } = this.state
-    // console.log('playListInfo', playListInfo)
+    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo, albumInfo, djRadioInfo } = this.state
     return (
       <View className={
         classnames({
@@ -849,9 +914,9 @@ class Page extends Component<IProps, PageState> {
                       <View>
                         {
                           totalInfo.artistInfo.artists.map((item, index) => (
-                            <View className='search_content__artist__item' key={index}>
+                            <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
                               <Image src={item.picUrl} className='search_content__artist__item__cover'/>
-                              <Text>{item.name}</Text>
+                              <Text>{item.name}{item.alias[0] ? `（${item.alias[0]}）` : ''}</Text>
                             </View>
                           ))
                         }
@@ -860,7 +925,80 @@ class Page extends Component<IProps, PageState> {
                             {totalInfo.artistInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
                           </View>  : ''
                         }
-                      </View>                    
+                      </View>
+                    </View> : ''
+                  }
+                  {
+                    totalInfo.albumInfo.albums.length ?
+                    <View>
+                      <View className='search_content__title'>
+                        专辑
+                      </View>
+                      <View>
+                        {
+                          totalInfo.albumInfo.albums.map((item, index) => (
+                            <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                              <View>
+                                <Image src={item.picUrl} className='search_content__playList__item__cover'/>
+                              </View>
+                              <View className='search_content__playList__item__info'>
+                                <View className='search_content__playList__item__info__title'>
+                                  {item.name}
+                                </View>
+                                <View className='search_content__playList__item__info__desc'>
+                                  <Text>
+                                    {item.artist.name}
+                                  </Text>
+                                  <Text className='search_content__playList__item__info__desc__nickname'>
+                                    {
+                                      item.containedSong ? `包含单曲：${item.containedSong}` : formatTimeStampToTime(item.publishTime)
+                                    }
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          ))
+                        }
+                        {
+                          totalInfo.albumInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 5)}>
+                            {totalInfo.albumInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>
+                    </View> : ''
+                  }
+                  {
+                    totalInfo.djRadioInfo.djRadios.length ?
+                    <View>
+                      <View className='search_content__title'>
+                        电台
+                      </View>
+                      <View>
+                        {
+                          totalInfo.djRadioInfo.djRadios.map((item, index) => (
+                            <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                              <View>
+                                <Image src={item.picUrl} className='search_content__playList__item__cover'/>
+                              </View>
+                              <View className='search_content__playList__item__info'>
+                                <View className='search_content__playList__item__info__title'>
+                                  {item.name}
+                                </View>
+                                <View className='search_content__playList__item__info__desc'>
+                                  <Text>
+                                    {item.desc}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          ))
+                        }
+                        {
+                          totalInfo.djRadioInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 6)}>
+                            {totalInfo.djRadioInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>
                     </View> : ''
                   }
                   {
@@ -872,11 +1010,18 @@ class Page extends Component<IProps, PageState> {
                       <View>
                         {
                           totalInfo.userListInfo.users.map((item, index) => (
-                            <View className='search_content__artist__item' key={index}>
+                            <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
                               <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
-                              <View>
-                                <View>{item.nickname}</View>
-                                <View className='search_content__artist__item__desc'>{item.signature}</View>
+                              <View className='search_content__artist__item__info'>
+                                <View>
+                                  {item.nickname}
+                                </View>
+                                {
+                                  item.signature ? 
+                                  <View className='search_content__artist__item__desc'>
+                                    {item.signature}
+                                  </View> : ''
+                                } 
                               </View>
                             </View>
                           ))
@@ -888,7 +1033,7 @@ class Page extends Component<IProps, PageState> {
                         }
                       </View>                    
                     </View> : ''
-                  }               
+                  }                     
                 </ScrollView>
               }
             </AtTabsPane>
@@ -978,9 +1123,9 @@ class Page extends Component<IProps, PageState> {
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
                   artistInfo.artists.map((item, index) => (
-                    <View className='search_content__artist__item' key={index}>
+                    <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
                       <Image src={item.picUrl} className='search_content__artist__item__cover'/>
-                      <Text>{item.name}</Text>
+                      <Text>{item.name}{item.alias[0] ? `（${item.alias[0]}）` : ''}</Text>
                     </View>
                   ))
                 }
@@ -988,17 +1133,64 @@ class Page extends Component<IProps, PageState> {
               </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={5}>
-              <View style='font-size:18px;text-align:center;height:100px;'>标签页六的内容</View>
+              <ScrollView scrollY onScrollToLower={this.getAlbumList.bind(this)} className='search_content__scroll'>
+                <CWhiteSpace size='sm' color='#fff'/>
+                {
+                  albumInfo.albums.map((item, index) => (
+                    <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                      <View>
+                        <Image src={item.picUrl} className='search_content__playList__item__cover'/>
+                      </View>
+                      <View className='search_content__playList__item__info'>
+                        <View className='search_content__playList__item__info__title'>
+                          {item.name}
+                        </View>
+                        <View className='search_content__playList__item__info__desc'>
+                          <Text>
+                            {item.artist.name}
+                          </Text>
+                          <Text className='search_content__playList__item__info__desc__nickname'>
+                           { item.containedSong ? `包含单曲：${item.containedSong}` : formatTimeStampToTime(item.publishTime) }
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  ))
+                }
+                { albumInfo.more ? <CLoading /> : ''}
+              </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={6}>
-              <View style='font-size:18px;text-align:center;height:100px;'>标签页七的内容</View>
+              <ScrollView scrollY onScrollToLower={this.getDjRadioList.bind(this)} className='search_content__scroll'>
+                <CWhiteSpace size='sm' color='#fff'/>
+                {
+                  djRadioInfo.djRadios.map((item, index) => (
+                    <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                      <View>
+                        <Image src={item.picUrl} className='search_content__playList__item__cover'/>
+                      </View>
+                      <View className='search_content__playList__item__info'>
+                        <View className='search_content__playList__item__info__title'>
+                          {item.name}
+                        </View>
+                        <View className='search_content__playList__item__info__desc'>
+                          <Text>
+                           { item.desc }
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  ))
+                }
+                { djRadioInfo.more ? <CLoading /> : ''}
+              </ScrollView>
             </AtTabsPane>
             <AtTabsPane current={activeTab} index={7}>
               <ScrollView scrollY onScrollToLower={this.getUserList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
                   userListInfo.users.map((item, index) => (
-                    <View className='search_content__artist__item' key={index}>
+                    <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
                       <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
                       <View className='search_content__artist__item__info'>
                         <View>{item.nickname}</View>
