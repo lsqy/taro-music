@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-29 10:30:27
+ * @LastEditTime: 2019-08-29 10:45:25
+ * @LastEditors: Please set LastEditors
+ */
 import Taro from '@tarojs/taro'
 
 Taro.getStorage({

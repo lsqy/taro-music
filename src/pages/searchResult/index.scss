@@ -9,13 +9,18 @@
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
+    .search_content__nodata {
+      text-align: center;
+      font-size: 30px;
+      color: #888888;
+      padding: 20px 0;
+    }
     .at-tabs__header {
       position: absolute;
       background: #ffffff;
       z-index: 10;
     }
     .at-tabs {
-      // overflow-y: auto;
       position: relative;
     }
     .at-tabs-pane--active {
@@ -164,6 +169,14 @@
       border-radius: 50%;
       margin-right: 20px;
       background-color: #f8f8f8;
+    }
+    .search_content__artist__item__info {
+      flex: 1;
+    }
+    .search_content__artist__item__desc {
+      font-size: 24px;
+      color: #bbbbbb;
+      margin-top: 10px;
     }
   }
 }
