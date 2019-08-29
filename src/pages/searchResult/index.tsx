@@ -372,8 +372,7 @@ class Page extends Component<IProps, PageState> {
       keywords,
       type: 1018
     }).then((res) => {
-      const result = res.data.result
-      if (!result.data || !res.data.result) {
+      if (!res.data || !res.data.result) {
         this.setState({
           totalInfo: Object.assign(this.state.totalInfo, {
             loading: false,
@@ -382,19 +381,36 @@ class Page extends Component<IProps, PageState> {
         })
         return
       }
+      const result = res.data.result
       if (result) {
         this.setState({
           totalInfo: {
             loading: false,
-            noData: false,
-            albumInfo: result.album,
-            artistInfo: result.artist,
-            djRadioInfo: result.djRadio,
-            playListInfo: result.playList,
-            songInfo: result.song,
-            userListInfo: result.user,
-            videoInfo: result.video,
-            sim_query: result.sim_query
+            noData: !result.album && !result.artist && !result.djRadio && !result.playList && !result.song && !result.user && !result.video && !result.sim_query,
+            albumInfo: result.album || {
+              albums: []
+            },
+            artistInfo: result.artist || {
+              artists: []
+            },
+            djRadioInfo: result.djRadio || {
+              djRadios: []
+            },
+            playListInfo: result.playList || {
+              playLists: []
+            },
+            songInfo: result.song || {
+              songs: []
+            },
+            userListInfo: result.user || {
+              users: []
+            },
+            videoInfo: result.video || {
+              videos: []
+            },
+            sim_query: result.sim_query || {
+              sim_querys: []
+            }
           }
         })
         // this.props.updateCanplayList({
@@ -431,7 +447,7 @@ class Page extends Component<IProps, PageState> {
         })
       } else {
         Taro.showToast({
-          title: '该视频暂时无法播放',
+          title: '该视频暂无版权播放',
           icon: 'none'
         })
       }
@@ -573,9 +589,50 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  resetInfo() {
+    this.setState({
+      userListInfo: {
+        users: [],
+        more: true,
+      },
+      videoInfo: {
+        videos: [],
+        more: true,
+      },
+      playListInfo: {
+        playLists: [],
+        more: true,
+        moreText: ''
+      },
+      songInfo: {
+        songs: [],
+        more: true
+      },
+      albumInfo: {
+        albums: [],
+        more: true,
+      },
+      djRadioInfo: {
+        djRadios: [],
+        more: true,
+      },
+      artistInfo: {
+        artists: [],
+        more: true,
+      }
+    })
+  }
+
   searchResult() {
     setKeywordInHistory(this.state.keywords)
-    this.getResult()
+    this.setState({
+      totalInfo: Object.assign(this.state.totalInfo, {
+        loading: true
+      })
+    }, () => {
+      this.switchTab(0)
+      this.resetInfo()
+    })
   }
 
   queryResultBySim(keyword) {
@@ -632,7 +689,7 @@ class Page extends Component<IProps, PageState> {
 
   render () {
     const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo } = this.state
-    console.log('playListInfo', playListInfo)
+    // console.log('playListInfo', playListInfo)
     return (
       <View className={
         classnames({
@@ -658,109 +715,119 @@ class Page extends Component<IProps, PageState> {
             onClick={this.switchTab.bind(this)}>
             <AtTabsPane current={activeTab} index={0}>
               {
-                totalInfo.noData ? <View>暂无数据</View> : ''
-              }
-              {
                 totalInfo.loading ? <CLoading /> : 
                 <ScrollView scrollY className='search_content__scroll'>
-                  <View>
-                    <View className='search_content__title'>
-                      单曲
-                    </View>
-                    {
-                      totalInfo.songInfo.songs.map((item, index) => (
-                        <View key={index} className='searchResult__music'>
-                          <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
-                            <View className='searchResult__music__info__name'>
-                            {item.name}
-                            </View>
-                            <View className='searchResult__music__info__desc'>
-                              {`${item.ar[0] ? item.ar[0].name : ''} - ${item.al.name}`}
-                            </View>
-                          </View>
-                          <View className='fa fa-ellipsis-v searchResult__music__icon' onClick={this.showMore.bind(this)}></View>
-                        </View>
-                      ))
-                    }
-                    {
-                      totalInfo.songInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 1)}>
-                        {totalInfo.songInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                      </View>  : ''
-                    }
-                  </View>
-                  <View>
-                    <View className='search_content__title'>
-                      歌单
-                    </View>
+                  {
+                    totalInfo.noData ? <View className='search_content__nodata'>暂无数据</View> : ''
+                  }
+                  {
+                    totalInfo.songInfo.songs.length ? 
                     <View>
+                      <View className='search_content__title'>
+                        单曲
+                      </View>
                       {
-                        totalInfo.playListInfo.playLists.map((item, index) => (
-                          <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
-                            <View>
-                              <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
-                            </View>
-                            <View className='search_content__playList__item__info'>
-                              <View className='search_content__playList__item__info__title'>
-                                {item.name}
+                        totalInfo.songInfo.songs.map((item, index) => (
+                          <View key={index} className='searchResult__music'>
+                            <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
+                              <View className='searchResult__music__info__name'>
+                              {item.name}
                               </View>
-                              <View className='search_content__playList__item__info__desc'>
-                                <Text>
-                                  {item.trackCount}首音乐
-                                </Text>
-                                <Text className='search_content__playList__item__info__desc__nickname'>
-                                  by {item.creator.nickname}
-                                </Text>
-                                <Text>
-                                  {formatCount(item.playCount)}次
-                                </Text>
+                              <View className='searchResult__music__info__desc'>
+                                {`${item.ar[0] ? item.ar[0].name : ''} - ${item.al.name}`}
                               </View>
                             </View>
+                            <View className='fa fa-ellipsis-v searchResult__music__icon' onClick={this.showMore.bind(this)}></View>
                           </View>
                         ))
                       }
                       {
-                        totalInfo.playListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 2)}>
-                          {totalInfo.playListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                        totalInfo.songInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 1)}>
+                          {totalInfo.songInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
                         </View>  : ''
                       }
-                    </View>
-                  </View>
-                  <View>
-                    <View className='search_content__title'>
-                      视频
-                    </View>
+                    </View> : ''
+                  }
+                  {
+                    totalInfo.playListInfo.playLists.length ? 
                     <View>
-                      {
-                        totalInfo.videoInfo.videos.map((item, index) => (
-                          <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
-                            <View className='search_content__video__item__cover--wrap'>
-                              <View className='search_content__video__item__cover--playtime'>
-                                <Text className='at-icon at-icon-play'></Text>
-                                <Text>{formatCount(item.playTime)}</Text>
+                      <View className='search_content__title'>
+                        歌单
+                      </View>
+                      <View>
+                        {
+                          totalInfo.playListInfo.playLists.map((item, index) => (
+                            <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
+                              <View>
+                                <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
                               </View>
-                              <Image src={item.coverUrl} className='search_content__video__item__cover'/>
+                              <View className='search_content__playList__item__info'>
+                                <View className='search_content__playList__item__info__title'>
+                                  {item.name}
+                                </View>
+                                <View className='search_content__playList__item__info__desc'>
+                                  <Text>
+                                    {item.trackCount}首音乐
+                                  </Text>
+                                  <Text className='search_content__playList__item__info__desc__nickname'>
+                                    by {item.creator.nickname}
+                                  </Text>
+                                  <Text>
+                                    {formatCount(item.playCount)}次
+                                  </Text>
+                                </View>
+                              </View>
                             </View>
-                            <View className='search_content__video__item__info'>
-                              <View className='search_content__video__item__info__title'>
-                                {item.title}
+                          ))
+                        }
+                        {
+                          totalInfo.playListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 2)}>
+                            {totalInfo.playListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>
+                    </View> : ''
+                  }
+                  {
+                    totalInfo.videoInfo.videos.length ?
+                    <View>
+                      <View className='search_content__title'>
+                        视频
+                      </View>
+                      <View>
+                        {
+                          totalInfo.videoInfo.videos.map((item, index) => (
+                            <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
+                              <View className='search_content__video__item__cover--wrap'>
+                                <View className='search_content__video__item__cover--playtime'>
+                                  <Text className='at-icon at-icon-play'></Text>
+                                  <Text>{formatCount(item.playTime)}</Text>
+                                </View>
+                                <Image src={item.coverUrl} className='search_content__video__item__cover'/>
                               </View>
-                              <View className='search_content__video__item__info__desc'>
-                                <Text>{this.formatDuration(item.durationms)},</Text>
-                                <Text className='search_content__video__item__info__desc__nickname'>
-                                  by {item.creator[0].userName}
-                                </Text>
+                              <View className='search_content__video__item__info'>
+                                <View className='search_content__video__item__info__title'>
+                                  {item.title}
+                                </View>
+                                <View className='search_content__video__item__info__desc'>
+                                  <Text>{this.formatDuration(item.durationms)},</Text>
+                                  <Text className='search_content__video__item__info__desc__nickname'>
+                                    by {item.creator[0].userName}
+                                  </Text>
+                                </View>
                               </View>
                             </View>
-                          </View>
-                        ))
-                      }
-                      {
-                        totalInfo.videoInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 3)}>
-                          {totalInfo.videoInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                        </View>  : ''
-                      }
-                    </View>
-                  </View>
+                          ))
+                        }
+                        {
+                          totalInfo.videoInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 3)}>
+                            {totalInfo.videoInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>
+                    </View> : ''
+                  }
+                  
                   {
                     totalInfo.sim_query.sim_querys.length ? <View>
                       <View className='search_content__title'>
@@ -773,46 +840,55 @@ class Page extends Component<IProps, PageState> {
                       </View>
                     </View> : ''
                   }
-                  <View>
-                    <View className='search_content__title'>
-                      歌手
-                    </View>
+                  {
+                    totalInfo.artistInfo.artists.length ?
                     <View>
-                      {
-                        totalInfo.artistInfo.artists.map((item, index) => (
-                          <View className='search_content__artist__item' key={index}>
-                            <Image src={item.picUrl} className='search_content__artist__item__cover'/>
-                            <Text>{item.name}</Text>
-                          </View>
-                        ))
-                      }
-                      {
-                        totalInfo.artistInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 4)}>
-                          {totalInfo.artistInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                        </View>  : ''
-                      }
-                    </View>                    
-                  </View> 
-                  <View>
-                    <View className='search_content__title'>
-                      用户
-                    </View>
+                      <View className='search_content__title'>
+                        歌手
+                      </View>
+                      <View>
+                        {
+                          totalInfo.artistInfo.artists.map((item, index) => (
+                            <View className='search_content__artist__item' key={index}>
+                              <Image src={item.picUrl} className='search_content__artist__item__cover'/>
+                              <Text>{item.name}</Text>
+                            </View>
+                          ))
+                        }
+                        {
+                          totalInfo.artistInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 4)}>
+                            {totalInfo.artistInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>                    
+                    </View> : ''
+                  }
+                  {
+                    totalInfo.userListInfo.users.length ?
                     <View>
-                      {
-                        totalInfo.userListInfo.users.map((item, index) => (
-                          <View className='search_content__artist__item' key={index}>
-                            <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
-                            <Text>{item.nickname}</Text>
-                          </View>
-                        ))
-                      }
-                      {
-                        totalInfo.userListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 7)}>
-                          {totalInfo.userListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
-                        </View>  : ''
-                      }
-                    </View>                    
-                  </View>                     
+                      <View className='search_content__title'>
+                        用户
+                      </View>
+                      <View>
+                        {
+                          totalInfo.userListInfo.users.map((item, index) => (
+                            <View className='search_content__artist__item' key={index}>
+                              <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
+                              <View>
+                                <View>{item.nickname}</View>
+                                <View className='search_content__artist__item__desc'>{item.signature}</View>
+                              </View>
+                            </View>
+                          ))
+                        }
+                        {
+                          totalInfo.userListInfo.moreText ? <View className='search_content__more' onClick={this.switchTab.bind(this, 7)}>
+                            {totalInfo.userListInfo.moreText}<AtIcon value='chevron-right' size='16' color='#ccc'></AtIcon>
+                          </View>  : ''
+                        }
+                      </View>                    
+                    </View> : ''
+                  }               
                 </ScrollView>
               }
             </AtTabsPane>
@@ -924,7 +1000,10 @@ class Page extends Component<IProps, PageState> {
                   userListInfo.users.map((item, index) => (
                     <View className='search_content__artist__item' key={index}>
                       <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
-                      <Text>{item.nickname}</Text>
+                      <View className='search_content__artist__item__info'>
+                        <View>{item.nickname}</View>
+                        <View className='search_content__artist__item__desc'>{item.signature}</View>
+                      </View>
                     </View>
                   ))
                 }
