@@ -4,7 +4,7 @@
     height: 420px;
   }
   .videoDetail__play__container {
-    padding: 20px 30px;
+    padding: 20px 30px 0 30px;
     .videoDetail__play__title {
       font-size: 36px;
     }
@@ -29,6 +29,14 @@
       overflow: hidden;
       margin-bottom: 20px;
     }
+    .videoDetail__play__numinfo {
+      text-align: center;
+      font-size: 22px;
+      margin: 30px 0;
+    }
+    .videoDetail__play__numinfo__text {
+      margin-top: 10px;
+    }
     .videoDetail__play__user {
       display: flex;
       align-items: center;
@@ -40,6 +48,55 @@
         height: 60px;
         border-radius: 50%;
         margin-right: 20px;
+      }
+    }
+  }
+  .videoDetail_relation {
+    padding: 20px 30px 0 30px;
+  }
+  .videoDetail__title {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+  .videoDetail_comment {
+    padding: 20px 30px 0 30px;
+  }
+  .search_content__video__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    .search_content__video__item__cover--wrap {
+      position: relative;
+      font-size: 20px;
+      color: #ffffff;
+      .search_content__video__item__cover--playtime {
+        position: absolute;
+        right: 30px;
+        top: 5px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .search_content__video__item__cover {
+      width: 200px;
+      height: 120px;
+      border-radius: 10px;
+      margin-right: 20px;
+      display: block;
+    }
+    .search_content__video__item__info {
+      flex: 1;
+      .search_content__video__item__info__title {
+        margin-bottom: 10px;
+        font-size: 28px;
+      }
+      .search_content__video__item__info__desc {
+        font-size: 20px;
+        color: #bbbbbb;
+        display: flex;
+      }
+      .search_content__video__item__info__desc__nickname {
+        margin: 0 10px;
       }
     }
   }
