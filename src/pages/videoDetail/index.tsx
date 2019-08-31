@@ -1,8 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Video, Text, Image } from '@tarojs/components'
+import { AtIcon } from 'taro-ui'
 // import CWhiteSpace from '../../components/CWhiteSpace'
-import { formatCount } from '../../utils/common'
+import { formatCount, formatNumber } from '../../utils/common'
+import CWhiteSpace from '../../components/CWhiteSpace'
 import api from '../../services/api'
 import './index.scss'
 
@@ -15,6 +17,7 @@ type PageState = {
     playTime: number,
     praisedCount: number,
     commentCount: number,
+    subscribeCount: number,
     creator: {
       nickname: string,
       avatarUrl: string
@@ -24,7 +27,17 @@ type PageState = {
       name: string
     }>
   },
-  videoUrl: string
+  videoUrl: string,
+  relatedList: Array<{
+    vid: string,
+    title: string,
+    durationms: number,
+    playTime: number,
+    coverUrl: string,
+    creator: Array<{
+      userName: string
+    }>
+  }>
 }
 
 class Page extends Component<{}, PageState> {
@@ -50,19 +63,25 @@ class Page extends Component<{}, PageState> {
         playTime: 0,
         praisedCount: 0,
         commentCount: 0,
+        subscribeCount: 0,
         creator: {
           nickname: '',
           avatarUrl: ''
         },
         videoGroup: []
       },
-      videoUrl: ''
+      videoUrl: '',
+      relatedList: []
     }
   }
 
   componentWillMount() {
     const { id } = this.$router.params
     // const id = "5DCA972C0F5C920F22F91997A931D326"
+    this.getDetail(id)
+  }
+
+  getDetail(id) {
     api.get('/video/detail', {
       id
     }).then(({ data }) => {
@@ -83,7 +102,26 @@ class Page extends Component<{}, PageState> {
         })
       }
     })
-
+    api.get('/related/allvideo', {
+      id
+    }).then(({ data }) => {
+      console.log('related', data)
+      if (data.data && data.data.length) {
+        this.setState({
+          relatedList: data.data
+        })
+      }
+    })
+    api.get('/comment/video', {
+      id
+    }).then(({ data }) => {
+      console.log('comment', data)
+      if (data.data && data.data.length) {
+        this.setState({
+          relatedList: data.data
+        })
+      }
+    })
   }
 
   componentWillReceiveProps (nextProps) {
@@ -96,11 +134,19 @@ class Page extends Component<{}, PageState> {
 
   }
 
+  formatDuration(ms: number) {
+    // @ts-ignore
+    let minutes: string = formatNumber(parseInt(ms / 60000))
+    // @ts-ignore
+    let seconds: string = formatNumber(parseInt((ms / 1000) % 60))
+    return `${minutes}:${seconds}`
+  }
+
   componentDidHide () { }
 
 
   render () {
-    const { videoInfo, videoUrl } = this.state
+    const { videoInfo, videoUrl, relatedList } = this.state
     return (
       <View className='videoDetail_container'>
         <Video
@@ -122,11 +168,67 @@ class Page extends Component<{}, PageState> {
               videoInfo.videoGroup.map((videoGroupItem) => <Text className='videoDetail__play__tag' key={videoGroupItem.id}>{videoGroupItem.name}</Text>)
             }
           </View>
+          <View className='flex videoDetail__play__numinfo'>
+            <View className='flex-item'>
+              <AtIcon prefixClass='fa' value='thumbs-o-up' size='24' color='#323232'></AtIcon>
+              <View className='videoDetail__play__numinfo__text'>{videoInfo.praisedCount}</View>
+            </View>
+            <View className='flex-item'>
+              <AtIcon value='star' size='24' color='#323232'></AtIcon>
+              <View className='videoDetail__play__numinfo__text'>{videoInfo.subscribeCount}</View>
+            </View>
+            <View className='flex-item'>
+              <AtIcon value='message' size='24' color='#323232'></AtIcon>
+              <View className='videoDetail__play__numinfo__text'>{videoInfo.commentCount}</View>
+            </View>
+            <View className='flex-item'>
+              <AtIcon value='share' size='24' color='#323232'></AtIcon>
+              <View className='videoDetail__play__numinfo__text'>{videoInfo.shareCount}</View>
+            </View>
+          </View>
           <View className='videoDetail__play__user'>
             <Image src={videoInfo.creator.avatarUrl} className='videoDetail__play__user__cover'/>
             <Text>{videoInfo.creator.nickname}</Text>
           </View>
         </View>
+        <CWhiteSpace size='sm' color='#f8f8f8'/>
+        <View className='videoDetail_relation'>
+          <View className='videoDetail__title'>
+            相关推荐
+          </View>
+          <View>
+            {
+              relatedList.map((item, index) => (
+                <View className='search_content__video__item' key={index} onClick={this.getDetail.bind(this, item.vid)}>
+                  <View className='search_content__video__item__cover--wrap'>
+                    <View className='search_content__video__item__cover--playtime'>
+                      <Text className='at-icon at-icon-play'></Text>
+                      <Text>{formatCount(item.playTime)}</Text>
+                    </View>
+                    <Image src={item.coverUrl} className='search_content__video__item__cover'/>
+                  </View>
+                  <View className='search_content__video__item__info'>
+                    <View className='search_content__video__item__info__title'>
+                      {item.title}
+                    </View>
+                    <View className='search_content__video__item__info__desc'>
+                      <Text>{this.formatDuration(item.durationms)},</Text>
+                      <Text className='search_content__video__item__info__desc__nickname'>
+                        by {item.creator[0].userName}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ))
+            }
+          </View>
+        </View>
+        <CWhiteSpace size='sm' color='#f8f8f8'/>
+        {/* <View className='videoDetail_comment'>
+          <View className='videoDetail__title'>
+            精彩评论
+          </View>
+        </View>   */}
       </View>
     )
   }

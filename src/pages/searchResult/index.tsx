@@ -188,6 +188,19 @@ type PageState = {
     }>,
     more: boolean,
   },
+  mvInfo: { // 视频
+    mvs: Array<{
+      name: string,
+      id: string,
+      cover: string,
+      artists: Array<{
+        name: string
+      }>,
+      duration: number,
+      playCount: number
+    }>,
+    more: boolean,
+  },
   userListInfo: { // 用户
     users: Array<{
       nickname: string,
@@ -320,6 +333,9 @@ class Page extends Component<IProps, PageState> {
         },
         {
           title: '用户'
+        },
+        {
+          title: 'MV'
         }
       ],
       userListInfo: {
@@ -328,6 +344,10 @@ class Page extends Component<IProps, PageState> {
       },
       videoInfo: {
         videos: [],
+        more: true,
+      },
+      mvInfo: {
+        mvs: [],
         more: true,
       },
       playListInfo: {
@@ -542,6 +562,28 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  // 获取mv列表
+  getMvList() {
+    const { keywords, mvInfo } = this.state
+    if (!mvInfo.more) return
+    api.get('/search', {
+      keywords,
+      type: 1004,
+      limit: 30,
+      offset: mvInfo.mvs.length
+    }).then(({ data }) => {
+      console.log('getMvList=>data', data)
+      if (data.result && data.result.mvs) {
+        this.setState({
+          mvInfo: {
+            mvs: mvInfo.mvs.concat(data.result.mvs),
+            more: mvInfo.mvs.concat(data.result.mvs).length < data.result.mvCount
+          }
+        })
+      }
+    })
+  }
+
   // 获取歌手列表
   getArtistList() {
     const { keywords, artistInfo } = this.state
@@ -737,7 +779,10 @@ class Page extends Component<IProps, PageState> {
         break 
       case 7:
         this.getUserList()
-        break   
+        break  
+      case 8:
+        this.getMvList()
+        break 
     }
     this.setState({
       activeTab
@@ -754,7 +799,7 @@ class Page extends Component<IProps, PageState> {
 
 
   render () {
-    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo, albumInfo, djRadioInfo } = this.state
+    const { keywords, activeTab, tabList, songInfo, playListInfo, totalInfo, videoInfo, artistInfo, userListInfo, albumInfo, djRadioInfo, mvInfo } = this.state
     return (
       <View className={
         classnames({
@@ -1015,6 +1060,12 @@ class Page extends Component<IProps, PageState> {
                               <View className='search_content__artist__item__info'>
                                 <View>
                                   {item.nickname}
+                                  {
+                                    item.gender === 1 ? <AtIcon prefixClass='fa' value='mars' size='12' color='#5cb8e7'></AtIcon> : ''
+                                  }
+                                  {
+                                    item.gender === 2 ? <AtIcon prefixClass='fa' value='venus' size='12' color='#f88fb8'></AtIcon> : ''
+                                  }
                                 </View>
                                 {
                                   item.signature ? 
@@ -1193,7 +1244,15 @@ class Page extends Component<IProps, PageState> {
                     <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
                       <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
                       <View className='search_content__artist__item__info'>
-                        <View>{item.nickname}</View>
+                        <View>
+                        {item.nickname}
+                        {
+                          item.gender === 1 ? <AtIcon prefixClass='fa' value='mars' size='12' color='#5cb8e7'></AtIcon> : ''
+                        }
+                        {
+                          item.gender === 2 ? <AtIcon prefixClass='fa' value='venus' size='12' color='#f88fb8'></AtIcon> : ''
+                        }
+                        </View>
                         <View className='search_content__artist__item__desc'>{item.signature}</View>
                       </View>
                     </View>
@@ -1201,6 +1260,36 @@ class Page extends Component<IProps, PageState> {
                 }
                 { userListInfo.more ? <CLoading /> : ''}
               </ScrollView>
+            </AtTabsPane>
+            <AtTabsPane current={activeTab} index={8}>
+              <ScrollView scrollY onScrollToLower={this.getVideoList.bind(this)} className='search_content__scroll'>
+                  <CWhiteSpace size='sm' color='#fff'/>
+                  {
+                    mvInfo.mvs.map((item, index) => (
+                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.id)}>
+                        <View className='search_content__video__item__cover--wrap'>
+                          <View className='search_content__video__item__cover--playtime'>
+                            <Text className='at-icon at-icon-play'></Text>
+                            <Text>{formatCount(item.playCount)}</Text>
+                          </View>
+                          <Image src={item.cover} className='search_content__video__item__cover'/>
+                        </View>
+                        <View className='search_content__video__item__info'>
+                          <View className='search_content__video__item__info__title'>
+                            {item.name}
+                          </View>
+                          <View className='search_content__video__item__info__desc'>
+                            <Text>{this.formatDuration(item.duration)},</Text>
+                            <Text className='search_content__video__item__info__desc__nickname'>
+                              by {item.artists[0].name}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    ))
+                  }
+                  { mvInfo.more ? <CLoading /> : ''}
+                </ScrollView>
             </AtTabsPane>
           </AtTabs>
         </View>

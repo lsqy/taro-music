@@ -18,6 +18,9 @@ page {
 .flex {
     display: flex;
 }
+.flex-item {
+    flex: 1;
+}
 .flex-align-center {
     align-items: center
 }
