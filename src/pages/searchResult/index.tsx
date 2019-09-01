@@ -473,17 +473,22 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
-  goVideoDetail(videoId) {
-    api.get('/video/url', {
-      id: videoId
+  goVideoDetail(id, type) {
+    let apiUrl = '/video/url'
+    if (type === 'mv') {
+      apiUrl = '/mv/url'
+    }
+    api.get(apiUrl, {
+      id
     }).then(({ data }) => {
-      if (data.urls && data.urls.length) {
+      console.log('data', data)
+      if ( (type === 'video' && data.urls && data.urls.length) || (type === 'mv' && data.data.url)) {
         Taro.navigateTo({
-          url: `/pages/videoDetail/index?id=${videoId}`
+          url: `/pages/videoDetail/index?id=${id}&type=${type}`
         })
       } else {
         Taro.showToast({
-          title: '该视频暂无版权播放',
+          title: `该${type === 'mv' ? 'mv' : '视频'}暂无版权播放`,
           icon: 'none'
         })
       }
@@ -907,7 +912,7 @@ class Page extends Component<IProps, PageState> {
                       <View>
                         {
                           totalInfo.videoInfo.videos.map((item, index) => (
-                            <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
+                            <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
                               <View className='search_content__video__item__cover--wrap'>
                                 <View className='search_content__video__item__cover--playtime'>
                                   <Text className='at-icon at-icon-play'></Text>
@@ -1144,7 +1149,7 @@ class Page extends Component<IProps, PageState> {
                   <CWhiteSpace size='sm' color='#fff'/>
                   {
                     videoInfo.videos.map((item, index) => (
-                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid)}>
+                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
                         <View className='search_content__video__item__cover--wrap'>
                           <View className='search_content__video__item__cover--playtime'>
                             <Text className='at-icon at-icon-play'></Text>
@@ -1266,7 +1271,7 @@ class Page extends Component<IProps, PageState> {
                   <CWhiteSpace size='sm' color='#fff'/>
                   {
                     mvInfo.mvs.map((item, index) => (
-                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.id)}>
+                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.id, 'mv')}>
                         <View className='search_content__video__item__cover--wrap'>
                           <View className='search_content__video__item__cover--playtime'>
                             <Text className='at-icon at-icon-play'></Text>
