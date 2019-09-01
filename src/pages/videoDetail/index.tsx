@@ -27,6 +27,23 @@ type PageState = {
       name: string
     }>
   },
+  mvInfo: {
+    cover: string,
+    name: string,
+    briefDesc: string,
+    desc: string,
+    shareCount: number,
+    playCount: number,
+    likeCount: number,
+    commentCount: number,
+    subCount: number,
+    artists: Array<{
+      name: string,
+      id: number
+    }>,
+    avatarUrl: string,
+    publishTime: string
+  },
   videoUrl: string,
   relatedList: Array<{
     vid: string,
@@ -37,7 +54,16 @@ type PageState = {
     creator: Array<{
       userName: string
     }>
-  }>
+  }>,
+  mvRelatedList: Array<{
+    id: string,
+    name: string,
+    duration: number,
+    playCount: number,
+    cover: string,
+    artistName: string
+  }>,
+  type: any
 }
 
 class Page extends Component<{}, PageState> {
@@ -70,18 +96,101 @@ class Page extends Component<{}, PageState> {
         },
         videoGroup: []
       },
+      mvInfo: {
+        cover: '',
+        name: '',
+        briefDesc: '',
+        desc: '',
+        shareCount: 0,
+        playCount: 0,
+        likeCount: 0,
+        commentCount: 0,
+        subCount: 0,
+        artists: [],
+        publishTime: '',
+        avatarUrl: ''
+      },
       videoUrl: '',
-      relatedList: []
+      relatedList: [],
+      mvRelatedList: [],
+      type: ''
     }
   }
 
-  componentWillMount() {
-    const { id } = this.$router.params
+  componentDidMount() {
     // const id = "5DCA972C0F5C920F22F91997A931D326"
-    this.getDetail(id)
+    // const id = 10858662
+    const { id, type } = this.$router.params
+    this.setState({
+      type: type
+    })
+    this.getDetailByType(id)
   }
 
-  getDetail(id) {
+  getDetailByType(id) {
+    const { type } = this.$router.params
+    if (type === 'mv') {
+      this.getMvDetail(id)
+    } else {
+      this.getVideoDetail(id)
+    }
+  }
+
+  getMvDetail(id) {
+    const videoContext = Taro.createVideoContext('myVideo')
+    videoContext.pause()
+    api.get('/mv/detail', {
+      mvid: id
+    }).then(({ data }) => {
+      console.log('mv', data)
+      if (data.data) {
+        let mvInfo = data.data
+        api.get('/artists', {
+          id: data.data.artists[0].id
+        }).then(({ data }) => {
+          // artist.picUrl
+          mvInfo.avatarUrl = data.artist.picUrl
+          this.setState({
+            mvInfo
+          })
+        })
+      }
+    })
+    api.get('/mv/url', {
+      id
+    }).then(({ data }) => {
+      console.log('mv-url', data)
+      if (data.data && data.data.url) {
+        this.setState({
+          videoUrl: data.data.url
+        })
+      }
+    })
+    api.get('/simi/mv', {
+      mvid: id
+    }).then(({ data }) => {
+      console.log('mv sim', data)
+      if (data.mvs && data.mvs.length) {
+        this.setState({
+          mvRelatedList: data.mvs
+        })
+      }
+    })
+    api.get('/comment/mv', {
+      id
+    }).then(({ data }) => {
+      console.log('mv-comment', data)
+      if (data.data && data.data.length) {
+        this.setState({
+          relatedList: data.data
+        })
+      }
+    })
+  }
+
+  getVideoDetail(id) {
+    const videoContext = Taro.createVideoContext('myVideo')
+    videoContext.pause()
     api.get('/video/detail', {
       id
     }).then(({ data }) => {
@@ -146,82 +255,159 @@ class Page extends Component<{}, PageState> {
 
 
   render () {
-    const { videoInfo, videoUrl, relatedList } = this.state
+    const { videoInfo, videoUrl, relatedList, mvInfo, mvRelatedList, type } = this.state
     return (
       <View className='videoDetail_container'>
         <Video
           src={videoUrl}
           controls={true}
           autoplay={false}
-          poster={videoInfo.coverUrl}
+          poster={type === 'video' ? videoInfo.coverUrl : mvInfo.cover}
           className='videoDetail__play'
           loop={false}
           muted={false}
+          id="myVideo"
         />
-        <View className='videoDetail__play__container'>
-          <View className='videoDetail__play__title'>
-            {videoInfo.title}
-          </View>
-          <View className='videoDetail__play__desc'>
-            <Text className='videoDetail__play__playtime'>{ formatCount(videoInfo.playTime) }次观看</Text> 
-            {
-              videoInfo.videoGroup.map((videoGroupItem) => <Text className='videoDetail__play__tag' key={videoGroupItem.id}>{videoGroupItem.name}</Text>)
-            }
-          </View>
-          <View className='flex videoDetail__play__numinfo'>
-            <View className='flex-item'>
-              <AtIcon prefixClass='fa' value='thumbs-o-up' size='24' color='#323232'></AtIcon>
-              <View className='videoDetail__play__numinfo__text'>{videoInfo.praisedCount}</View>
+        {
+          type === 'video' ?
+          <View className='videoDetail__play__container'>
+            <View className='videoDetail__play__title'>
+              {videoInfo.title}
             </View>
-            <View className='flex-item'>
-              <AtIcon value='star' size='24' color='#323232'></AtIcon>
-              <View className='videoDetail__play__numinfo__text'>{videoInfo.subscribeCount}</View>
+            <View className='videoDetail__play__desc'>
+              <Text className='videoDetail__play__playtime'>{ formatCount(videoInfo.playTime) }次观看</Text> 
+              {
+                videoInfo.videoGroup.map((videoGroupItem) => <Text className='videoDetail__play__tag' key={videoGroupItem.id}>{videoGroupItem.name}</Text>)
+              }
             </View>
-            <View className='flex-item'>
-              <AtIcon value='message' size='24' color='#323232'></AtIcon>
-              <View className='videoDetail__play__numinfo__text'>{videoInfo.commentCount}</View>
+            <View className='flex videoDetail__play__numinfo'>
+              <View className='flex-item'>
+                <AtIcon prefixClass='fa' value='thumbs-o-up' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{videoInfo.praisedCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='star' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{videoInfo.subscribeCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='message' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{videoInfo.commentCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='share' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{videoInfo.shareCount}</View>
+              </View>
             </View>
-            <View className='flex-item'>
-              <AtIcon value='share' size='24' color='#323232'></AtIcon>
-              <View className='videoDetail__play__numinfo__text'>{videoInfo.shareCount}</View>
+            <View className='videoDetail__play__user'>
+              <Image src={videoInfo.creator.avatarUrl} className='videoDetail__play__user__cover'/>
+              <Text>{videoInfo.creator.nickname}</Text>
+            </View>
+          </View> :
+          <View className='videoDetail__play__container'>
+            <View className='videoDetail__play__title'>
+              {mvInfo.name}
+            </View>
+            <View className='videoDetail__play__desc'>
+              <Text className='videoDetail__play__playtime'>{ formatCount(mvInfo.playCount) }次观看</Text> 
+            </View>
+            <View className='videoDetail__play__descinfo'>
+              <View>
+                发行： {mvInfo.publishTime}
+              </View>
+              <CWhiteSpace size='xs' color='#ffffff'/>
+              <View>
+                {mvInfo.briefDesc}
+              </View>
+              <CWhiteSpace size='xs' color='#ffffff'/>
+              <View>
+                {mvInfo.desc}
+              </View>
+            </View>
+            <View className='flex videoDetail__play__numinfo'>
+              <View className='flex-item'>
+                <AtIcon prefixClass='fa' value='thumbs-o-up' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{mvInfo.likeCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='star' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{mvInfo.subCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='message' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{mvInfo.commentCount}</View>
+              </View>
+              <View className='flex-item'>
+                <AtIcon value='share' size='24' color='#323232'></AtIcon>
+                <View className='videoDetail__play__numinfo__text'>{mvInfo.shareCount}</View>
+              </View>
+            </View>
+            <View className='videoDetail__play__user'>
+              <Image src={mvInfo.avatarUrl} className='videoDetail__play__user__cover'/>
+              <Text>{mvInfo.artists[0].name}</Text>
             </View>
           </View>
-          <View className='videoDetail__play__user'>
-            <Image src={videoInfo.creator.avatarUrl} className='videoDetail__play__user__cover'/>
-            <Text>{videoInfo.creator.nickname}</Text>
-          </View>
-        </View>
+        }
         <CWhiteSpace size='sm' color='#f8f8f8'/>
         <View className='videoDetail_relation'>
           <View className='videoDetail__title'>
             相关推荐
           </View>
-          <View>
-            {
-              relatedList.map((item, index) => (
-                <View className='search_content__video__item' key={index} onClick={this.getDetail.bind(this, item.vid)}>
-                  <View className='search_content__video__item__cover--wrap'>
-                    <View className='search_content__video__item__cover--playtime'>
-                      <Text className='at-icon at-icon-play'></Text>
-                      <Text>{formatCount(item.playTime)}</Text>
+          {
+            type === 'video' ?
+            <View>
+              {
+                relatedList.map((item, index) => (
+                  <View className='search_content__video__item' key={index} onClick={this.getDetailByType.bind(this, item.vid)}>
+                    <View className='search_content__video__item__cover--wrap'>
+                      <View className='search_content__video__item__cover--playtime'>
+                        <Text className='at-icon at-icon-play'></Text>
+                        <Text>{formatCount(item.playTime)}</Text>
+                      </View>
+                      <Image src={item.coverUrl} className='search_content__video__item__cover'/>
                     </View>
-                    <Image src={item.coverUrl} className='search_content__video__item__cover'/>
+                    <View className='search_content__video__item__info'>
+                      <View className='search_content__video__item__info__title'>
+                        {item.title}
+                      </View>
+                      <View className='search_content__video__item__info__desc'>
+                        <Text>{this.formatDuration(item.durationms)},</Text>
+                        <Text className='search_content__video__item__info__desc__nickname'>
+                          by {item.creator[0].userName}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                  <View className='search_content__video__item__info'>
-                    <View className='search_content__video__item__info__title'>
-                      {item.title}
+                ))
+              }
+            </View> :
+            <View>
+              {
+                mvRelatedList.map((item, index) => (
+                  <View className='search_content__video__item' key={index} onClick={this.getDetailByType.bind(this, item.id)}>
+                    <View className='search_content__video__item__cover--wrap'>
+                      <View className='search_content__video__item__cover--playtime'>
+                        <Text className='at-icon at-icon-play'></Text>
+                        <Text>{formatCount(item.playCount)}</Text>
+                      </View>
+                      <Image src={item.cover} className='search_content__video__item__cover'/>
                     </View>
-                    <View className='search_content__video__item__info__desc'>
-                      <Text>{this.formatDuration(item.durationms)},</Text>
-                      <Text className='search_content__video__item__info__desc__nickname'>
-                        by {item.creator[0].userName}
-                      </Text>
+                    <View className='search_content__video__item__info'>
+                      <View className='search_content__video__item__info__title'>
+                        {item.name}
+                      </View>
+                      <View className='search_content__video__item__info__desc'>
+                        <Text>{this.formatDuration(item.duration)},</Text>
+                        <Text className='search_content__video__item__info__desc__nickname'>
+                          by {item.artistName}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              ))
-            }
-          </View>
+                ))
+              }
+            </View>
+          }
+ 
         </View>
         <CWhiteSpace size='sm' color='#f8f8f8'/>
         {/* <View className='videoDetail_comment'>
