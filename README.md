@@ -105,6 +105,7 @@ npm run dev:weapp
 
 - 加入搜索功能（进一步完善中）
 - 加入了视频播放（进一步完善中）
+- 加入了mv播放（进一步完善中）
 
 <div align="center">
   <image width="900" src="https://oscimg.oschina.net/oscnet/593c5fbb8302492750ce20ad4a61086f417.jpg"/>
