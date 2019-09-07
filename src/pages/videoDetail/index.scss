@@ -1,7 +1,17 @@
+@import '../../base.scss';
 .videoDetail_container {
+  height: 100%;
+  position: relative;
   .videoDetail__play {
+    position: absolute;
     width: 100%;
     height: 420px;
+    top: 0;
+  }
+  .videoDetail_scroll {
+    padding-top: 420px;
+    box-sizing: border-box;
+    height: 100%;
   }
   .videoDetail__play__container {
     padding: 20px 30px 0 30px;
@@ -62,9 +72,6 @@
     font-size: 26px;
     margin-bottom: 30px;
   }
-  .videoDetail_comment {
-    padding: 20px 30px 0 30px;
-  }
   .search_content__video__item {
     display: flex;
     align-items: center;
@@ -101,6 +108,40 @@
       }
       .search_content__video__item__info__desc__nickname {
         margin: 0 10px;
+      }
+    }
+  }
+  .videoDetail__comment {
+    padding: 20px 30px 0 30px;
+  }
+  .videoDetail__comment__info__item {
+    padding-top: 30px;
+    .videoDetail__comment__info__item__avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+    .videoDetail__comment__info__item__nickname {
+      font-size: 24px;
+    }
+    .videoDetail__comment__info__item__time {
+      font-size: 20px;
+      color: #ccc;
+    }
+    .videoDetail__comment__info__item__content {
+      font-size: 28px;
+      margin-top: 15px;
+      padding-bottom: 30px;
+      padding-left: 80px;
+      border-bottom: 1px solid #f8f8f8;
+      box-sizing: border-box;
+    }
+    .videoDetail__comment__info__item__likecount {
+      font-size: 22px;
+      color: #aaa;
+      &.like {
+        color: $primary-color
       }
     }
   }

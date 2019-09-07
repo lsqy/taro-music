@@ -31,8 +31,13 @@ class App extends Component {
     pages: [
       'pages/my/index',
       'pages/videoDetail/index',
-      'pages/searchResult/index', 
       'pages/search/index',
+      
+      
+      
+      
+      'pages/searchResult/index', 
+      
       // 'pages/search/index',
       'pages/index/index',
       'pages/songDetail/index',
