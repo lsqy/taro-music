@@ -109,7 +109,7 @@ npm run dev:weapp
 - 加入了视频与mv中的评论列表（2019-09-07）
 
 <div align="center">
-  <image width="900" src="https://oscimg.oschina.net/oscnet/593c5fbb8302492750ce20ad4a61086f417.jpg"/>
+  <image width="900" src="https://oscimg.oschina.net/oscnet/498fdfc98cc89d72196dded4f54afa29ed4.jpg"/>
 </div>
 
 ### 效果图预览
