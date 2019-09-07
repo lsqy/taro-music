@@ -27,6 +27,15 @@ page {
 .flex-between {
     justify-content: space-between;
 }
+.flex-between {
+    justify-content: space-between;
+}
+.flex-row {
+    flex-direction: row;
+}
+.flex-column {
+    flex-direction: column;
+}
 
 // reset taro ui
 .at-search-bar__action {
