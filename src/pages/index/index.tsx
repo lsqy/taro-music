@@ -1,11 +1,12 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
 import CMusic from '../../components/CMusic'
+import api from '../../services/api'
 import { injectPlaySong } from '../../utils/decorators'
 import { songType } from '../../constants/commonType'
 import { 
@@ -60,7 +61,11 @@ type PageOwnProps = {}
 
 type PageState = {
   current: number,
-  showLoading: boolean
+  showLoading: boolean,
+  bannerList: Array<{
+    typeTitle: string,
+    pic: string
+  }>
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -113,7 +118,8 @@ class Index extends Component<IProps, PageState> {
     super(props)
     this.state = {
       current: 0,
-      showLoading: true
+      showLoading: true,
+      bannerList: []
     }
   }
 
@@ -129,6 +135,7 @@ class Index extends Component<IProps, PageState> {
     this.getNewsong()
     this.getDjprogram()
     this.getRecommend()
+    this.getBanner()
   }
 
   componentWillUnmount () { }
@@ -176,9 +183,29 @@ class Index extends Component<IProps, PageState> {
     this.props.getRecommend()
   }
 
+  getBanner() {
+    api.get('/banner', {
+      type: 2
+    }).then(({ data }) => {
+      console.log('banner', data)
+      if (data.banners) {
+        this.setState({
+          bannerList: data.banners
+        })
+      }
+    })
+  }
+
   goDetail(item) {
     Taro.navigateTo({
       url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+    })
+  }
+
+  goDjDetail() {
+    Taro.showToast({
+      title: '暂未实现，敬请期待',
+      icon: 'none'
     })
   }
 
@@ -193,7 +220,7 @@ class Index extends Component<IProps, PageState> {
 
   render () {
     const { recommendPlayList, recommendDj, song } = this.props
-    const { showLoading } = this.state
+    const { showLoading, bannerList } = this.state
     return (
       <View className={
         classnames({
@@ -203,6 +230,22 @@ class Index extends Component<IProps, PageState> {
       }>
         <CLoading fullPage={true} hide={!showLoading} />
         <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
+        <Swiper 
+          className='banner_list'
+          indicatorColor='#999'
+          indicatorActiveColor='#d43c33'
+          circular
+          indicatorDots
+          autoplay
+          >
+          {
+            bannerList.map((item, index) => 
+              <SwiperItem key={index} className='banner_list__item'>
+                <Image src={item.pic} className='banner_list__item__img'/>
+              </SwiperItem>
+            )
+          }
+        </Swiper>
         <View className='recommend_playlist'>
           <View className='recommend_playlist__title'>
             推荐歌单
@@ -233,7 +276,7 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className='recommend_playlist__content'>
             {
-              recommendDj.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              recommendDj.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDjDetail.bind(this, item)}>
                 <Image 
                   src={item.picUrl}
                   className='recommend_playlist__item__cover'

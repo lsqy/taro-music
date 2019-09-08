@@ -4,6 +4,17 @@
     &.hasMusicBox {
         padding-bottom: 220px;
     }
+    .banner_list {
+        height: 375px;
+        margin-top: 20px;
+    }
+    .banner_list__item__img {
+        width: 92%;
+        height: 375px;
+        position: relative;
+        left: 4%;
+        border-radius: 20px;
+    }
     .index_header {
         position: fixed;
         top: 0;
