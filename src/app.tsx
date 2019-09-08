@@ -29,6 +29,7 @@ class App extends Component {
    */
   config: Config = {
     pages: [
+      'pages/index/index',
       'pages/my/index',
       'pages/videoDetail/index',
       'pages/search/index',
@@ -39,7 +40,7 @@ class App extends Component {
       'pages/searchResult/index', 
       
       // 'pages/search/index',
-      'pages/index/index',
+      
       'pages/songDetail/index',
       'pages/myFans/index',
       'pages/myFocus/index',
