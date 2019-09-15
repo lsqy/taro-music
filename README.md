@@ -131,7 +131,7 @@ npm run dev:weapp
 - 推荐歌单
 
 <div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95.png"/>
+  <image width="340" src="http://img.lsqy.tech/hexo/%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95.jpg"/>
 </div>
 
 - 歌单详情
