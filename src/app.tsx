@@ -33,7 +33,7 @@ class App extends Component {
       'pages/my/index',
       'pages/videoDetail/index',
       'pages/search/index',
-      
+      'pages/user/index',
       
       
       

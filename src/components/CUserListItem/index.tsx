@@ -9,8 +9,10 @@ type Props = {
     avatarUrl: string,
     nickname: string,
     signature?: string,
-    gender: number
-  }
+    gender: number,
+    userId: number
+  },
+  clickFunc?: (number) => any
 }
 
 export default class CUserListItem extends Component<Props, {}> {
@@ -18,11 +20,17 @@ export default class CUserListItem extends Component<Props, {}> {
   componentWillMount() {
   }
 
+  goDetail() {
+    if (this.props.clickFunc) {
+      this.props.clickFunc(this.props.userInfo.userId)
+    }
+  }
+
   render() {
     const { userInfo } = this.props
     if (!userInfo) return null
     return (
-        <View className='userListItem_components'>
+        <View className='userListItem_components' onClick={this.goDetail.bind(this)}>
             <Image 
 							src={userInfo.avatarUrl}
 							className='userListItem__avatar'

@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
 import CUserListItem from '../../components/CUserListItem'
@@ -10,13 +10,14 @@ type userInfo = {
   avatarUrl: string,
   nickname: string,
   signature?: string,
-  gender: number
+  gender: number,
+  userId: number
 }
 
 type PageState = {
   userList: Array<userInfo>,
   userId: number,
-  hideLoading: boolean
+  hasMore: boolean
 }
 
 class Page extends Component<{}, PageState> {
@@ -37,7 +38,7 @@ class Page extends Component<{}, PageState> {
     this.state = {
       userId: Taro.getStorageSync('userId'),
       userList: [],
-      hideLoading: false
+      hasMore: true
     }
   }
 
@@ -48,14 +49,20 @@ class Page extends Component<{}, PageState> {
   componentWillUnmount () { }
 
   componentWillMount () {
-    const { userId } = this.state
+    this.getFollowedList()
+  }
+
+  getFollowedList() {
+    const { userId, userList, hasMore } = this.state
+    if (!hasMore) return
     api.get('/user/followeds', {
       uid: userId,
-      limit: 1000
+      limit: 20,
+      offset: this.state.userList.length
     }).then((res) => {
       this.setState({
-        userList: res.data.followeds,
-        hideLoading: true
+        userList: userList.concat(res.data.followeds),
+        hasMore: res.data.more
       })
     })
   }
@@ -65,17 +72,27 @@ class Page extends Component<{}, PageState> {
 
   componentDidHide () { }
 
+  goUserDetail() {
+    Taro.showToast({
+      title: '详情页面正在开发中，敬请期待',
+      icon: 'none'
+    })
+    // Taro.navigateTo({
+    //   url: `/pages/user/index?id=${id}`
+    // })
+  }
+
 
   render () {
-    const { hideLoading, userList } = this.state
+    const { hasMore, userList } = this.state
     return (
       <View className='my_fans_container'>
-        <CLoading fullPage={true} hide={hideLoading} />
-        <View className='user_list'>
+        <ScrollView scrollY onScrollToLower={this.getFollowedList.bind(this)} className='user_list'>
           {
-            userList.map((item, index) => <CUserListItem userInfo={item} key={index} />)
+            userList.map((item, index) => <CUserListItem userInfo={item} key={index} clickFunc={this.goUserDetail.bind(this)}/>)
           }
-        </View>
+          <CLoading hide={!hasMore} />
+        </ScrollView>
       </View>
     )
   }

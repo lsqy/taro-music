@@ -1,3 +1,4 @@
+const path = require('path');
 const config = {
   projectName: 'taro-music',
   date: '2019-3-19',
@@ -25,6 +26,9 @@ const config = {
     }
   },
   defineConstants: {
+  },
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src')
   },
   copy: {
     patterns: [
