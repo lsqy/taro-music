@@ -40,16 +40,17 @@ type PageState = {
       account: {
         id: number
       },
+      level: number,
       profile: {
         avatarUrl: string,
         backgroundUrl: string,
         nickname: string,
         eventCount: number,
         follows: number,
-        followeds: number
+        followeds: number,
+        userId: number
       }
     },
-    userLevel: number,
     current: number,
     userCreateList: Array<ListItemInfo>,
     userCollectList: Array<ListItemInfo>,
@@ -90,7 +91,6 @@ class Page extends Component<IProps, PageState> {
     super(props)
     this.state = {
       userInfo: Taro.getStorageSync('userInfo'),
-      userLevel: 0,
       current: 1,
       userCreateList: [],
       userCollectList: [],
@@ -119,26 +119,27 @@ class Page extends Component<IProps, PageState> {
   componentDidHide () { }
 
   getUserDetail() {
-    const { id } = this.state.userInfo.account
+    const { userId } = this.state.userInfo.profile
     api.get('/user/detail', {
-      uid: id
+      uid: userId
     }).then((res) => {
+      res.data
       this.setState({
-        userLevel: res.data.level
+        userInfo: res.data
       })
     })
   }
 
   getPlayList() {
-    const { id } = this.state.userInfo.account
+    const { userId } = this.state.userInfo.profile
     api.get('/user/playlist', {
-      uid: id,
+      uid: userId,
       limit: 300
     }).then((res) => {
       if (res.data.playlist && res.data.playlist.length > 0) {
         this.setState({
-          userCreateList: res.data.playlist.filter(item => item.userId === id),
-          userCollectList: res.data.playlist.filter(item => item.userId !== id),
+          userCreateList: res.data.playlist.filter(item => item.userId === userId),
+          userCollectList: res.data.playlist.filter(item => item.userId !== userId),
         })
       }
     })
@@ -162,6 +163,14 @@ class Page extends Component<IProps, PageState> {
       title: '暂未实现，敬请期待',
       icon: 'none'
     })
+  }
+
+  goUserDetail() {
+    return
+    // const { userId } = this.state.userInfo.profile
+    // Taro.navigateTo({
+    //   url: `/pages/user/index?id=${userId}`
+    // })
   }
 
   goSearch() {
@@ -197,7 +206,7 @@ class Page extends Component<IProps, PageState> {
   }
 
   render () {
-    const { userInfo, userLevel, userCreateList, userCollectList, searchValue } = this.state
+    const { userInfo, userCreateList, userCollectList, searchValue } = this.state
     return (
       <View className={classnames({
         my_container: true,
@@ -213,14 +222,14 @@ class Page extends Component<IProps, PageState> {
           />
         </View>
         <View className='header'>
-          <View className='header__left'>
+          <View className='header__left' onClick={this.goUserDetail.bind(this)}>
             <Image src={userInfo.profile.avatarUrl} className='header__img' />
             <View className='header__info'>
               <View className='header__info__name'>
                 {userInfo.profile.nickname}
               </View>
               <View>
-                <Text className='header__info__level'>LV.{userLevel}</Text>
+                <Text className='header__info__level'>LV.{userInfo.level}</Text>
               </View>
             </View>
           </View>
