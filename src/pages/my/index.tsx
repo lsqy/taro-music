@@ -46,7 +46,7 @@ type PageState = {
         backgroundUrl: string,
         nickname: string,
         eventCount: number,
-        follows: number,
+        newFollows: number,
         followeds: number,
         userId: number
       }
@@ -223,7 +223,7 @@ class Page extends Component<IProps, PageState> {
         </View>
         <View className='header'>
           <View className='header__left' onClick={this.goUserDetail.bind(this)}>
-            <Image src={userInfo.profile.avatarUrl} className='header__img' />
+            <Image src={`${userInfo.profile.avatarUrl}?imageView&thumbnail=250x0`} className='header__img' />
             <View className='header__info'>
               <View className='header__info__name'>
                 {userInfo.profile.nickname}
@@ -238,19 +238,19 @@ class Page extends Component<IProps, PageState> {
         <View className='user_count'>
           <View className='user_count__sub' onClick={this.showToast.bind(this)}>
             <View className='user_count__sub--num'>
-              {userInfo.profile.eventCount}
+              {userInfo.profile.eventCount || 0}
             </View>
             <View>动态</View>
           </View>
           <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myFocus')}>
             <View className='user_count__sub--num'>
-              {userInfo.profile.follows}
+              {userInfo.profile.newFollows || 0}
             </View>
             <View>关注</View>
           </View>
           <View className='user_count__sub' onClick={this.jumpPage.bind(this, 'myFans')}>
             <View className='user_count__sub--num'>
-              {userInfo.profile.followeds}
+              {userInfo.profile.followeds || 0}
             </View>
             <View>粉丝</View>
           </View>
@@ -305,7 +305,7 @@ class Page extends Component<IProps, PageState> {
               userCreateList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
-                  src={item.coverImgUrl}
+                  src={`${item.coverImgUrl}?imageView&thumbnail=250x0`}
                 />
                 <View className='user_playlist__item__info'>
                   <View className='user_playlist__item__info__name'>{item.name}</View>
@@ -327,7 +327,7 @@ class Page extends Component<IProps, PageState> {
               userCollectList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
-                  src={item.coverImgUrl}
+                  src={`${item.coverImgUrl}?imageView&thumbnail=250x0`}
                 />
                 <View className='user_playlist__item__info'>
                   <View className='user_playlist__item__info__name'>{item.name}</View>

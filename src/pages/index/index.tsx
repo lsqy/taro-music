@@ -254,7 +254,7 @@ class Index extends Component<IProps, PageState> {
             {
               recommendPlayList.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
-                  src={item.picUrl}
+                  src={`${item.picUrl}?imageView&thumbnail=250x0`}
                   className='recommend_playlist__item__cover'
                 />
                 <View className='recommend_playlist__item__cover__num'>
@@ -278,7 +278,7 @@ class Index extends Component<IProps, PageState> {
             {
               recommendDj.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDjDetail.bind(this, item)}>
                 <Image 
-                  src={item.picUrl}
+                  src={`${item.picUrl}?imageView&thumbnail=250x0`}
                   className='recommend_playlist__item__cover'
                 />
                 <View className='recommend_playlist__item__title'>{item.name}</View>

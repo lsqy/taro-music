@@ -32,7 +32,7 @@ export default class CUserListItem extends Component<Props, {}> {
     return (
         <View className='userListItem_components' onClick={this.goDetail.bind(this)}>
             <Image 
-							src={userInfo.avatarUrl}
+							src={`${userInfo.avatarUrl}?imageView&thumbnail=250x0`}
 							className='userListItem__avatar'
             />
             <View className='userListItem__info'>
