@@ -70,8 +70,8 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 
   componentDidHide () { }
 
-  playSong(songId, canPlay) {
-    if (canPlay) {
+  playSong(songId, playStatus) {
+    if (playStatus === 0) {
       Taro.navigateTo({
         url: `/pages/songDetail/index?id=${songId}`
       })
@@ -155,7 +155,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
                   disabled: playListDetailPrivileges[index].st === -200
                 })}
                 key={index}
-                onClick={this.playSong.bind(this, track.id, playListDetailPrivileges[index].st !== -200)}
+                onClick={this.playSong.bind(this, track.id, playListDetailPrivileges[index].st)}
                 >
                   <Text className='playList__content__list__item__index'>{index+1}</Text>
                   <View className='playList__content__list__item__info'>
