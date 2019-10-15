@@ -1,13 +1,12 @@
-<!--
- * @Description: In User Settings Edit
- * @Author: lsqy
- * @Date: 2019-08-14 09:35:50
- * @LastEditTime: 2019-08-15 09:50:08
- * @LastEditors: Please set LastEditors
- -->
 ## taro-music
 
 > 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序，此项目会持续更新，欢迎`watch`和`star`～
+
+<hr/>
+
+[![GitHub stars](https://img.shields.io/github/stars/lsqy/taro-music.svg?style=flat&label=Star)](https://github.com/lsqy/taro-music/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/lsqy/taro-music.svg?style=flat&label=Fork)](https://github.com/lsqy/taro-music/fork)
+[![GitHub watchers](https://img.shields.io/github/watchers/lsqy/taro-music.svg?style=flat&label=Watch)](https://github.com/lsqy/taro-music/watchers)
 
 ### 快速开始
 
