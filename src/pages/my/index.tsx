@@ -189,6 +189,13 @@ class Page extends Component<IProps, PageState> {
     })
   }
 
+  jumpEventPage() {
+    const { userId } = this.state.userInfo.profile
+    Taro.navigateTo({
+      url: `/pages/myEvents/index?uid=${userId}`
+    })
+  }
+
   signOut() {
     Taro.clearStorage()
     api.get('/logout').then((res) => {
@@ -236,7 +243,7 @@ class Page extends Component<IProps, PageState> {
           <AtIcon prefixClass='fa' value='sign-out' size='30' color='#d43c33' className='exit_icon' onClick={this.signOut.bind(this)}></AtIcon>
         </View>
         <View className='user_count'>
-          <View className='user_count__sub' onClick={this.showToast.bind(this)}>
+          <View className='user_count__sub' onClick={this.jumpEventPage.bind(this)}>
             <View className='user_count__sub--num'>
               {userInfo.profile.eventCount || 0}
             </View>
