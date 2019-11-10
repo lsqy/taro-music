@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
-import { AtTabBar } from 'taro-ui'
+import { AtTabBar, AtSearchBar } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
@@ -65,7 +65,8 @@ type PageState = {
   bannerList: Array<{
     typeTitle: string,
     pic: string
-  }>
+  }>,
+  searchValue: string
 }
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
@@ -119,7 +120,8 @@ class Index extends Component<IProps, PageState> {
     this.state = {
       current: 0,
       showLoading: true,
-      bannerList: []
+      bannerList: [],
+      searchValue: ''
     }
   }
 
@@ -196,6 +198,12 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
+  goSearch() {
+    Taro.navigateTo({
+      url: `/pages/search/index`
+    })
+  }
+
   goDetail(item) {
     Taro.navigateTo({
       url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
@@ -222,8 +230,8 @@ class Index extends Component<IProps, PageState> {
   }
 
   render () {
-    const { recommendPlayList, recommendDj, song } = this.props
-    const { showLoading, bannerList } = this.state
+    const { recommendPlayList, song } = this.props
+    const { showLoading, bannerList, searchValue } = this.state
     return (
       <View className={
         classnames({
@@ -233,6 +241,14 @@ class Index extends Component<IProps, PageState> {
       }>
         <CLoading fullPage={true} hide={!showLoading} />
         <CMusic songInfo={ this.props.song } isHome={true} onUpdatePlayStatus={this.props.updatePlayStatus.bind(this)} />
+        <View onClick={this.goSearch.bind(this)}>
+          <AtSearchBar
+            actionName='搜一下'
+            disabled={true}
+            value={searchValue}
+            onChange={this.goSearch.bind(this)}
+          />
+        </View>
         <Swiper 
           className='banner_list'
           indicatorColor='#999'
