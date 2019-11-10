@@ -77,3 +77,9 @@ export type songType = {
   likeMusicList: Array<number>,
   recentTab: number
 }
+
+export type djListType = {
+  djListDetailInfo: {
+    name: string
+  },
+}

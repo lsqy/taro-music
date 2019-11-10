@@ -202,10 +202,13 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
-  goDjDetail() {
-    Taro.showToast({
-      title: '暂未实现，敬请期待',
-      icon: 'none'
+  goDjDetail(item) {
+    // Taro.showToast({
+    //   title: '暂未实现，敬请期待',
+    //   icon: 'none'
+    // })
+    Taro.navigateTo({
+      url: `/pages/djprogramListDetail/index?id=${item.id}&name=${item.name}`
     })
   }
 
@@ -270,7 +273,7 @@ class Index extends Component<IProps, PageState> {
             }
           </View>
         </View>
-        <View className='recommend_playlist'>
+        {/* <View className='recommend_playlist'>
           <View className='recommend_playlist__title'>
             推荐电台
           </View>
@@ -285,7 +288,7 @@ class Index extends Component<IProps, PageState> {
               </View>)
             }
           </View>
-        </View>
+        </View> */}
         <AtTabBar
           fixed
           selectedColor='#d43c33'

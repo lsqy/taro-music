@@ -34,13 +34,9 @@ class App extends Component {
       'pages/videoDetail/index',
       'pages/search/index',
       'pages/user/index',
-      
-      
-      
+      'pages/djprogramListDetail/index',
       'pages/searchResult/index', 
-      
       // 'pages/search/index',
-      
       'pages/songDetail/index',
       'pages/myFans/index',
       'pages/myFocus/index',
