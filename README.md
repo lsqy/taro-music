@@ -13,7 +13,7 @@
 首先需要在src目录下创建一个config.ts,可以根据自己的需要将其替换成线上地址，接口服务是使用的[NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/)
 
 ```
-export const baseUrl: string = 'http://localhost:3000' // 这里的配置的这个url是后端服务的请求地址
+export const baseUrl: string = 'http://localhost:3000' // 这里配置的这个url是后端服务的请求地址
 
 ```
 
