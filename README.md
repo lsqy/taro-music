@@ -7,6 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/lsqy/taro-music.svg?style=flat&label=Star)](https://github.com/lsqy/taro-music/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/lsqy/taro-music.svg?style=flat&label=Fork)](https://github.com/lsqy/taro-music/fork)
 [![GitHub watchers](https://img.shields.io/github/watchers/lsqy/taro-music.svg?style=flat&label=Watch)](https://github.com/lsqy/taro-music/watchers)
+[![GitHub](https://img.shields.io/github/license/lsqy/taro-music)](https://github.com/lsqy/taro-music/blob/master/LICENSE)
 
 ### 快速开始
 
