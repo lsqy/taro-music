@@ -27,8 +27,6 @@ import './index.scss'
 // 这样才能完成类型检查和 IDE 的自动提示
 // 使用函数模式则无此限制
 // ref: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20796
-//
-// #endregion
 
 type PageStateProps = {
   song: songType,
