@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-// import api from '../../services/api'
+import api from '../../services/api'
 import './index.scss'
 
 
@@ -34,11 +34,12 @@ class Page extends Component<{}, PageState> {
   }
 
   componentWillMount () {
-    // const { userId } = this.state
-    // api.get('/user/event', {
-    //   uid: userId
-    // }).then((res) => {
-    // })
+    const { userId } = this.state
+    api.get('/user/event', {
+      uid: userId
+    }).then((res) => {
+      console.log('event =>', res)
+    })
   }
 
   componentDidShow () {
