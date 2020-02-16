@@ -33,6 +33,32 @@
             height: 50px;
         }
     }
+    .handle_list {
+        overflow: hidden;
+        margin-top: 40px;
+        padding: 0 40px;
+        .handle_list__item {
+            width: 20%;
+            float: left;
+            text-align: center;
+            .handle_list__item__icon-wrap {
+                background-color: $primary-color;
+                width: 100px;
+                height: 100px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                margin: 0 auto;
+            }
+            .handle_list_item__icon {
+                margin-left: 5px;
+            }
+            .handle_list__item__text {
+                font-size: 24px;
+            }
+        }
+    }
     .recommend_playlist {
         padding: 40px;
         overflow: hidden;

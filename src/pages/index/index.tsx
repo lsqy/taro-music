@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
-import { AtTabBar, AtSearchBar } from 'taro-ui'
+import { AtTabBar, AtSearchBar, AtIcon } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import classnames from 'classnames'
 import CLoading from '../../components/CLoading'
@@ -208,6 +208,13 @@ class Index extends Component<IProps, PageState> {
     })
   }
 
+  goPage(pageName) {
+    Taro.showToast({
+      title: '正在开发中，敬请期待',
+      icon: 'none'
+    })
+  }
+
   goDjDetail(item) {
     // Taro.showToast({
     //   title: '暂未实现，敬请期待',
@@ -263,6 +270,20 @@ class Index extends Component<IProps, PageState> {
             )
           }
         </Swiper>
+        <View className='handle_list'>
+          <View className='handle_list__item' onClick={this.goPage.bind(this, 'recommend')}>
+            <View className='handle_list__item__icon-wrap'>
+              <AtIcon prefixClass='fa' value='calendar-minus-o' size='25' color='#ffffff' className='handle_list_item__icon'></AtIcon>
+            </View>
+            <Text className='handle_list__item__text'>每日推荐</Text>
+          </View>
+          <View className='handle_list__item' onClick={this.goPage.bind(this, 'rank')}>
+            <View className='handle_list__item__icon-wrap'>
+              <AtIcon prefixClass='fa' value='bar-chart' size='25' color='#ffffff' className='handle_list_item__icon'></AtIcon>
+            </View>
+            <Text className='handle_list__item__text'>排行榜</Text>
+          </View>
+        </View>
         <View className='recommend_playlist'>
           <View className='recommend_playlist__title'>
             推荐歌单
