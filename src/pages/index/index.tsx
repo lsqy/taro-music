@@ -209,6 +209,9 @@ class Index extends Component<IProps, PageState> {
   }
 
   goPage(pageName) {
+    // Taro.navigateTo({
+    //   url: `/pages/${pageName}/index`
+    // })
     Taro.showToast({
       title: '正在开发中，敬请期待',
       icon: 'none'
@@ -271,7 +274,7 @@ class Index extends Component<IProps, PageState> {
           }
         </Swiper>
         <View className='handle_list'>
-          <View className='handle_list__item' onClick={this.goPage.bind(this, 'recommend')}>
+          <View className='handle_list__item' onClick={this.goPage.bind(this, 'dailyRecommend')}>
             <View className='handle_list__item__icon-wrap'>
               <AtIcon prefixClass='fa' value='calendar-minus-o' size='25' color='#ffffff' className='handle_list_item__icon'></AtIcon>
             </View>

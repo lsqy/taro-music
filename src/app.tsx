@@ -30,6 +30,7 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
+      'pages/dailyRecommend/index',
       'pages/my/index',
       'pages/videoDetail/index',
       'pages/search/index',
