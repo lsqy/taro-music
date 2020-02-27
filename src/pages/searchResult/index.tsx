@@ -842,8 +842,8 @@ class Page extends Component<IProps, PageState> {
                         单曲
                       </View>
                       {
-                        totalInfo.songInfo.songs.map((item, index) => (
-                          <View key={index} className='searchResult__music'>
+                        totalInfo.songInfo.songs.map((item) => (
+                          <View key={item.id} className='searchResult__music'>
                             <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
                               <View className='searchResult__music__info__name'>
                               {item.name}
@@ -872,7 +872,7 @@ class Page extends Component<IProps, PageState> {
                       <View>
                         {
                           totalInfo.playListInfo.playLists.map((item, index) => (
-                            <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
+                            <View className='search_content__playList__item' key={item.id} onClick={this.goPlayListDetail.bind(this, item)}>
                               <View>
                                 <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
                               </View>
@@ -911,8 +911,8 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View>
                         {
-                          totalInfo.videoInfo.videos.map((item, index) => (
-                            <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
+                          totalInfo.videoInfo.videos.map((item) => (
+                            <View className='search_content__video__item' key={item.vid} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
                               <View className='search_content__video__item__cover--wrap'>
                                 <View className='search_content__video__item__cover--playtime'>
                                   <Text className='at-icon at-icon-play'></Text>
@@ -950,7 +950,7 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View className='search_content__simquery'>
                         {
-                          totalInfo.sim_query.sim_querys.map((item, index) => <Text key={index} onClick={this.queryResultBySim.bind(this, item.keyword)} className='search_content__simquery__item'>{item.keyword}</Text>)
+                          totalInfo.sim_query.sim_querys.map((item) => <Text key={item.keyword} onClick={this.queryResultBySim.bind(this, item.keyword)} className='search_content__simquery__item'>{item.keyword}</Text>)
                         }
                       </View>
                     </View> : ''
@@ -963,8 +963,8 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View>
                         {
-                          totalInfo.artistInfo.artists.map((item, index) => (
-                            <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
+                          totalInfo.artistInfo.artists.map((item) => (
+                            <View className='search_content__artist__item' key={item.id} onClick={this.showTip.bind(this)}>
                               <Image src={item.picUrl} className='search_content__artist__item__cover'/>
                               <Text>{item.name}{item.alias[0] ? `（${item.alias[0]}）` : ''}</Text>
                             </View>
@@ -986,8 +986,8 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View>
                         {
-                          totalInfo.albumInfo.albums.map((item, index) => (
-                            <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                          totalInfo.albumInfo.albums.map((item) => (
+                            <View className='search_content__playList__item' key={item.id} onClick={this.showTip.bind(this)}>
                               <View>
                                 <Image src={item.picUrl} className='search_content__playList__item__cover'/>
                               </View>
@@ -1025,8 +1025,8 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View>
                         {
-                          totalInfo.djRadioInfo.djRadios.map((item, index) => (
-                            <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                          totalInfo.djRadioInfo.djRadios.map((item) => (
+                            <View className='search_content__playList__item' key={item.id} onClick={this.showTip.bind(this)}>
                               <View>
                                 <Image src={item.picUrl} className='search_content__playList__item__cover'/>
                               </View>
@@ -1059,8 +1059,8 @@ class Page extends Component<IProps, PageState> {
                       </View>
                       <View>
                         {
-                          totalInfo.userListInfo.users.map((item, index) => (
-                            <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
+                          totalInfo.userListInfo.users.map((item) => (
+                            <View className='search_content__artist__item' key={item.userId} onClick={this.showTip.bind(this)}>
                               <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
                               <View className='search_content__artist__item__info'>
                                 <View>
@@ -1096,8 +1096,8 @@ class Page extends Component<IProps, PageState> {
             <AtTabsPane current={activeTab} index={1}>
               <ScrollView scrollY onScrollToLower={this.getSongList.bind(this)} className='search_content__scroll'>
               {
-                songInfo.songs.map((item, index) => (
-                  <View key={index} className='searchResult__music'>
+                songInfo.songs.map((item) => (
+                  <View key={item.id} className='searchResult__music'>
                     <View className='searchResult__music__info' onClick={this.playSong.bind(this, item.id)}>
                       <View className='searchResult__music__info__name'>
                       {item.name}
@@ -1117,8 +1117,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getPlayList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
-                  playListInfo.playLists.map((item, index) => (
-                    <View className='search_content__playList__item' key={index} onClick={this.goPlayListDetail.bind(this, item)}>
+                  playListInfo.playLists.map((item) => (
+                    <View className='search_content__playList__item' key={item.id} onClick={this.goPlayListDetail.bind(this, item)}>
                       <View>
                         <Image src={item.coverImgUrl} className='search_content__playList__item__cover'/>
                       </View>
@@ -1149,7 +1149,7 @@ class Page extends Component<IProps, PageState> {
                   <CWhiteSpace size='sm' color='#fff'/>
                   {
                     videoInfo.videos.map((item, index) => (
-                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
+                      <View className='search_content__video__item' key={item.vid} onClick={this.goVideoDetail.bind(this, item.vid, 'video')}>
                         <View className='search_content__video__item__cover--wrap'>
                           <View className='search_content__video__item__cover--playtime'>
                             <Text className='at-icon at-icon-play'></Text>
@@ -1178,8 +1178,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getArtistList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
-                  artistInfo.artists.map((item, index) => (
-                    <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
+                  artistInfo.artists.map((item) => (
+                    <View className='search_content__artist__item' key={item.id} onClick={this.showTip.bind(this)}>
                       <Image src={item.picUrl} className='search_content__artist__item__cover'/>
                       <Text>{item.name}{item.alias[0] ? `（${item.alias[0]}）` : ''}</Text>
                     </View>
@@ -1192,8 +1192,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getAlbumList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
-                  albumInfo.albums.map((item, index) => (
-                    <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                  albumInfo.albums.map((item) => (
+                    <View className='search_content__playList__item' key={item.id} onClick={this.showTip.bind(this)}>
                       <View>
                         <Image src={item.picUrl} className='search_content__playList__item__cover'/>
                       </View>
@@ -1220,8 +1220,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getDjRadioList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
-                  djRadioInfo.djRadios.map((item, index) => (
-                    <View className='search_content__playList__item' key={index} onClick={this.showTip.bind(this)}>
+                  djRadioInfo.djRadios.map((item) => (
+                    <View className='search_content__playList__item' key={item.id} onClick={this.showTip.bind(this)}>
                       <View>
                         <Image src={item.picUrl} className='search_content__playList__item__cover'/>
                       </View>
@@ -1245,8 +1245,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getUserList.bind(this)} className='search_content__scroll'>
                 <CWhiteSpace size='sm' color='#fff'/>
                 {
-                  userListInfo.users.map((item, index) => (
-                    <View className='search_content__artist__item' key={index} onClick={this.showTip.bind(this)}>
+                  userListInfo.users.map((item) => (
+                    <View className='search_content__artist__item' key={item.userId} onClick={this.showTip.bind(this)}>
                       <Image src={item.avatarUrl} className='search_content__artist__item__cover'/>
                       <View className='search_content__artist__item__info'>
                         <View>
@@ -1270,8 +1270,8 @@ class Page extends Component<IProps, PageState> {
               <ScrollView scrollY onScrollToLower={this.getVideoList.bind(this)} className='search_content__scroll'>
                   <CWhiteSpace size='sm' color='#fff'/>
                   {
-                    mvInfo.mvs.map((item, index) => (
-                      <View className='search_content__video__item' key={index} onClick={this.goVideoDetail.bind(this, item.id, 'mv')}>
+                    mvInfo.mvs.map((item) => (
+                      <View className='search_content__video__item' key={item.id} onClick={this.goVideoDetail.bind(this, item.id, 'mv')}>
                         <View className='search_content__video__item__cover--wrap'>
                           <View className='search_content__video__item__cover--playtime'>
                             <Text className='at-icon at-icon-play'></Text>

@@ -70,6 +70,7 @@ type PageState = {
   commentInfo: {
     commentList: Array<{
       content: string,
+      commentId: number,
       time: number,
       likedCount: number,
       liked: boolean,
@@ -406,7 +407,7 @@ class Page extends Component<{}, PageState> {
                 { !relatedList.length ? <CLoading /> : ''}
                 {
                   relatedList.map((item, index) => (
-                    <View className='search_content__video__item' key={index} onClick={this.getDetailByType.bind(this, item.vid)}>
+                    <View className='search_content__video__item' key={item.vid} onClick={this.getDetailByType.bind(this, item.vid)}>
                       <View className='search_content__video__item__cover--wrap'>
                         <View className='search_content__video__item__cover--playtime'>
                           <Text className='at-icon at-icon-play'></Text>
@@ -432,8 +433,8 @@ class Page extends Component<{}, PageState> {
               <View>
                 { !mvRelatedList.length ? <CLoading /> : ''}
                 {
-                  mvRelatedList.map((item, index) => (
-                    <View className='search_content__video__item' key={index} onClick={this.getDetailByType.bind(this, item.id)}>
+                  mvRelatedList.map((item) => (
+                    <View className='search_content__video__item' key={item.id} onClick={this.getDetailByType.bind(this, item.id)}>
                       <View className='search_content__video__item__cover--wrap'>
                         <View className='search_content__video__item__cover--playtime'>
                           <Text className='at-icon at-icon-play'></Text>
@@ -465,8 +466,8 @@ class Page extends Component<{}, PageState> {
             </View>
             <View className='videoDetail__comment__info'>
               {
-                commentInfo.commentList.map((item, index) => 
-                  <View key={index} className='videoDetail__comment__info__item'>
+                commentInfo.commentList.map((item) => 
+                  <View key={item.commentId} className='videoDetail__comment__info__item'>
                     <View className='flex flex-between'>
                       <View className='flex flex-align-center'>
                         <Image src={item.user.avatarUrl} className='videoDetail__comment__info__item__avatar'/>

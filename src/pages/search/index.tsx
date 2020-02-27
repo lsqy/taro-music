@@ -123,7 +123,7 @@ class Page extends Component<{}, PageState> {
               </View>
               <ScrollView className='search__history__list' scrollX>
                 {
-                  historyList.map((keyword, index) => <Text className='search__history__list__item' key={index} onClick={this.goResult.bind(this, keyword)}>{keyword}</Text>)
+                  historyList.map((keyword) => <Text className='search__history__list__item' key={keyword} onClick={this.goResult.bind(this, keyword)}>{keyword}</Text>)
                 }
               </ScrollView>
             </View> : ''
@@ -139,7 +139,7 @@ class Page extends Component<{}, PageState> {
             }
             <View className='search__hot__list'>
               {
-                hotList.map((item, index) => <View className='search__hot__list__item flex flex-align-center' key={index} onClick={this.goResult.bind(this, item.searchWord)}>
+                hotList.map((item, index) => <View className='search__hot__list__item flex flex-align-center' key={item.searchWord} onClick={this.goResult.bind(this, item.searchWord)}>
                   <View className={
                     classnames({
                       search__hot__list__item__index: true,

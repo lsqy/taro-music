@@ -177,7 +177,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             {
               list.length === 0 ? 
                 <CLoading /> :
-              list.map((item, index) => <View key={index} className='recentPlay__music'>
+              list.map((item) => <View key={item.song.id} className='recentPlay__music'>
                 <View className='recentPlay__music__info' onClick={this.playSong.bind(this, item.song.id, item.song.st !== -200)}>
                   <View className='recentPlay__music__info__name'>
                   {item.song.name}
@@ -194,7 +194,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             {
               list.length === 0 ? 
                 <CLoading /> :
-              list.map((item, index) => <View key={index} className='recentPlay__music'>
+              list.map((item, index) => <View key={item.song.id} className='recentPlay__music'>
                 <View className='recentPlay__music__info' onClick={this.playSong.bind(this, item.song.id, item.song.st !== -200)}>
                   <View className='recentPlay__music__info__name'>
                   {item.song.name}

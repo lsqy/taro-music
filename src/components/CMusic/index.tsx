@@ -105,7 +105,7 @@ export default class CMusic extends Component<Props, State> {
         <AtFloatLayout isOpened={isOpened} title="播放列表" scrollY onClose={this.closePlayList.bind(this)}>
           <View className='music__playlist'>
             {
-              canPlayList.map((item, index) => <View key={index} className={classnames({
+              canPlayList.map((item) => <View key={item.id} className={classnames({
                 music__playlist__item: true,
                 current: item.current
               })}>

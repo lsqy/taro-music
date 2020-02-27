@@ -66,7 +66,7 @@ export default class CLyric extends Component<Props, {}> {
           }
           {
             lrc.lrclist.map((item, index) => 
-                <View key={index} className={
+                <View key={item.lrc_sec} className={
                   classnames({
                     song__lyric__text: true,
                     'song__lyric__text--current': index === lrcIndex  && !lrc.scroll,

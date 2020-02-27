@@ -129,7 +129,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
           <View className='playList__header--more__tag'>
               标签：
               {
-                playListDetailInfo.tags.map((tag, index) => <Text key={index} className='playList__header--more__tag__item'>{tag}</Text>)
+                playListDetailInfo.tags.map((tag) => <Text key={tag} className='playList__header--more__tag__item'>{tag}</Text>)
               }
               {
                 playListDetailInfo.tags.length === 0 ? '暂无' : ''
@@ -154,7 +154,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
                   playList__content__list__item: true,
                   disabled: playListDetailPrivileges[index].st === -200
                 })}
-                key={index}
+                key={track.id}
                 onClick={this.playSong.bind(this, track.id, playListDetailPrivileges[index].st)}
                 >
                   <Text className='playList__content__list__item__index'>{index+1}</Text>

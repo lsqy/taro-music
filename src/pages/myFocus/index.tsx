@@ -88,7 +88,7 @@ class Page extends Component<{}, PageState> {
       <View className='my_focus_container'>
           <ScrollView scrollY className='userList' onScrollToLower={this.getFollowList.bind(this)}>
             {
-              userList.map((item, index) => <CUserListItem userInfo={item} key={index} clickFunc={this.goUserDetail.bind(this)}/>)
+              userList.map((item, index) => <CUserListItem userInfo={item} key={item.userId} clickFunc={this.goUserDetail.bind(this)}/>)
             }
             <CLoading hide={!hasMore} />
           </ScrollView>

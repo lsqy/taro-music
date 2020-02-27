@@ -34,6 +34,7 @@ type PageStateProps = {
     num: number
   },
   recommendPlayList: Array<{
+    id: number,
     name: string,
     picUrl: string,
     playCount: number
@@ -62,7 +63,8 @@ type PageState = {
   showLoading: boolean,
   bannerList: Array<{
     typeTitle: string,
-    pic: string
+    pic: string,
+    targetId: number
   }>,
   searchValue: string
 }
@@ -266,8 +268,8 @@ class Index extends Component<IProps, PageState> {
           autoplay
           >
           {
-            bannerList.map((item, index) => 
-              <SwiperItem key={index} className='banner_list__item'>
+            bannerList.map((item) => 
+              <SwiperItem key={item.targetId} className='banner_list__item'>
                 <Image src={item.pic} className='banner_list__item__img'/>
               </SwiperItem>
             )
@@ -293,7 +295,7 @@ class Index extends Component<IProps, PageState> {
           </View>
           <View className='recommend_playlist__content'>
             {
-              recommendPlayList.map((item, index) => <View key={index} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              recommendPlayList.map((item) => <View key={item.id} className='recommend_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image 
                   src={`${item.picUrl}?imageView&thumbnail=250x0`}
                   className='recommend_playlist__item__cover'

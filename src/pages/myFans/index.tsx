@@ -89,7 +89,7 @@ class Page extends Component<{}, PageState> {
       <View className='my_fans_container'>
         <ScrollView scrollY onScrollToLower={this.getFollowedList.bind(this)} className='user_list'>
           {
-            userList.map((item, index) => <CUserListItem userInfo={item} key={index} clickFunc={this.goUserDetail.bind(this)}/>)
+            userList.map((item) => <CUserListItem userInfo={item} key={item.userId} clickFunc={this.goUserDetail.bind(this)}/>)
           }
           <CLoading hide={!hasMore} />
         </ScrollView>

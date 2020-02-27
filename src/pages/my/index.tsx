@@ -14,6 +14,7 @@ import { songType } from '../../constants/commonType'
 import './index.scss'
 
 type ListItemInfo = {
+  id: number,
   coverImgUrl: string,
   name: string,
   trackCount: number,
@@ -305,7 +306,7 @@ class Page extends Component<IProps, PageState> {
           }
           <View>
             {
-              userCreateList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              userCreateList.map((item) => <View key={item.id} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
                   src={`${item.coverImgUrl}?imageView&thumbnail=250x0`}
@@ -327,7 +328,7 @@ class Page extends Component<IProps, PageState> {
           }
           <View>
             {
-              userCollectList.map((item, index) => <View key={index} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
+              userCollectList.map((item) => <View key={item.id} className='user_playlist__item' onClick={this.goDetail.bind(this, item)}>
                 <Image
                   className='user_playlist__item__cover'
                   src={`${item.coverImgUrl}?imageView&thumbnail=250x0`}
