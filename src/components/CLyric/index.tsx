@@ -1,11 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import classnames from 'classnames'
 import { View } from '@tarojs/components'
 
 import './index.scss'
 type Props = {
   lrc: {
-    scroll?: boolean,
+    scroll: boolean,
     nolyric: boolean,
     uncollected: boolean,
     lrclist: Array<{
@@ -18,20 +18,8 @@ type Props = {
   onTrigger: () => void
 }
 
-
-export default function CLyric (props: Props) {
-  // static defaultProps = {
-  //   lrc: {
-  //     scroll: false,
-  //     nolyric: false,
-  //     uncollected: false,
-  //     lrclist: []
-  //   },
-  //   lrcIndex: 0,
-  //   showLyric: false
-  // }
-  
-  const { lrc, lrcIndex, showLyric } = props
+const CLyric = (props: Props) => {
+  const { lrc, lrcIndex, showLyric, onTrigger } = props
   const cls = classnames({
     song__lyric_components: true,
     hidden: !showLyric
@@ -40,7 +28,7 @@ export default function CLyric (props: Props) {
     <View className={cls} style={{
       overflow: lrc.scroll && !lrc.nolyric && !lrc.uncollected ? 'auto' : 'hidden'
     }}
-    onClick={() => this.props.onTrigger()}
+    onClick={() => onTrigger()}
     >
       <View className='song__lyric__wrap' style={{
           transform: `translateY(-${lrcIndex*100/(lrc.lrclist.length)}%)`
@@ -83,3 +71,14 @@ export default function CLyric (props: Props) {
     </View>
   )
 }
+CLyric.defaultProps = {
+    lrc: {
+      scroll: false,
+      nolyric: false,
+      uncollected: false,
+      lrclist: []
+    },
+    lrcIndex: 0,
+    showLyr: false
+}
+export default CLyric
