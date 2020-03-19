@@ -103,14 +103,14 @@ npm run dev:weapp
 - 搜索功能 *已完成部分功能*
 - 个人主页支持跳转
 - 歌手页面
-- `react-hooks`重构部分功能
+- `react-hooks`重构部分功能,正在进行中
 
 ### 最近更新
 
-- 加入搜索功能（进一步完善中）
-- 加入了视频播放（进一步完善中）
-- 加入了mv播放（进一步完善中）
-- 加入了视频与mv中的评论列表（2019-09-07）
+- [x] 搜索功能
+- [x] 视频播放
+- [x] mv播放
+- [x] 视频与mv中的评论列表
 
 <div align="center">
   <image width="900" src="https://oscimg.oschina.net/oscnet/498fdfc98cc89d72196dded4f54afa29ed4.jpg"/>
