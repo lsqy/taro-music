@@ -120,65 +120,19 @@ npm run dev:weapp
 
 > 下面简要列出几张效果图
 
-- 我的页面
 
 <div align="center">
-  <image width="340" src="https://oscimg.oschina.net/oscnet/eba8689c2fb3d031a3f2d0c5b541f622764.jpg"/>
+  <image width="900" src="https://oscimg.oschina.net/oscnet/f52f4448ce3475f5ecd002958ae1413a3dd.jpg"/>
 </div>
-
-- 登陆页面
-  
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E7%99%BB%E9%99%86%E9%A1%B5%E9%9D%A2.png"/>
-</div>
-
-- 推荐歌单
 
 <div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95.jpg"/>
+  <image width="900" src="https://oscimg.oschina.net/oscnet/446008d8690a962a105f839c46d7638b89b.jpg"/>
 </div>
-
-- 歌单详情
 
 <div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%AD%8C%E5%8D%95%E8%AF%A6%E6%83%85.png"/>
+  <image width="900" src="https://oscimg.oschina.net/oscnet/38e5dcac4baaca87195e95a115132cb7958.jpg"/>
 </div>
 
-- 正在播放列表
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%AD%8C%E5%8D%95%E6%92%AD%E6%94%BE%E5%88%97%E8%A1%A8.png"/>
-</div>
-
-- 歌曲播放
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%AD%8C%E6%9B%B2%E6%92%AD%E6%94%BE.png"/>
-</div>
-
-- 歌词显示
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%AD%8C%E8%AF%8D%E6%98%BE%E7%A4%BA.png"/>
-</div>
-
-- 最近播放
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E6%9C%80%E8%BF%91%E6%92%AD%E6%94%BE.png"/>
-</div>
-
-- 关注列表
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E5%85%B3%E6%B3%A8%E5%88%97%E8%A1%A8.png"/>
-</div>
-
-- 粉丝列表
-
-<div align="center">
-  <image width="340" src="http://img.lsqy.tech/hexo/%E7%B2%89%E4%B8%9D%E5%88%97%E8%A1%A8.png"/>
-</div>
 
 ### 有待完善部分
 
