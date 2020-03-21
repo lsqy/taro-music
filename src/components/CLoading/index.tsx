@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { FC } from '@tarojs/taro'
 import classnames from 'classnames'
 import { View } from '@tarojs/components'
 import './index.scss'
@@ -8,8 +8,7 @@ type Props = {
   hide?: boolean
 }
 
-export default function CLoading (props: Props) {
-  const { fullPage, hide } = props
+const CLoading: FC<Props> = ({ fullPage, hide }) => {
   const cls = classnames({
       loading_components: true,
       fullScreen: fullPage,
@@ -21,3 +20,5 @@ export default function CLoading (props: Props) {
       </View>
   )
 }
+
+export default CLoading

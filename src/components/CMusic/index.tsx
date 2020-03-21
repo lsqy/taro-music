@@ -1,38 +1,43 @@
-import Taro, { useState } from '@tarojs/taro'
+import Taro, { useState, FC } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtIcon, AtFloatLayout } from 'taro-ui'
 import classnames from 'classnames'
-import { songType } from '../../constants/commonType'
+import { currentSongInfoType, MusicItemType } from '../../constants/commonType'
 import './index.scss'
 type Props = {
-  songInfo: songType,
+  songInfo: {
+    currentSongInfo: currentSongInfoType,
+    isPlaying: boolean,
+    canPlayList: Array<MusicItemType>
+  },
   isHome?: boolean,
   onUpdatePlayStatus: (object) => any
 }
 
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
-const CMusic = (props: Props) => {
-  const { currentSongInfo, isPlaying, canPlayList } = props.songInfo
+const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
+  let { currentSongInfo, isPlaying, canPlayList } =songInfo 
   const [ isOpened, setIsOpened ] = useState(false)
+  currentSongInfo = currentSongInfo || {}
   if (!currentSongInfo.name) return <View></View>
   function goDetail() {
-    const { id } = props.songInfo.currentSongInfo
+    const { id } = currentSongInfo
     Taro.navigateTo({
       url: `/pages/songDetail/index?id=${id}`
     })
   }
 
   function switchPlayStatus() {
-    const { isPlaying } = props.songInfo
+    const { isPlaying } = songInfo
     if (isPlaying) {
       backgroundAudioManager.pause()
-      props.onUpdatePlayStatus({
+      onUpdatePlayStatus({
         isPlaying: false
       })
     } else {
       backgroundAudioManager.play()
-      props.onUpdatePlayStatus({
+      onUpdatePlayStatus({
         isPlaying: true
       })
     }
@@ -48,7 +53,7 @@ const CMusic = (props: Props) => {
     <View className={
       classnames({
         music_components: true,
-        isHome: props.isHome
+        isHome: isHome
       })
     }>
       <Image 
@@ -97,8 +102,20 @@ const CMusic = (props: Props) => {
 CMusic.defaultProps = {
   songInfo: {
     currentSongInfo: {
-      name: ''
-    }
+      id: 0,
+      name: '',
+      ar: [],
+      al: {
+        picUrl: '',
+        name: ''
+      },
+      url: '',
+      lrcInfo: '',
+      dt: 0, // 总时长，ms
+      st: 0 // 是否喜欢
+    },
+    canPlayList: [],
+    isPlaying: false
   }
 }
 

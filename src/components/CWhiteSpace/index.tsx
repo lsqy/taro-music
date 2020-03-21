@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { FC } from '@tarojs/taro'
 import classnames from 'classnames'
 import { View } from '@tarojs/components'
 
@@ -9,8 +9,7 @@ type Props = {
 }
 
 
-export default function CWhiteSpace (props: Props) {
-  const { size, color } = props
+const CWhiteSpace: FC<Props> = ({ size, color }) => {
   const cls = classnames({
     whiteSpace_components: true,
     xs: size === 'xs',
@@ -24,3 +23,5 @@ export default function CWhiteSpace (props: Props) {
       </View>
   )
 }
+
+export default CWhiteSpace

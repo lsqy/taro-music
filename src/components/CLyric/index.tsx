@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { FC } from '@tarojs/taro'
 import classnames from 'classnames'
 import { View } from '@tarojs/components'
 
@@ -18,8 +18,7 @@ type Props = {
   onTrigger: () => void
 }
 
-const CLyric = (props: Props) => {
-  const { lrc, lrcIndex, showLyric, onTrigger } = props
+const CLyric: FC<Props> = ({ lrc, lrcIndex, showLyric, onTrigger }) => {
   const cls = classnames({
     song__lyric_components: true,
     hidden: !showLyric
@@ -79,6 +78,6 @@ CLyric.defaultProps = {
       lrclist: []
     },
     lrcIndex: 0,
-    showLyr: false
+    showLyric: false
 }
 export default CLyric

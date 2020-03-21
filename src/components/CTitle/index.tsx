@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { FC } from '@tarojs/taro'
 import classnames from 'classnames'
 import { View, Image } from '@tarojs/components'
 
@@ -8,8 +8,7 @@ type Props = {
 }
 
 
-export default function CTitle (props: Props) {
-  const { isFixed } = props
+const CTitle: FC<Props> = ({ isFixed }) => {
   const cls = classnames({
       title_components: true,
       fixed: isFixed
@@ -20,3 +19,5 @@ export default function CTitle (props: Props) {
       </View>
   )
 }
+
+export default CTitle

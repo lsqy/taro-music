@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { FC } from '@tarojs/taro'
 import { AtIcon } from 'taro-ui'
 import { View, Image } from '@tarojs/components'
 
@@ -14,9 +14,7 @@ type Props = {
   },
   clickFunc?: (number) => any
 }
-
-export default function CUserListItem (props: Props) {
-  const { userInfo, clickFunc } = props
+const CUserListItem: FC<Props> = ({ userInfo, clickFunc }) => {
   function goDetail() {
     if (clickFunc) {
       clickFunc(userInfo.userId)
@@ -44,3 +42,5 @@ export default function CUserListItem (props: Props) {
       </View>
   )
 }
+
+export default CUserListItem
