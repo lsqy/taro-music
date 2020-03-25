@@ -1,4 +1,4 @@
-import Taro, { useState, useEffect } from '@tarojs/taro'
+import Taro, { useState, useEffect, FC } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
@@ -14,7 +14,7 @@ type userList = Array<{
 }>
 
 
-const Page = () => {
+const Page: FC = () => {
   const [ userId ] = useState<number>(Taro.getStorageSync('userId'))
   const [ userList, setUserList ] = useState<userList>([])
   const [ hasMore, setHasMore ] = useState<boolean>(true)
