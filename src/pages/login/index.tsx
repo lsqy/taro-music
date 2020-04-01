@@ -15,6 +15,27 @@ const Page: FC = () => {
   const [ password, setPassword ] = useState<string>('')
   const [ tip, setTip ] = useState<string>('')
 
+  function useLoginStatus(res) {
+    const { code } = res.data
+    let tip = '登录成功'
+    if (code !== 200) {
+      tip = res.data.msg || '登录失败'
+    }
+    setShowLoading(false)
+    setShowTip(true)
+    setTip(tip)
+    setTimeout(() => {
+      setShowTip(false)
+    }, 2000)
+    if (code === 200) {
+      Taro.setStorageSync('userInfo', res.data)
+      Taro.setStorageSync('userId', res.data.account.id)
+      Taro.navigateTo({
+        url: '/pages/index/index'
+      })
+    }
+  }
+
   function login() {
     if (!phone) {
       this.setState({
@@ -35,24 +56,7 @@ const Page: FC = () => {
         phone,
         password
     }).then((res) => {
-        const { code } = res.data
-        let tip = '登录成功'
-        if (code !== 200) {
-          tip = res.data.msg || '登录失败'
-        }
-        setShowLoading(false)
-        setShowTip(true)
-        setTip(tip)
-        setTimeout(() => {
-          setShowTip(false)
-        }, 2000)
-        if (code === 200) {
-          Taro.setStorageSync('userInfo', res.data)
-          Taro.setStorageSync('userId', res.data.account.id)
-          Taro.navigateTo({
-            url: '/pages/index/index'
-          })
-        }
+      useLoginStatus(res)
     })
   }
 
