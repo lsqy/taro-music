@@ -1,18 +1,14 @@
-import { ComponentClass } from 'react'
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { useState, useEffect, useRouter, FC } from '@tarojs/taro'
 import { View, Video, Text, Image, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { AtIcon } from 'taro-ui'
-// import CWhiteSpace from '../../components/CWhiteSpace'
 import { formatCount, formatNumber, formatTimeStampToTime } from '../../utils/common'
 import CWhiteSpace from '../../components/CWhiteSpace'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
 import './index.scss'
 
-
-type PageState = {
-  videoInfo: {
+type videoInfo = {
     coverUrl: string,
     title: string,
     shareCount: number,
@@ -28,8 +24,8 @@ type PageState = {
       id: number,
       name: string
     }>
-  },
-  mvInfo: {
+  } 
+type mvInfo = {
     cover: string,
     name: string,
     briefDesc: string,
@@ -45,9 +41,9 @@ type PageState = {
     }>,
     avatarUrl: string,
     publishTime: string
-  },
-  videoUrl: string,
-  relatedList: Array<{
+  }
+  // videoUrl: string,
+  type relatedList = Array<{
     vid: string,
     title: string,
     durationms: number,
@@ -56,18 +52,18 @@ type PageState = {
     creator: Array<{
       userName: string
     }>
-  }>,
-  mvRelatedList: Array<{
+  }>
+  type mvRelatedList = Array<{
     id: string,
     name: string,
     duration: number,
     playCount: number,
     cover: string,
     artistName: string
-  }>,
-  type: any,
-  showMoreInfo: boolean,
-  commentInfo: {
+  }>
+  // type: any,
+  // showMoreInfo: boolean,
+  type commentInfo = {
     commentList: Array<{
       content: string,
       commentId: number,
@@ -82,40 +78,28 @@ type PageState = {
     }>,
     more: boolean
   }
-  
-}
 
-class Page extends Component<{}, PageState> {
-
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: '精彩视频'
-  }
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      videoInfo: {
-        coverUrl: '',
-        title: '',
-        shareCount: 0,
-        playTime: 0,
-        praisedCount: 0,
-        commentCount: 0,
-        subscribeCount: 0,
-        creator: {
-          nickname: '',
-          avatarUrl: ''
-        },
-        videoGroup: []
-      },
-      mvInfo: {
+const Page: FC = () => {
+  const [ videoInfo, setVideoInfo ] = useState<videoInfo>(
+    {
+          coverUrl: '',
+          title: '',
+          shareCount: 0,
+          playTime: 0,
+          praisedCount: 0,
+          commentCount: 0,
+          subscribeCount: 0,
+          creator: {
+            nickname: '',
+            avatarUrl: ''
+          },
+          videoGroup: []
+    }
+  )
+  const [ videoUrl, setVideoUrl ] = useState<string>('')
+  const [ relatedList, setRelatedList ] = useState<relatedList>([])
+  const [ mvInfo, setMvInfo ] = useState<mvInfo>(
+    {
         cover: '',
         name: '',
         briefDesc: '',
@@ -128,43 +112,35 @@ class Page extends Component<{}, PageState> {
         artists: [],
         publishTime: '',
         avatarUrl: ''
-      },
-      videoUrl: '',
-      relatedList: [],
-      mvRelatedList: [],
-      type: '',
-      showMoreInfo: false,
-      commentInfo: {
-        commentList: [],
-        more: true
-      }
     }
-  }
+  )
+  const [ mvRelatedList, setMvRelatedList ] = useState<mvRelatedList>([])
+  const [ showMoreInfo, setShowMoreInfo ] = useState<boolean>(false)
+  const [ type, setType ] = useState<any>('')
+  const [ commentInfo, setCommentInfo ] = useState<commentInfo>(
+    {
+      commentList: [],
+      more: true
+    }
+  )
+  const router = useRouter()
+  console.log('router =>', router)
+  useEffect(() => {
+    const { id, type } = router.params
+    setType(type)
+    getDetailByType(id)
+  }, [])
 
-  componentDidMount() {
-    // const id = "5DCA972C0F5C920F22F91997A931D326"
-    // const type = 'video'
-    // const id = 10858662
-    // const type = 'mv'
-    const { id, type } = this.$router.params
-    this.setState({
-      type: type
-    })
-    this.getDetailByType(id)
-  }
-
-  getDetailByType(id) {
-    const { type } = this.$router.params
-    // this.getVideoDetail(id)
-    // this.getMvDetail(id)
+  function getDetailByType(id) {
+    const { type } = router.params
     if (type === 'mv') {
-      this.getMvDetail(id)
+      getMvDetail(id)
     } else {
-      this.getVideoDetail(id)
+      getVideoDetail(id)
     }
   }
 
-  getMvDetail(id) {
+  function getMvDetail(id) {
     const videoContext = Taro.createVideoContext('myVideo')
     videoContext.pause()
     api.get('/mv/detail', {
@@ -178,9 +154,7 @@ class Page extends Component<{}, PageState> {
         }).then(({ data }) => {
           // artist.picUrl
           mvInfo.avatarUrl = data.artist.picUrl
-          this.setState({
-            mvInfo
-          })
+          setMvInfo(mvInfo)
         })
       }
     })
@@ -189,9 +163,7 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('mv-url', data)
       if (data.data && data.data.url) {
-        this.setState({
-          videoUrl: data.data.url
-        })
+        setVideoUrl(data.data.url)
       }
     })
     api.get('/simi/mv', {
@@ -199,15 +171,13 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('mv sim', data)
       if (data.mvs && data.mvs.length) {
-        this.setState({
-          mvRelatedList: data.mvs
-        })
+        setMvRelatedList(data.mvs)
       }
     })
-    this.getCommentInfo()
+    getCommentInfo()
   }
 
-  getVideoDetail(id) {
+  function getVideoDetail(id) {
     const videoContext = Taro.createVideoContext('myVideo')
     videoContext.pause()
     api.get('/video/detail', {
@@ -215,9 +185,7 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('video', data)
       if (data.data) {
-        this.setState({
-          videoInfo: data.data
-        })
+        setVideoInfo(data.data)
       }
     })
     api.get('/video/url', {
@@ -225,9 +193,7 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('video-url', data)
       if (data.urls && data.urls.length) {
-        this.setState({
-          videoUrl: data.urls[0].url
-        })
+        setVideoUrl(data.urls[0].url)
       }
     })
     api.get('/related/allvideo', {
@@ -235,19 +201,16 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('related', data)
       if (data.data && data.data.length) {
-        this.setState({
-          relatedList: data.data
-        })
+        setRelatedList(data.data)
       }
     })
-    this.getCommentInfo()
+    getCommentInfo()
   }
 
-  getCommentInfo() {
-    const { type, id } = this.$router.params
+  function getCommentInfo() {
+    const { type, id } = router.params
     // const type = 'video'
     // const id = '5DCA972C0F5C920F22F91997A931D326'
-    const { commentInfo } = this.state
     api.get(`/comment/${type}`, {
       id,
       limit: 20,
@@ -255,27 +218,15 @@ class Page extends Component<{}, PageState> {
     }).then(({ data }) => {
       console.log('comment', data)
       if (data.comments) {
-        this.setState({
-          commentInfo: {
-            commentList: commentInfo.commentList.concat(data.comments),
-            more: data.more
-          }
+        setCommentInfo({
+          commentList: commentInfo.commentList.concat(data.comments),
+          more: data.more     
         })
       } 
     })
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
-  }
-
-  componentWillUnmount () { }
-
-  componentDidShow () {
-
-  }
-
-  formatDuration(ms: number) {
+  function formatDuration(ms: number) {
     // @ts-ignore
     let minutes: string = formatNumber(parseInt(ms / 60000))
     // @ts-ignore
@@ -283,18 +234,11 @@ class Page extends Component<{}, PageState> {
     return `${minutes}:${seconds}`
   }
 
-  componentDidHide () { }
-
-  switchMoreInfo() {
-    const { showMoreInfo } = this.state
-    this.setState({
-      showMoreInfo: !showMoreInfo
-    })
+  function switchMoreInfo() {
+    setShowMoreInfo(!showMoreInfo)
   }
 
 
-  render () {
-    const { videoInfo, videoUrl, relatedList, mvInfo, mvRelatedList, type, showMoreInfo, commentInfo } = this.state
     return (
       <View className='videoDetail_container'>
         <Video
@@ -307,7 +251,7 @@ class Page extends Component<{}, PageState> {
           muted={false}
           id="myVideo"
         />
-        <ScrollView scrollY className='videoDetail_scroll' onScrollToLower={this.getCommentInfo.bind(this)}>
+        <ScrollView scrollY className='videoDetail_scroll' onScrollToLower={() => getCommentInfo()}>
           {
             (!videoInfo.title && !mvInfo.name) ? <CLoading /> : ''
           }
@@ -351,7 +295,7 @@ class Page extends Component<{}, PageState> {
                 <Text>
                   {mvInfo.name}
                 </Text>
-                <AtIcon value={showMoreInfo ? 'chevron-up' : 'chevron-down'} size='20' color='#323232' onClick={this.switchMoreInfo.bind(this)}></AtIcon>
+                <AtIcon value={showMoreInfo ? 'chevron-up' : 'chevron-down'} size='20' color='#323232' onClick={() => switchMoreInfo()}></AtIcon>
               </View>
               <View className='videoDetail__play__desc'>
                 <Text className='videoDetail__play__playtime'>{ formatCount(mvInfo.playCount) }次观看</Text> 
@@ -406,8 +350,8 @@ class Page extends Component<{}, PageState> {
               <View>
                 { !relatedList.length ? <CLoading /> : ''}
                 {
-                  relatedList.map((item, index) => (
-                    <View className='search_content__video__item' key={item.vid} onClick={this.getDetailByType.bind(this, item.vid)}>
+                  relatedList.map((item) => (
+                    <View className='search_content__video__item' key={item.vid} onClick={() => getDetailByType(item.vid)}>
                       <View className='search_content__video__item__cover--wrap'>
                         <View className='search_content__video__item__cover--playtime'>
                           <Text className='at-icon at-icon-play'></Text>
@@ -420,7 +364,7 @@ class Page extends Component<{}, PageState> {
                           {item.title}
                         </View>
                         <View className='search_content__video__item__info__desc'>
-                          <Text>{this.formatDuration(item.durationms)},</Text>
+                          <Text>{() => formatDuration(item.durationms)},</Text>
                           <Text className='search_content__video__item__info__desc__nickname'>
                             by {item.creator[0].userName}
                           </Text>
@@ -434,7 +378,7 @@ class Page extends Component<{}, PageState> {
                 { !mvRelatedList.length ? <CLoading /> : ''}
                 {
                   mvRelatedList.map((item) => (
-                    <View className='search_content__video__item' key={item.id} onClick={this.getDetailByType.bind(this, item.id)}>
+                    <View className='search_content__video__item' key={item.id} onClick={() => getDetailByType(item.id)}>
                       <View className='search_content__video__item__cover--wrap'>
                         <View className='search_content__video__item__cover--playtime'>
                           <Text className='at-icon at-icon-play'></Text>
@@ -447,7 +391,7 @@ class Page extends Component<{}, PageState> {
                           {item.name}
                         </View>
                         <View className='search_content__video__item__info__desc'>
-                          <Text>{this.formatDuration(item.duration)},</Text>
+                          <Text>{() => formatDuration(item.duration)},</Text>
                           <Text className='search_content__video__item__info__desc__nickname'>
                             by {item.artistName}
                           </Text>
@@ -497,14 +441,10 @@ class Page extends Component<{}, PageState> {
         </ScrollView>
       </View>
     )
-  }
 }
 
-// #region 导出注意
-//
-// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
-// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
-//
-// #endregion
+Page.config = {
+  navigationBarTitleText: '精彩视频'
+}
 
-export default Page as ComponentClass
+export default Page
