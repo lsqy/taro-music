@@ -124,12 +124,12 @@ const Page: FC = () => {
     }
   )
   const router = useRouter()
-  console.log('router =>', router)
+  const routerParams = router.params
+  const { id } = routerParams
   useEffect(() => {
-    const { id, type } = router.params
-    setType(type)
+    setType(routerParams.type)
     getDetailByType(id)
-  }, [])
+  }, [id])
 
   function getDetailByType(id) {
     const { type } = router.params
@@ -364,7 +364,7 @@ const Page: FC = () => {
                           {item.title}
                         </View>
                         <View className='search_content__video__item__info__desc'>
-                          <Text>{() => formatDuration(item.durationms)},</Text>
+                          <Text>{formatDuration(item.durationms)},</Text>
                           <Text className='search_content__video__item__info__desc__nickname'>
                             by {item.creator[0].userName}
                           </Text>
@@ -391,7 +391,7 @@ const Page: FC = () => {
                           {item.name}
                         </View>
                         <View className='search_content__video__item__info__desc'>
-                          <Text>{() => formatDuration(item.duration)},</Text>
+                          <Text>{formatDuration(item.duration)},</Text>
                           <Text className='search_content__video__item__info__desc__nickname'>
                             by {item.artistName}
                           </Text>

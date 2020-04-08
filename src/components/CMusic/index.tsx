@@ -17,8 +17,9 @@ type Props = {
 const backgroundAudioManager = Taro.getBackgroundAudioManager()
 
 const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
-  let { currentSongInfo, isPlaying, canPlayList } =songInfo 
+  let { currentSongInfo, isPlaying, canPlayList } = songInfo 
   const [ isOpened, setIsOpened ] = useState(false)
+  const updatePlayStatusFunc = onUpdatePlayStatus
   currentSongInfo = currentSongInfo || {}
   if (!currentSongInfo.name) return <View></View>
   function goDetail() {
@@ -32,12 +33,12 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
     const { isPlaying } = songInfo
     if (isPlaying) {
       backgroundAudioManager.pause()
-      onUpdatePlayStatus({
+      updatePlayStatusFunc({
         isPlaying: false
       })
     } else {
       backgroundAudioManager.play()
-      onUpdatePlayStatus({
+      updatePlayStatusFunc({
         isPlaying: true
       })
     }
