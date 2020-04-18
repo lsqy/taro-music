@@ -1,0 +1,83 @@
+@import '../../base.scss';
+.music_components {
+  position: fixed;
+  width: 96%;
+  padding: 10px;
+  bottom: 20px;
+  left: 2%;
+  background: #8d949a;
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  align-items: center;
+  z-index: 10000;
+  &.isHome {
+    bottom: 120px;
+  }
+  .music__pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .music__info {
+    flex: 1;
+    overflow: hidden;
+    .music__info__name {
+      width: 100%;
+      font-size: 28px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .music__info__desc {
+      width: 100%;
+      font-size: 22px;
+      margin-top: 10px;
+      color: #ccc;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .music__icon--play {
+    padding: 0 10px;
+  }
+  .music__playlist {
+    color: #323232;
+    .music__playlist__item {
+      display: flex;
+      padding: 15px 10px;
+      align-items: center;
+      &.current {
+        color: $primary-color
+      }
+      .music__playlist__item__info {
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .music__playlist__item__close {
+        padding: 6px;
+      }
+    }
+  }
+}
+.circling {
+  animation: circling 20s infinite linear;
+  &.z-pause {
+      animation-play-state: paused;
+  }
+}
+
+@keyframes circling {
+  0% { 
+      transform: rotate(0deg) 
+  }
+  to { 
+      transform: rotate(1turn) 
+  }
+}

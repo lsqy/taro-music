@@ -1,0 +1,57 @@
+/* icon.scss */
+@font-face {
+  font-family: 'FontAwesome';
+  /* 自行安装第三方字体图标库 */
+  src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');
+  src: url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* 根据第三方字体图标库编写 */
+/* 举例：fa 就是 prefixClass 的值，下面的的图标 css class 命名都要用 fa- 开头  */
+.fa {
+  display: inline-block;
+  /* 以下的 font 与上面 @font-face 的 font-family 要一致*/
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.fa-feed:before {
+  content: "\f09e";
+}
+.fa-music:before {
+  content: "\f001";
+}
+.fa-mobile-phone:before,
+.fa-mobile:before {
+  content: "\f10b";
+}
+.fa-sign-out:before {
+  content: "\f08b";
+}
+.fa-mars:before {
+  content: "\f222";
+}
+.fa-venus:before {
+  content: "\f221";
+} 
+.fa-play-circle-o:before {
+  content: "\f01d";
+}
+.fa-ellipsis-v:before {
+  content: "\f142";
+}
+.fa-trash-o:before {
+  content: "\f014";
+}
+.fa-thumbs-o-up:before {
+  content: "\f087";
+}
+.fa-calendar-minus-o:before {
+  content: "\f272";
+}
+.fa-bar-chart:before {
+  content: "\f080";
+}

@@ -1,0 +1,117 @@
+.my_container {
+  padding-bottom: 120px;
+  &.hasMusicBox {
+    padding-bottom: 220px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 40px;
+    .header__left {
+      display: flex;
+      flex: 1;
+    }
+    .header__img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+    .header__info {
+      padding: 20px;
+      .header__info__name {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+      .header__info__level {
+        color: #888888;
+        font-size: 24px;
+        border: 1px solid #888888;
+        padding: 2px 20px;
+        border-radius: 40px;
+      }
+    }
+    .exit_icon {
+      float: right;
+    }
+  }
+  .user_count {
+    display: flex;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    .user_count__sub {
+      flex: 1;
+      font-size: 22px;
+      color: #888888;
+      .user_count__sub--num {
+        color: #323232;
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .user_brief {
+    .user_brief__item {
+      display: flex;
+      align-items: center;
+      &:last-child {
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        .user_brief__item__text {
+          border-bottom: none;
+        }
+      }
+      .user_brief__item__img {
+        width: 70px;
+        height: 70px;
+        margin: 20px 40px;
+      }
+      .user_brief__item__text {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        line-height: 110px;
+        .at-icon {
+          font-size: 40px;
+          margin-right: 40px;
+        }
+      }
+    }
+
+  }
+  .user_playlist {
+    padding: 30px;
+    .user_playlist__title {
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      .user_playlist__title__desc {
+        font-size: 24px;
+        color: #888888;
+        margin-left: 10px;
+      }
+    }
+    .user_playlist__item {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      .user_playlist__item__cover {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+      .user_playlist__item__info {
+        flex: 1;
+        .user_playlist__item__info__count {
+          font-size: 24px;
+          color: #888888;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

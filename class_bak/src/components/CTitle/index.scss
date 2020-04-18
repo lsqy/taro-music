@@ -1,0 +1,22 @@
+@import '../../base.scss';
+.title_components {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 128px;
+    background-color: $primary-color;
+    box-sizing: border-box;
+    &.fixed {
+        position: fixed;
+    }
+    .title_components__logo {
+        width: 284px;
+        height: 50px;
+    }
+}

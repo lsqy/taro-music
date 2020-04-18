@@ -1,0 +1,111 @@
+@import '../../base.scss';
+.index_container {
+    padding-bottom: 120px;
+    &.hasMusicBox {
+        padding-bottom: 220px;
+    }
+    .banner_list {
+        height: 375px;
+        margin-top: 20px;
+    }
+    .banner_list__item__img {
+        width: 92%;
+        height: 375px;
+        position: relative;
+        left: 4%;
+        border-radius: 20px;
+    }
+    .index_header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        width: 100%;
+        height: 128px;
+        background-color: $primary-color;
+        box-sizing: border-box;
+        .index_header__logo {
+            width: 284px;
+            height: 50px;
+        }
+    }
+    .handle_list {
+        overflow: hidden;
+        margin-top: 40px;
+        padding: 0 40px;
+        .handle_list__item {
+            width: 20%;
+            float: left;
+            text-align: center;
+            .handle_list__item__icon-wrap {
+                background-color: $primary-color;
+                width: 100px;
+                height: 100px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                margin: 0 auto;
+            }
+            .handle_list_item__icon {
+                margin-left: 5px;
+            }
+            .handle_list__item__text {
+                font-size: 24px;
+            }
+        }
+    }
+    .recommend_playlist {
+        padding: 40px;
+        overflow: hidden;
+        .recommend_playlist__title {
+            margin-bottom: 30px;
+        }
+        .recommend_playlist__content {
+            .recommend_playlist__item {
+                position: relative;
+                width: 32%;
+                float: left;
+                margin-bottom: 30px;
+                &:nth-child(3n-1) {
+                    margin: 0 2% 30px 2%;
+                }
+                .recommend_playlist__item__cover__num {
+                    font-size: 20px;
+                    position: absolute;
+                    right: 10px;
+                    top: 0;
+                    font-weight: 700;
+                    z-index: 3;
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    .at-icon-sound {
+                        margin-right: 10px;
+                    }
+                }
+                .recommend_playlist__item__cover {
+                    display: block;
+                    width: 100%;
+                    height: 200px;
+                    border-radius: 12px;
+                    box-shadow: 0px 0px 20px #8F8F8F;
+                }
+                .recommend_playlist__item__title {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    font-size: 26px;
+                    margin-top: 10px;
+                    height: 72px;
+                }
+            }
+        }
+    }
+}

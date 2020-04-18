@@ -1,0 +1,38 @@
+.recentPlay_container {
+  width: 100%;
+  &.hasMusicBox {
+    padding-bottom: 120px;
+  }
+  .at-tabs {
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .recentPlay__music {
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    .recentPlay__music__info {
+      flex: 1;
+      overflow: hidden;
+      .recentPlay__music__info__name {
+        font-size: 34px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .recentPlay__music__info__desc {
+        font-size: 24px;
+        color: #888888;
+        margin-top: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .recentPlay__music__icon {
+      font-size: 30px;
+      color: #dddddd;
+      padding: 40px 0 40px 80px;
+    }
+  }
+}

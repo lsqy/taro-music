@@ -1,0 +1,46 @@
+.song__lyric_components {
+  position: absolute;
+  left: 60px;
+  top: 20px;
+  right: 60px;
+  bottom: 260px;
+  text-align: center;
+  overflow: hidden;
+  color: #fff;
+  z-index: 3;
+  &.hidden {
+    opacity: 0;
+    z-index: -1;
+    pointer-events:none;
+  }
+  .song__lyric__wrap {
+    top: 50%;
+    position: absolute;
+    font-size: 40px;
+    width: 100%;
+    transition: all ease 1s;
+    text-align: center;
+    transform: translateY(-50%);
+  }
+  .song__lyric__text {
+    line-height: 1.2;
+    word-break: break-all;
+    opacity: .5;
+    height: 72px;
+    overflow: hidden;
+    transition: all ease .5s;
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    &.song__lyric__text--current {
+      opacity: 1;
+      font-size: 32px;
+    }
+    &.siblings1 {
+      opacity: .3;
+    }
+    &.siblings2 {
+      opacity: .1;
+    }
+  }
+}

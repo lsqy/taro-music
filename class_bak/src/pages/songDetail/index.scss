@@ -1,0 +1,152 @@
+.song_container {
+  overflow: hidden;
+  .song__bg {
+    transform: scale(1.2);
+    transform-origin: center top;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter:blur(30px) brightness(.8);
+    overflow: hidden;
+    z-index: -1;
+    transition: opacity .3s linear;
+    &:after {
+      content: " ";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: rgba(0,0,0,.5);
+    }
+  }
+  .song__music {
+    position: relative;
+    width: 592px;
+    height: 592px;
+    margin: 140px auto 0;
+    &.hidden {
+      display: none;
+    }
+    .song__music__main {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      &.playing {
+        .song__music__main--before {
+          transform: rotate(0deg);
+        }
+      }
+      &:after {
+        content: " ";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        background: url(//s3.music.126.net/m/s/img/disc-ip6.png?69796123ad7cfe95781ea38aac8f2d48) no-repeat;
+        background-size: contain;
+      }
+      .song__music__main--before {
+        position: absolute;
+        width: 222px;
+        height: 366px;
+        top: -200px;
+        left: 240px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        transform-origin: 60px 60px;
+        z-index: 5;
+        transition: all 1.5s;
+        transform: rotate(-20deg);
+      }
+      .song__music__main__cover {
+        position: absolute;
+        width: 368px;
+        height: 368px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        overflow: hidden;
+        .song__music__main__img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          overflow: hidden;
+          background: url(//s3.music.126.net/m/s/img/disc_default.png?7c9b3ad…) no-repeat;
+          background-size: contain;
+          .song__music__main__img__cover {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+    .song__music__lgour {
+      position: absolute;
+      width: 592px;
+      height: 592px;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 3;
+      .song__music__lgour__cover {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 3;
+        background: url(//s3.music.126.net/m/s/img/disc_light-ip6.png?996fc8a2bc62e1ab3f51f135fc459577) no-repeat;
+        background-size: contain;
+      }
+    }
+  }
+  .song__bottom {
+    position: absolute;
+    padding: 40px 0;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    box-sizing: border-box;
+    .song__operation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      .song__operation__mode {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        left: 30px;
+        top: 14px;
+      }
+      .song__operation__prev {
+        width: 60px;
+        height: 60px;
+      }
+      .song__operation__play {
+        width: 120px;
+        height: 120px;
+        margin: 0 50px;
+      }
+      .song__operation__next {
+        width: 60px;
+        height: 60px;
+      }
+      .song__operation__like {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        right: 40px;
+        top: 14px;
+      }
+    }
+  }
+}

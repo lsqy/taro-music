@@ -1,0 +1,24 @@
+@import '../../base.scss';
+
+.login_container {
+    .login_content {
+        padding: 20px 10px;
+    }
+    .login_content__item {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #cccccc;
+        padding: 20px 10px;
+        font-size: 32px;
+    }
+    .login_content__input {
+        padding-left: 20px;
+    }
+    .login_content__btn {
+        margin-top: 40px;
+        border-radius: 44px;
+        color: #ffffff;
+        background-color: $primary-color;
+        border: none;
+    }
+}
