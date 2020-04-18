@@ -1,6 +1,6 @@
 ## taro-music
 
-> 基于`Taro`与网易云音乐api开发，技术栈主要是：`typescript+taro+taro-ui+redux+react-hooks`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，打造一个最佳实践项目，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序，此项目会持续更新，欢迎`watch`和`star`～
+> 基于`Taro`与网易云音乐 api 开发，技术栈主要是：`typescript+taro+taro-ui+redux+react-hooks`,目前主要是着重小程序端的展示，主要也是借此项目强化下上述几个技术栈的使用，打造一个最佳实践项目，通过这个项目也可以帮助你快速使用`Taro`开发一个属于你自己的小程序，此项目会持续更新，欢迎`watch`和`star`～
 
 <hr/>
 
@@ -13,16 +13,16 @@
 
 #### 注意事项
 
-**目前已将`taro`的版本升级到最新版本`2.0.6`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
+**目前已将`taro`的版本升级到最新版本`2.1.4`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
 
-**首先需要在src目录下创建一个`config.ts`**,这样可以根据自己的需要将其替换成线上地址，接口服务是使用的[NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/)
+**首先需要在 src 目录下创建一个`config.ts`**,这样可以根据自己的需要将其替换成线上地址，接口服务是使用的[NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/)
 
 ```
 export const baseUrl: string = 'http://localhost:3000' // 这里配置的这个url是后端服务的请求地址，示例中代表在本地启用的服务端口是3000，如果希望在真机上调试，那么就需要将后端服务部署到一个云主机上
 
 ```
 
-> 在运行本项目前，请先确保已经全局安装了Taro，安装可见[官网指导](https://nervjs.github.io/taro/docs/GETTING-STARTED.html)
+> 在运行本项目前，请先确保已经全局安装了 Taro，安装可见[官网指导](https://nervjs.github.io/taro/docs/GETTING-STARTED.html)
 
 ```
 启动后端接口服务
@@ -100,7 +100,7 @@ npm run dev:weapp
 ### todo
 
 - 复用的评论列表
-- 搜索功能 *已完成部分功能*
+- 搜索功能 _已完成部分功能_
 - 个人主页支持跳转
 - 歌手页面
 - `react-hooks`重构部分功能,正在进行中
@@ -109,8 +109,8 @@ npm run dev:weapp
 
 - [x] 搜索功能
 - [x] 视频播放
-- [x] mv播放
-- [x] 视频与mv中的评论列表
+- [x] mv 播放
+- [x] 视频与 mv 中的评论列表
 
 <div align="center">
   <image width="900" src="https://oscimg.oschina.net/oscnet/498fdfc98cc89d72196dded4f54afa29ed4.jpg"/>
@@ -119,7 +119,6 @@ npm run dev:weapp
 ### 效果图预览
 
 > 下面简要列出几张效果图
-
 
 <div align="center">
   <image width="900" src="https://oscimg.oschina.net/oscnet/f52f4448ce3475f5ecd002958ae1413a3dd.jpg"/>
@@ -133,7 +132,6 @@ npm run dev:weapp
   <image width="900" src="https://oscimg.oschina.net/oscnet/38e5dcac4baaca87195e95a115132cb7958.jpg"/>
 </div>
 
-
 ### 有待完善部分
 
-还有一些功能点以及细节都还有待进一步完善，目前先把大致主要的功能进行了下实现，当然如果发现什么问题，欢迎能够提交`issues`,发现之后我会及时进行更正,欢迎 `star` 和 `fork`，感谢大家支持🙏。
+还有一些功能点以及细节都还有待进一步完善，目前先把大致主要的功能进行了下实现，当然如果发现什么问题，欢迎能够提交`issues`,发现之后我会及时进行更正,欢迎 `star` 和 `fork`，感谢大家支持 🙏。
