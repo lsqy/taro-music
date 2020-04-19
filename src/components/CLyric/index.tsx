@@ -1,4 +1,4 @@
-import Taro, { FC } from "@tarojs/taro";
+import Taro, { FC, memo } from "@tarojs/taro";
 import classnames from "classnames";
 import { View } from "@tarojs/components";
 
@@ -23,6 +23,7 @@ const CLyric: FC<Props> = ({ lrc, lrcIndex, showLyric, onTrigger }) => {
     song__lyric_components: true,
     hidden: !showLyric
   });
+  console.log("CLyric render");
   return (
     <View
       className={cls}
@@ -85,4 +86,9 @@ CLyric.defaultProps = {
   lrcIndex: 0,
   showLyric: false
 };
-export default CLyric;
+export default memo(CLyric, (prevProps, nextProps) => {
+  return (
+    prevProps.showLyric === nextProps.showLyric &&
+    prevProps.lrcIndex === nextProps.lrcIndex
+  );
+});

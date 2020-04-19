@@ -139,5 +139,17 @@ CMusic.defaultProps = {
     isPlaying: false
   }
 };
+const shouldUpdate = (prevProps, nextProps) => {
+  console.log("prevProps =>", prevProps);
+  console.log("nextProps =>", nextProps);
+  if (
+    nextProps.songInfo.isPlaying !== prevProps.songInfo.isPlaying ||
+    nextProps.songInfo.currentSongInfo.name !==
+      prevProps.songInfo.currentSongInfo.name
+  ) {
+    return false; // 返回false本次则会渲染，反之则不会渲染
+  }
+  return true;
+};
 // 通过memo来避免不必要的渲染,提高响应速度
-export default memo(CMusic);
+export default memo(CMusic, shouldUpdate);
