@@ -23,7 +23,7 @@ const CLyric: FC<Props> = ({ lrc, lrcIndex, showLyric, onTrigger }) => {
     song__lyric_components: true,
     hidden: !showLyric
   });
-  console.log("CLyric render");
+  // console.log("CLyric render");
   return (
     <View
       className={cls}

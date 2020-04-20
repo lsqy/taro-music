@@ -139,7 +139,9 @@ CMusic.defaultProps = {
     isPlaying: false
   }
 };
-const shouldUpdate = (prevProps, nextProps) => {
+// const shouldUpdate =
+// 通过memo来避免不必要的渲染,提高响应速度
+export default memo(CMusic, (prevProps, nextProps) => {
   console.log("prevProps =>", prevProps);
   console.log("nextProps =>", nextProps);
   if (
@@ -150,6 +152,4 @@ const shouldUpdate = (prevProps, nextProps) => {
     return false; // 返回false本次则会渲染，反之则不会渲染
   }
   return true;
-};
-// 通过memo来避免不必要的渲染,提高响应速度
-export default memo(CMusic, shouldUpdate);
+});

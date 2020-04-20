@@ -10,7 +10,7 @@ type Props = {
 };
 
 const CSlider: FC<Props> = ({ percent }) => {
-  console.log("CSlider render");
+  // console.log("CSlider render");
   return (
     <View className="slider_components">
       <Slider
