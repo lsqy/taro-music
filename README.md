@@ -17,7 +17,7 @@
 
 #### 注意事项
 
-**taro3 迁移正在进行中**，感兴趣的可以切换到[feature_upgrade_taro3.0](https://github.com/lsqy/taro-music/tree/feature_upgrade_taro3.0)这个分支进行查看，目前大多数页面可以正常访问，还有一些细节有待进一步完善。
+**taro3 迁移正在进行中**，感兴趣的可以切换到[feature_upgrade_taro3.0](https://github.com/lsqy/taro-music/tree/feature_upgrade_taro3.0)这个分支进行查看，目前大多数页面可以正常运行，还有一些细节有待进一步完善。
 
 <hr/>
 
