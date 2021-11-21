@@ -1,8 +1,8 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
 import {
@@ -10,7 +10,7 @@ import {
   getPlayListDetail,
   updatePlayStatus
 } from "../../actions/song";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import { formatCount } from "../../utils/common";
 import { songType } from "../../constants/commonType";
 import "./index.scss";
@@ -27,7 +27,7 @@ type PageDispatchProps = {
 
 type PageState = {};
 
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song }) => ({
     song: song
@@ -45,17 +45,13 @@ type PageState = {};
   })
 )
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
-  config: Config = {
-    navigationBarTitleText: "歌单详情"
-  };
-
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   componentWillMount() {
-    const { id, name } = this.$router.params;
+    const { id, name } = getCurrentInstance().router.params;
     Taro.setNavigationBarTitle({
       title: name
     });
@@ -189,11 +185,4 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 }
 
-// #region 导出注意
-//
-// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
-// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
-//
-// #endregion
-
-export default Page as ComponentClass;
+export default Page;

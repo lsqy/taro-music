@@ -3,7 +3,7 @@ import Taro, { Component, Config } from "@tarojs/taro";
 import { AtTabBar, AtIcon, AtSearchBar } from "taro-ui";
 import classnames from "classnames";
 import { View, Image, Text } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CLoading from "../../components/CLoading";
 import api from "../../services/api";
 import CMusic from "../../components/CMusic";

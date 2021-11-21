@@ -1,9 +1,9 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro from "@tarojs/taro";
 import { AtTabBar, AtIcon, AtSearchBar } from "taro-ui";
 import classnames from "classnames";
 import { View, Image, Text } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CLoading from "../../components/CLoading";
 import api from "../../services/api";
 import CMusic from "../../components/CMusic";
@@ -61,7 +61,7 @@ type PageState = {
 // interface Page {
 //   props: PageStateProps;
 // }
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song }) => ({
     song: song
@@ -76,17 +76,6 @@ type PageState = {
   })
 )
 class Page extends Component<IProps, PageState> {
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: "我的"
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -419,4 +408,4 @@ class Page extends Component<IProps, PageState> {
   }
 }
 
-export default Page as ComponentClass<PageDispatchProps, PageState>;
+export default Page;

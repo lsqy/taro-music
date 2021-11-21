@@ -2,7 +2,7 @@ import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image, Text, Swiper, SwiperItem } from "@tarojs/components";
 import { AtTabBar, AtSearchBar, AtIcon } from "taro-ui";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";

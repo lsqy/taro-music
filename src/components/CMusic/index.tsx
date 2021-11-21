@@ -1,4 +1,5 @@
-import Taro, { useState, FC, memo } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
+import { useState, FC, memo } from "react";
 import { View, Image } from "@tarojs/components";
 import { AtIcon, AtFloatLayout } from "taro-ui";
 import classnames from "classnames";

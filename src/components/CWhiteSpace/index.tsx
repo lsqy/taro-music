@@ -1,4 +1,4 @@
-import Taro, { FC } from '@tarojs/taro'
+import { FC } from "react";
 import classnames from 'classnames'
 import { View } from '@tarojs/components'
 

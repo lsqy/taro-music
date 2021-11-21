@@ -2,7 +2,7 @@ import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
 import {

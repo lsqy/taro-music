@@ -1,8 +1,9 @@
 export default {
   pages: [
     "pages/index/index",
-    "pages/dailyRecommend/index",
     "pages/my/index",
+    "pages/playListDetail/index",
+    "pages/dailyRecommend/index",
     "pages/videoDetail/index",
     "pages/search/index",
     "pages/user/index",
@@ -13,7 +14,6 @@ export default {
     "pages/myFocus/index",
     "pages/myEvents/index",
     "pages/login/index",
-    "pages/playListDetail/index",
     "pages/recentPlay/index",
   ],
   window: {

@@ -1,4 +1,4 @@
-import Taro, { FC } from '@tarojs/taro'
+import { FC } from "react";
 import { AtIcon } from 'taro-ui'
 import { View, Image } from '@tarojs/components'
 
@@ -23,7 +23,7 @@ const CUserListItem: FC<Props> = ({ userInfo, clickFunc }) => {
   if (!userInfo) return null
   return (
       <View className='userListItem_components' onClick={() => goDetail()}>
-          <Image 
+          <Image
             src={`${userInfo.avatarUrl}?imageView&thumbnail=250x0`}
             className='userListItem__avatar'
           />

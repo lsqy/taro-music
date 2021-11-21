@@ -1,4 +1,4 @@
-import Taro, { FC, memo } from "@tarojs/taro";
+import { FC, memo } from "react";
 import classnames from "classnames";
 import { View, Image } from "@tarojs/components";
 

@@ -1,6 +1,6 @@
 import "@tarojs/async-await";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { Provider } from "@tarojs/redux";
+import { Provider } from "react-redux";
 
 import AppContainer from "./pages/app";
 

@@ -4,7 +4,7 @@ import { View, Image, Text, ScrollView } from "@tarojs/components";
 import { AtSearchBar, AtTabs, AtTabsPane, AtIcon } from "taro-ui";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CMusic from "../../components/CMusic";
 import CWhiteSpace from "../../components/CWhiteSpace";
 import { injectPlaySong } from "../../utils/decorators";

@@ -2,7 +2,7 @@ import { ComponentClass } from "react";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "@tarojs/redux";
+import { connect } from "react-redux";
 import CLyric from "../../components/CLyric";
 import CSlider from "../../components/CSlider";
 import {

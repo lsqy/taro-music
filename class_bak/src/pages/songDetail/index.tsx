@@ -2,11 +2,11 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import classnames from 'classnames'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import CLyric from '../../components/CLyric'
 import CSlider from '../../components/CSlider'
 import {
-  getSongInfo, 
+  getSongInfo,
   changePlayMode,
   getLikeMusicList,
   likeMusic,
@@ -107,7 +107,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
       star: false,
       firstEnter: true,
       switchStar: false,
-      playPercent: 0 
+      playPercent: 0
     }
   }
 
@@ -144,7 +144,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     }
   }
 
-  componentWillUnmount () { 
+  componentWillUnmount () {
     // 更新下播放状态
     this.props.updatePlayStatus({
       isPlaying: this.state.isPlaying
@@ -334,7 +334,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
         break
       // 默认按列表顺序播放
       default:
-        this.getNextSong()  
+        this.getNextSong()
     }
   }
 
@@ -404,7 +404,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
     }
     return (
       <View className='song_container'>
-        <Image 
+        <Image
           className='song__bg'
           src={currentSongInfo.al.picUrl}
         />
@@ -420,11 +420,11 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
               playing: isPlaying
             })
           }>
-            <Image  
+            <Image
             className='song__music__main--before'
             src={require('../../assets/images/aag.png')}
             />
-            <View className='song__music__main__cover'> 
+            <View className='song__music__main__cover'>
               <View className={
                 classnames({
                   song__music__main__img: true,
@@ -446,18 +446,18 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
             }>
             </View>
           </View>
-        </View> 
+        </View>
         <CSlider percent={playPercent} onChange={this.percentChange.bind(this)} onChanging={this.percentChanging.bind(this)} />
         <CLyric lrc={lrc} lrcIndex={lrcIndex} showLyric={showLyric} onTrigger={() => this.hiddenLyric()} />
         <View className='song__bottom'>
           <View className='song__operation'>
-            <Image 
-              src={playModeImg} 
+            <Image
+              src={playModeImg}
               className='song__operation__mode'
               onClick={this.changePlayMode.bind(this)}
             />
-            <Image 
-              src={require('../../assets/images/ajh.png')} 
+            <Image
+              src={require('../../assets/images/ajh.png')}
               className='song__operation__prev'
               onClick={this.getPrevSong.bind(this)}
             />
@@ -465,13 +465,13 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
               isPlaying ? <Image src={require('../../assets/images/ajd.png')} className='song__operation__play' onClick={this.pauseMusic.bind(this)}/> :
               <Image src={require('../../assets/images/ajf.png')} className='song__operation__play' onClick={this.playMusic.bind(this)}/>
             }
-            <Image 
-              src={require('../../assets/images/ajb.png')} 
+            <Image
+              src={require('../../assets/images/ajb.png')}
               className='song__operation__next'
               onClick={this.getNextSong.bind(this)}
             />
-            <Image 
-              src={star ? require('../../assets/images/song/play_icn_loved.png') : require('../../assets/images/song/play_icn_love.png')} 
+            <Image
+              src={star ? require('../../assets/images/song/play_icn_loved.png') : require('../../assets/images/song/play_icn_love.png')}
               className='song__operation__like'
               onClick={this.likeMusic.bind(this)}
             />

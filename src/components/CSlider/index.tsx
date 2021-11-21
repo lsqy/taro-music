@@ -1,4 +1,4 @@
-import Taro, { FC, memo } from "@tarojs/taro";
+import { FC, memo } from "react";
 import { View, Slider } from "@tarojs/components";
 
 import "./index.scss";
