@@ -1,4 +1,5 @@
-import Taro, { FC, useState, useEffect } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
+import { FC, useState, useEffect } from 'react'
 import { View } from '@tarojs/components'
 import api from '../../services/api'
 import './index.scss'
@@ -16,10 +17,6 @@ const Page: FC = () => {
     <View className='template_container'>
     </View>
   )
-}
-
-Page.config = {
-  navigationBarTitleText: '我的动态'
 }
 
 export default Page

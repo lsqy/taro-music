@@ -1,5 +1,5 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ import {
   updatePlayStatus
 } from "../../actions/song";
 import { getDjListDetail } from "../../actions/dj";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import { formatCount } from "../../utils/common";
 import { songType, djListType } from "../../constants/commonType";
 import "./index.scss";
@@ -30,7 +30,7 @@ type PageDispatchProps = {
 
 type PageState = {};
 
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song, dj }) => ({
     song: song,
@@ -203,4 +203,4 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass;
+export default Page;

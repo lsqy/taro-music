@@ -1,5 +1,5 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import classnames from "classnames";
 import { connect } from "react-redux";
@@ -77,16 +77,6 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager();
   })
 )
 class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
-  /**
-   * 指定config的类型声明为: Taro.Config
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: "加载中...",
-    disableScroll: true
-  };
 
   constructor(props) {
     super(props);
@@ -187,7 +177,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   componentDidMount() {
     const that = this;
-    const { id } = that.$router.params;
+    const { id } = getCurrentInstance().router.params;
     // const id = 1341964346
     this.props.getSongInfo({
       id
@@ -516,4 +506,4 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
   }
 }
 
-export default Page as ComponentClass;
+export default Page;

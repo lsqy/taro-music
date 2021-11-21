@@ -1,4 +1,5 @@
-import Taro, { FC, useState, useEffect } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
+import { FC, useState, useEffect } from 'react'
 import { View, ScrollView } from '@tarojs/components'
 import CLoading from '../../components/CLoading'
 import api from '../../services/api'
@@ -53,10 +54,6 @@ const Page: FC = () => {
       </ScrollView>
     </View>
   )
-}
-
-Page.config = {
-  navigationBarTitleText: '我的粉丝'
 }
 
 export default Page
