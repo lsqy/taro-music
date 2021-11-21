@@ -15,6 +15,30 @@
 
 **目前已将`taro`的版本升级到最新版本`2.1.5`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
 
+##### **重要说明**
+
+`taro`现在已经发布了`3.0`,目前该项目尚未进行升级适配，所以当安装`@tarojs/cli`的时候需要注意加上版本号，也就是需要按照下方说明来看下执行的命令是否正确
+
+```
+  如果之前有安装其他版本的@tarojs/cli，需要先全局卸载，执行下方命令,执行完后再执行下方两步
+  npm uninstall -g @tarojs/cli
+  rm -rf node_modules
+  ---------------
+  第一步
+  npm install -g @tarojs/cli@2.1.5
+  or
+  cnpm install -g @tarojs/cli@2.1.5
+  or
+  yarn global add @tarojs/cli@2.1.5
+
+  第二步
+  npm install
+  or
+  cnpm install
+  or
+  yarn
+```
+
 **首先需要在 src 目录下创建一个`config.ts`**,这样可以根据自己的需要将其替换成线上地址，接口服务是使用的[NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi/#/)
 
 ```

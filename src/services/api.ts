@@ -30,20 +30,20 @@ export default {
       }
     }) => {
       if (res.cookies && res.cookies.length > 0) {
-        let cookies = ''
+        let cookies = Taro.getStorageSync('cookies') || '';
         res.cookies.forEach((cookie, index) => {
           // windows的微信开发者工具返回的是cookie格式是有name和value的,在mac上是只是字符串的
           if (cookie.name && cookie.value) {
             cookies += index === res.cookies.length - 1 ? `${cookie.name}=${cookie.value};expires=${cookie.expires};path=${cookie.path}` : `${cookie.name}=${cookie.value};`
           } else {
-            cookies += `${cookie};`     
-          } 
+            cookies += `${cookie};`
+          }
         });
         Taro.setStorageSync('cookies', cookies)
       }
-      if (res.header && res.header['Set-Cookie']) {
-        Taro.setStorageSync('cookies', res.header['Set-Cookie'])
-      }
+      // if (res.header && res.header['Set-Cookie']) {
+      //   Taro.setStorageSync('cookies', res.header['Set-Cookie'])
+      // }
     }
     const option: OptionType = {
       url: url.indexOf('http') !== -1 ? url : baseUrl + url,
@@ -56,7 +56,7 @@ export default {
       // mode: 'cors',
       xhrFields: { withCredentials: true },
       success(res) {
-        // console.log('res', res)
+        console.log('res', res)
         setCookie(res)
         if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
           return logError('api', '请求资源不存在')
@@ -98,5 +98,3 @@ export default {
     return this.baseOptions(option, 'DELETE')
   }
 }
-
-
