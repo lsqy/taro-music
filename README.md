@@ -17,6 +17,10 @@
 
 #### 注意事项
 
+**taro3 迁移正在进行中**，感兴趣的可以切换到[feature_upgrade_taro3.0](https://github.com/lsqy/taro-music/tree/feature_upgrade_taro3.0)这个分支进行查看，目前大多数页面可以正常访问，还有一些细节有待进一步完善。
+
+<hr/>
+
 **目前已将`taro`的版本升级到最新版本`2.1.5`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
 
 ##### **重要说明**
