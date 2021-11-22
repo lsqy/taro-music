@@ -240,12 +240,12 @@ class Page extends Component<IProps, PageState> {
         <View className="header">
           <View className="header__left" onClick={this.goUserDetail.bind(this)}>
             <Image
-              src={`${userInfo.profile.avatarUrl}?imageView&thumbnail=250x0`}
+              src={`${userInfo?.profile?.avatarUrl}?imageView&thumbnail=250x0`}
               className="header__img"
             />
             <View className="header__info">
               <View className="header__info__name">
-                {userInfo.profile.nickname}
+                {userInfo?.profile?.nickname}
               </View>
               <View>
                 <Text className="header__info__level">LV.{userInfo.level}</Text>
@@ -267,7 +267,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpEventPage.bind(this)}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.eventCount || 0}
+              {userInfo?.profile?.eventCount || 0}
             </View>
             <View>动态</View>
           </View>
@@ -276,7 +276,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpPage.bind(this, "myFocus")}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.newFollows || 0}
+              {userInfo?.profile?.newFollows || 0}
             </View>
             <View>关注</View>
           </View>
@@ -285,7 +285,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpPage.bind(this, "myFans")}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.followeds || 0}
+              {userInfo?.profile?.followeds || 0}
             </View>
             <View>粉丝</View>
           </View>
