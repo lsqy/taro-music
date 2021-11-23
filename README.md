@@ -9,6 +9,10 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/lsqy/taro-music.svg?style=flat&label=Watch)](https://github.com/lsqy/taro-music/watchers)
 [![GitHub](https://img.shields.io/github/license/lsqy/taro-music)](https://github.com/lsqy/taro-music/blob/master/LICENSE)
 
+### 特别注意
+
+**注意该分支尚未完全迁移 taro3 成功**
+
 ### 快速开始
 
 #### 注意事项

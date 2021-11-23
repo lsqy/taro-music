@@ -1,8 +1,8 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "@tarojs/redux";
+import { connect } from "../../utils/connect";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
 import {
@@ -11,7 +11,7 @@ import {
   updatePlayStatus
 } from "../../actions/song";
 import { getDjListDetail } from "../../actions/dj";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import { formatCount } from "../../utils/common";
 import { songType, djListType } from "../../constants/commonType";
 import "./index.scss";
@@ -30,7 +30,7 @@ type PageDispatchProps = {
 
 type PageState = {};
 
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song, dj }) => ({
     song: song,
@@ -52,9 +52,6 @@ type PageState = {};
   })
 )
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
-  config: Config = {
-    navigationBarTitleText: "歌单详情"
-  };
 
   constructor(props) {
     super(props);
@@ -62,7 +59,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillMount() {
-    const { id, name } = this.$router.params;
+    const { id, name = "" } = getCurrentInstance()?.router?.params || {};
     Taro.setNavigationBarTitle({
       title: name
     });
@@ -203,4 +200,4 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass;
+export default Page;

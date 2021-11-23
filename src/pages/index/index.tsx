@@ -1,13 +1,13 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
+import { Component } from "react";
 import { View, Image, Text, Swiper, SwiperItem } from "@tarojs/components";
 import { AtTabBar, AtSearchBar, AtIcon } from "taro-ui";
-import { connect } from "@tarojs/redux";
+import { connect } from "../../utils/connect";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
 import api from "../../services/api";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import { songType } from "../../constants/commonType";
 import {
   getRecommendPlayList,
@@ -75,16 +75,15 @@ interface Index {
   props: IProps;
 }
 
-@injectPlaySong()
-@connect(
-  ({ song }) => ({
+// @injectPlaySong()
+@connect(({ song }) => ({
     song: song,
     recommendPlayList: song.recommendPlayList,
     recommendDj: song.recommendDj,
     recommendNewSong: song.recommendNewSong,
     recommend: song.recommend
   }),
-  dispatch => ({
+  (dispatch) => ({
     getRecommendPlayList() {
       dispatch(getRecommendPlayList());
     },
@@ -103,20 +102,8 @@ interface Index {
     updatePlayStatus(object) {
       dispatch(updatePlayStatus(object));
     }
-  })
-)
+}))
 class Index extends Component<IProps, PageState> {
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: "网易云音乐"
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -214,7 +201,7 @@ class Index extends Component<IProps, PageState> {
     });
   }
 
-  goPage(pageName) {
+  goPage() {
     // Taro.navigateTo({
     //   url: `/pages/${pageName}/index`
     // })
@@ -375,4 +362,4 @@ class Index extends Component<IProps, PageState> {
   }
 }
 
-export default Index as ComponentClass<IProps, PageState>;
+export default Index;

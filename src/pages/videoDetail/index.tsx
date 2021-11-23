@@ -1,4 +1,5 @@
-import Taro, { useState, useEffect, useRouter, FC } from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { useState, useEffect, FC } from 'react'
 import { View, Video, Text, Image, ScrollView } from '@tarojs/components'
 import classnames from 'classnames'
 import { AtIcon } from 'taro-ui'
@@ -24,7 +25,7 @@ type videoInfo = {
       id: number,
       name: string
     }>
-  } 
+  }
 type mvInfo = {
     cover: string,
     name: string,
@@ -123,8 +124,8 @@ const Page: FC = () => {
       more: true
     }
   )
-  const router = useRouter()
-  const routerParams = router.params
+  const instance = getCurrentInstance()
+  const routerParams = instance?.router?.params || {}
   const { id } = routerParams
   useEffect(() => {
     setType(routerParams.type)
@@ -132,7 +133,7 @@ const Page: FC = () => {
   }, [id])
 
   function getDetailByType(id) {
-    const { type } = router.params
+    const { type } = instance?.router?.params || {}
     if (type === 'mv') {
       getMvDetail(id)
     } else {
@@ -208,7 +209,7 @@ const Page: FC = () => {
   }
 
   function getCommentInfo() {
-    const { type, id } = router.params
+    const { type, id } = instance?.router?.params || {}
     // const type = 'video'
     // const id = '5DCA972C0F5C920F22F91997A931D326'
     api.get(`/comment/${type}`, {
@@ -220,9 +221,9 @@ const Page: FC = () => {
       if (data.comments) {
         setCommentInfo({
           commentList: commentInfo.commentList.concat(data.comments),
-          more: data.more     
+          more: data.more
         })
-      } 
+      }
     })
   }
 
@@ -262,7 +263,7 @@ const Page: FC = () => {
                 {videoInfo.title}
               </View>
               <View className='videoDetail__play__desc'>
-                <Text className='videoDetail__play__playtime'>{ formatCount(videoInfo.playTime) }次观看</Text> 
+                <Text className='videoDetail__play__playtime'>{ formatCount(videoInfo.playTime) }次观看</Text>
                 {
                   videoInfo.videoGroup.map((videoGroupItem) => <Text className='videoDetail__play__tag' key={videoGroupItem.id}>{videoGroupItem.name}</Text>)
                 }
@@ -298,10 +299,10 @@ const Page: FC = () => {
                 <AtIcon value={showMoreInfo ? 'chevron-up' : 'chevron-down'} size='20' color='#323232' onClick={() => switchMoreInfo()}></AtIcon>
               </View>
               <View className='videoDetail__play__desc'>
-                <Text className='videoDetail__play__playtime'>{ formatCount(mvInfo.playCount) }次观看</Text> 
+                <Text className='videoDetail__play__playtime'>{ formatCount(mvInfo.playCount) }次观看</Text>
               </View>
               {
-                showMoreInfo ? 
+                showMoreInfo ?
                 <View className='videoDetail__play__descinfo'>
                   <View>
                     发行： {mvInfo.publishTime}
@@ -336,7 +337,7 @@ const Page: FC = () => {
               </View>
               <View className='videoDetail__play__user'>
                 <Image src={mvInfo.avatarUrl} className='videoDetail__play__user__cover'/>
-                <Text>{mvInfo.artists[0].name}</Text>
+                <Text>{mvInfo.artists[0]?.name}</Text>
               </View>
             </View>
           }
@@ -410,7 +411,7 @@ const Page: FC = () => {
             </View>
             <View className='videoDetail__comment__info'>
               {
-                commentInfo.commentList.map((item) => 
+                commentInfo.commentList.map((item) =>
                   <View key={item.commentId} className='videoDetail__comment__info__item'>
                     <View className='flex flex-between'>
                       <View className='flex flex-align-center'>
@@ -437,14 +438,10 @@ const Page: FC = () => {
               }
             </View>
             { commentInfo.more ? <CLoading /> : ''}
-          </View>  
+          </View>
         </ScrollView>
       </View>
     )
-}
-
-Page.config = {
-  navigationBarTitleText: '精彩视频'
 }
 
 export default Page

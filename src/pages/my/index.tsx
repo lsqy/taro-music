@@ -1,13 +1,13 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro from "@tarojs/taro";
 import { AtTabBar, AtIcon, AtSearchBar } from "taro-ui";
 import classnames from "classnames";
 import { View, Image, Text } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
+import { connect } from "../../utils/connect";
 import CLoading from "../../components/CLoading";
 import api from "../../services/api";
 import CMusic from "../../components/CMusic";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import { getSongInfo, updatePlayStatus } from "../../actions/song";
 import { formatCount } from "../../utils/common";
 import { songType } from "../../constants/commonType";
@@ -61,7 +61,7 @@ type PageState = {
 // interface Page {
 //   props: PageStateProps;
 // }
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song }) => ({
     song: song
@@ -76,17 +76,6 @@ type PageState = {
   })
 )
 class Page extends Component<IProps, PageState> {
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: "我的"
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -251,12 +240,12 @@ class Page extends Component<IProps, PageState> {
         <View className="header">
           <View className="header__left" onClick={this.goUserDetail.bind(this)}>
             <Image
-              src={`${userInfo.profile.avatarUrl}?imageView&thumbnail=250x0`}
+              src={`${userInfo?.profile?.avatarUrl}?imageView&thumbnail=250x0`}
               className="header__img"
             />
             <View className="header__info">
               <View className="header__info__name">
-                {userInfo.profile.nickname}
+                {userInfo?.profile?.nickname}
               </View>
               <View>
                 <Text className="header__info__level">LV.{userInfo.level}</Text>
@@ -278,7 +267,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpEventPage.bind(this)}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.eventCount || 0}
+              {userInfo?.profile?.eventCount || 0}
             </View>
             <View>动态</View>
           </View>
@@ -287,7 +276,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpPage.bind(this, "myFocus")}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.newFollows || 0}
+              {userInfo?.profile?.newFollows || 0}
             </View>
             <View>关注</View>
           </View>
@@ -296,7 +285,7 @@ class Page extends Component<IProps, PageState> {
             onClick={this.jumpPage.bind(this, "myFans")}
           >
             <View className="user_count__sub--num">
-              {userInfo.profile.followeds || 0}
+              {userInfo?.profile?.followeds || 0}
             </View>
             <View>粉丝</View>
           </View>
@@ -419,4 +408,4 @@ class Page extends Component<IProps, PageState> {
   }
 }
 
-export default Page as ComponentClass<PageDispatchProps, PageState>;
+export default Page;

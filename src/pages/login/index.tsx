@@ -1,4 +1,5 @@
-import Taro, { FC, useState } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
+import { FC, useState } from "react";
 import { View, Input } from "@tarojs/components";
 import { AtIcon, AtButton, AtToast } from "taro-ui";
 import CTitle from "../../components/CTitle";
@@ -114,7 +115,4 @@ const Page: FC = () => {
   );
 };
 
-Page.config = {
-  navigationBarTitleText: "登录"
-};
 export default Page;

@@ -1,13 +1,13 @@
-import { ComponentClass } from "react";
-import Taro, { Component, Config } from "@tarojs/taro";
+import { Component } from "react";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text, ScrollView } from "@tarojs/components";
 import { AtSearchBar, AtTabs, AtTabsPane, AtIcon } from "taro-ui";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
-import { connect } from "@tarojs/redux";
+import { connect } from "../../utils/connect";
 import CMusic from "../../components/CMusic";
 import CWhiteSpace from "../../components/CWhiteSpace";
-import { injectPlaySong } from "../../utils/decorators";
+// import { injectPlaySong } from "../../utils/decorators";
 import {
   updateCanplayList,
   getSongInfo,
@@ -254,7 +254,7 @@ type PageState = {
   }>;
 };
 
-@injectPlaySong()
+// @injectPlaySong()
 @connect(
   ({ song }) => ({
     song: song
@@ -272,20 +272,10 @@ type PageState = {
   })
 )
 class Page extends Component<IProps, PageState> {
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
-  config: Config = {
-    navigationBarTitleText: "搜索"
-  };
 
   constructor(props) {
     super(props);
-    const { keywords } = this.$router.params;
+    const { keywords = "" } = getCurrentInstance()?.router?.params || {};
     this.state = {
       // keywords: '海阔天空',
       keywords,
@@ -982,7 +972,7 @@ class Page extends Component<IProps, PageState> {
                     <View>
                       <View className="search_content__title">歌单</View>
                       <View>
-                        {totalInfo.playListInfo.playLists.map((item, index) => (
+                        {totalInfo.playListInfo.playLists.map((item) => (
                           <View
                             className="search_content__playList__item"
                             key={item.id}
@@ -1390,7 +1380,7 @@ class Page extends Component<IProps, PageState> {
                 className="search_content__scroll"
               >
                 <CWhiteSpace size="sm" color="#fff" />
-                {videoInfo.videos.map((item, index) => (
+                {videoInfo.videos.map((item) => (
                   <View
                     className="search_content__video__item"
                     key={item.vid}
@@ -1620,4 +1610,4 @@ class Page extends Component<IProps, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass;
+export default Page;

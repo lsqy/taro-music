@@ -1,0 +1,26 @@
+export default {
+  pages: [
+    "pages/index/index",
+    "pages/my/index",
+    "pages/playListDetail/index",
+    "pages/dailyRecommend/index",
+    "pages/videoDetail/index",
+    "pages/search/index",
+    "pages/user/index",
+    "pages/djprogramListDetail/index",
+    "pages/searchResult/index",
+    "pages/songDetail/index",
+    "pages/myFans/index",
+    "pages/myFocus/index",
+    "pages/myEvents/index",
+    "pages/login/index",
+    "pages/recentPlay/index",
+  ],
+  window: {
+    backgroundTextStyle: "light",
+    navigationBarBackgroundColor: "#d43c33",
+    navigationBarTitleText: "WeChat",
+    navigationBarTextStyle: "white",
+  },
+  requiredBackgroundModes: ["audio"],
+};
