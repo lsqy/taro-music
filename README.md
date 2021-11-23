@@ -17,15 +17,15 @@
 
 #### 注意事项
 
-**taro3 迁移正在进行中**，感兴趣的可以切换到[feature_upgrade_taro3.0](https://github.com/lsqy/taro-music/tree/feature_upgrade_taro3.0)这个分支进行查看，目前大多数页面可以正常运行，还有一些细节有待进一步完善。
+**taro3.3.14 已迁移完毕**，目前大多数页面可以正常运行，迁移后性能比之前的`taro2.x`有所提升，还有一些细节有待进一步完善。
 
 <hr/>
 
-**目前已将`taro`的版本升级到最新版本`2.1.5`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
+**目前已将`taro`的版本升级到最新版本`3.3.14`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
 
 ##### **重要说明**
 
-`taro`现在已经发布了`3.0`,目前该项目尚未进行升级适配，所以当安装`@tarojs/cli`的时候需要注意加上版本号，也就是需要按照下方说明来看下执行的命令是否正确
+安装`@tarojs/cli`的时候需要注意加上版本号，也就是需要按照下方说明来看下执行的命令是否正确
 
 ```
   如果之前有安装其他版本的@tarojs/cli，需要先全局卸载，执行下方命令,执行完后再执行下方两步
@@ -33,11 +33,11 @@
   rm -rf node_modules
   ---------------
   第一步
-  npm install -g @tarojs/cli@2.1.5
+  npm install -g @tarojs/cli@3.3.14
   or
-  cnpm install -g @tarojs/cli@2.1.5
+  cnpm install -g @tarojs/cli@3.3.14
   or
-  yarn global add @tarojs/cli@2.1.5
+  yarn global add @tarojs/cli@3.3.14
 
   第二步
   npm install
@@ -105,6 +105,10 @@ npm run dev:weapp
 - [x] 热搜列表
 - [x] 搜索（包含单曲/歌单/视频/歌手/专辑/电台/用户）
 - [x] 统一的播放组件，方便进行切换页面后可以随时进入到播放页面
+- [x] 搜索功能
+- [x] 视频播放
+- [x] mv 播放
+- [x] 视频与 mv 中的评论列表
 
 ### 目录结构简要介绍
 
@@ -139,10 +143,7 @@ npm run dev:weapp
 
 ### 最近更新
 
-- [x] 搜索功能
-- [x] 视频播放
-- [x] mv 播放
-- [x] 视频与 mv 中的评论列表
+- [x] 升级 taro3 完毕
 
 <div align="center">
   <image width="900" src="https://oscimg.oschina.net/oscnet/498fdfc98cc89d72196dded4f54afa29ed4.jpg"/>
