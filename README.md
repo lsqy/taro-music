@@ -13,7 +13,7 @@
 
 #### 注意事项
 
-**taro3.3.14 已迁移完毕**，目前大多数页面可以正常运行，迁移后性能比之前的`taro2.x`有所提升，还有一些细节有待进一步完善，如需查看 taro2.x 版本可自行切换到[feature_taro2.x](https://github.com/lsqy/taro-music/tree/feature_taro2.x)该分支查看
+**taro3.3.14 已迁移完毕**，目前大多数页面可以正常运行，迁移后性能比之前的`taro2.x`有所提升，还有一些细节有待进一步完善，如需查看 `taro2.x` 版本可自行切换到[feature_taro2.x](https://github.com/lsqy/taro-music/tree/feature_taro2.x)该分支查看
 
 <hr/>
 
