@@ -2,7 +2,7 @@ import { Component } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "react-redux";
+import { connect } from "../../utils/connect";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
 import {
@@ -51,7 +51,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   }
 
   componentWillMount() {
-    const { id, name } = getCurrentInstance().router.params;
+    const { id, name = "" } = getCurrentInstance()?.router?.params || {};
     Taro.setNavigationBarTitle({
       title: name
     });

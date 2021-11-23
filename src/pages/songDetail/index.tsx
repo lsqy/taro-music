@@ -2,7 +2,7 @@ import { Component } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "react-redux";
+import { connect } from "../../utils/connect";
 import CLyric from "../../components/CLyric";
 import CSlider from "../../components/CSlider";
 import {
@@ -64,7 +64,7 @@ interface Page {
     song: song
   }),
   dispatch => ({
-    getSongInfo(object) {
+    getSongInfo(object: any) {
       dispatch(getSongInfo(object));
     },
     changePlayMode(object) {
@@ -182,7 +182,7 @@ class Page extends Component {
 
   componentDidMount() {
     const that = this;
-    const { id } = getCurrentInstance()?.router?.params;
+    const { id } = getCurrentInstance()?.router?.params || {};
     // const id = 1341964346
     this.props.getSongInfo({
       id

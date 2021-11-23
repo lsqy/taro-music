@@ -3,7 +3,7 @@ import Taro from "@tarojs/taro";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import { View } from "@tarojs/components";
 import api from "../../services/api";
-import { connect } from "react-redux";
+import { connect } from "../../utils/connect";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
 import CMusic from "../../components/CMusic";
@@ -225,7 +225,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
             {list.length === 0 ? (
               <CLoading />
             ) : (
-              list.map((item, index) => (
+              list.map((item) => (
                 <View key={item.song.id} className="recentPlay__music">
                   <View
                     className="recentPlay__music__info"

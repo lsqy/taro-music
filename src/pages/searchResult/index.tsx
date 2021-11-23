@@ -4,7 +4,7 @@ import { View, Image, Text, ScrollView } from "@tarojs/components";
 import { AtSearchBar, AtTabs, AtTabsPane, AtIcon } from "taro-ui";
 import classnames from "classnames";
 import CLoading from "../../components/CLoading";
-import { connect } from "react-redux";
+import { connect } from "../../utils/connect";
 import CMusic from "../../components/CMusic";
 import CWhiteSpace from "../../components/CWhiteSpace";
 // import { injectPlaySong } from "../../utils/decorators";
@@ -275,7 +275,7 @@ class Page extends Component<IProps, PageState> {
 
   constructor(props) {
     super(props);
-    const { keywords } = getCurrentInstance().router.params;
+    const { keywords = "" } = getCurrentInstance()?.router?.params || {};
     this.state = {
       // keywords: '海阔天空',
       keywords,
@@ -972,7 +972,7 @@ class Page extends Component<IProps, PageState> {
                     <View>
                       <View className="search_content__title">歌单</View>
                       <View>
-                        {totalInfo.playListInfo.playLists.map((item, index) => (
+                        {totalInfo.playListInfo.playLists.map((item) => (
                           <View
                             className="search_content__playList__item"
                             key={item.id}
@@ -1380,7 +1380,7 @@ class Page extends Component<IProps, PageState> {
                 className="search_content__scroll"
               >
                 <CWhiteSpace size="sm" color="#fff" />
-                {videoInfo.videos.map((item, index) => (
+                {videoInfo.videos.map((item) => (
                   <View
                     className="search_content__video__item"
                     key={item.vid}
@@ -1610,4 +1610,4 @@ class Page extends Component<IProps, PageState> {
 //
 // #endregion
 
-export default Page as ComponentClass;
+export default Page;
