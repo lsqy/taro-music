@@ -54,6 +54,11 @@ type PageState = {
 
 const backgroundAudioManager = Taro.getBackgroundAudioManager();
 
+interface Page {
+  props: PageStateProps & PageDispatchProps;
+  state: PageState;
+}
+
 @connect(
   ({ song }) => ({
     song: song
@@ -76,7 +81,7 @@ const backgroundAudioManager = Taro.getBackgroundAudioManager();
     }
   })
 )
-class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
+class Page extends Component {
 
   constructor(props) {
     super(props);
@@ -177,7 +182,7 @@ class Page extends Component<PageStateProps & PageDispatchProps, PageState> {
 
   componentDidMount() {
     const that = this;
-    const { id } = getCurrentInstance().router.params;
+    const { id } = getCurrentInstance()?.router?.params;
     // const id = 1341964346
     this.props.getSongInfo({
       id

@@ -125,7 +125,7 @@ const Page: FC = () => {
     }
   )
   const instance = getCurrentInstance()
-  const routerParams = instance.router.params
+  const routerParams = instance?.router?.params || {}
   const { id } = routerParams
   useEffect(() => {
     setType(routerParams.type)
@@ -133,7 +133,7 @@ const Page: FC = () => {
   }, [id])
 
   function getDetailByType(id) {
-    const { type } = instance.router.params
+    const { type } = instance?.router?.params || {}
     if (type === 'mv') {
       getMvDetail(id)
     } else {
@@ -209,7 +209,7 @@ const Page: FC = () => {
   }
 
   function getCommentInfo() {
-    const { type, id } = instance.router.params
+    const { type, id } = instance?.router?.params || {}
     // const type = 'video'
     // const id = '5DCA972C0F5C920F22F91997A931D326'
     api.get(`/comment/${type}`, {
