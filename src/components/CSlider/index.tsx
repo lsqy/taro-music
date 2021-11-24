@@ -9,7 +9,8 @@ type Props = {
   onChanging: (object) => any;
 };
 
-const CSlider: FC<Props> = ({ percent }) => {
+
+const CSlider: FC<Props> = ({ percent, onChange, onChanging }) => {
   // console.log("CSlider render");
   return (
     <View className="slider_components">
@@ -17,8 +18,8 @@ const CSlider: FC<Props> = ({ percent }) => {
         value={percent}
         blockSize={15}
         activeColor="#d43c33"
-        onChange={e => this.props.onChange(e)}
-        onChanging={e => this.props.onChanging(e)}
+        onChange={e => onChange(e)}
+        onChanging={e => onChanging(e)}
       />
     </View>
   );
