@@ -177,7 +177,7 @@ class Index extends Component<IProps, PageState> {
   getBanner() {
     api
       .get("/banner", {
-        type: 2
+        type: 1
       })
       .then(({ data }) => {
         console.log("banner", data);

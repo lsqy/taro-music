@@ -243,7 +243,6 @@ class Page extends Component {
   }
 
   percentChange(e) {
-    console.log(e)
     const { value } = e.detail;
     const { dt } = this.props.song.currentSongInfo;
     let currentPosition = Math.floor(((dt / 1000) * value) / 100);

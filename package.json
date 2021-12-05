@@ -1,6 +1,6 @@
 {
 	"name": "taro-music",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"private": true,
 	"description": "",
 	"scripts": {
@@ -27,11 +27,6 @@
 		"@tarojs/router": "3.3.14",
 		"@tarojs/runtime": "3.3.14",
 		"@tarojs/taro": "3.3.14",
-		"@tarojs/taro-alipay": "2.2.18",
-		"@tarojs/taro-h5": "3.3.14",
-		"@tarojs/taro-swan": "2.2.18",
-		"@tarojs/taro-tt": "2.2.18",
-		"@tarojs/taro-weapp": "2.2.18",
 		"classnames": "^2.2.6",
 		"nerv-devtools": "^1.5.7",
 		"nervjs": "^1.5.7",
