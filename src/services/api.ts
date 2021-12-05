@@ -29,21 +29,27 @@ export default {
         'Set-Cookie': string
       }
     }) => {
-      if (res.cookies && res.cookies.length > 0) {
-        let cookies = Taro.getStorageSync('cookies') || '';
+      if (res.cookies && res.cookies.length > 0 && url.indexOf('login/cellphone') !== -1) {
+        // console.info("res ===>", res)
+        let cookies = '';
         res.cookies.forEach((cookie, index) => {
           // windows的微信开发者工具返回的是cookie格式是有name和value的,在mac上是只是字符串的
           if (cookie.name && cookie.value) {
             cookies += index === res.cookies.length - 1 ? `${cookie.name}=${cookie.value};expires=${cookie.expires};path=${cookie.path}` : `${cookie.name}=${cookie.value};`
           } else {
-            cookies += `${cookie};`
+            cookies += `${cookie}`
           }
         });
+        // console.info("cookies ===>", cookies)
         Taro.setStorageSync('cookies', cookies)
       }
       // if (res.header && res.header['Set-Cookie']) {
       //   Taro.setStorageSync('cookies', res.header['Set-Cookie'])
       // }
+    }
+    data = {
+      ...data,
+      timestamp: new Date().getTime()
     }
     const option: OptionType = {
       url: url.indexOf('http') !== -1 ? url : baseUrl + url,
