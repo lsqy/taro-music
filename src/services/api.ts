@@ -40,16 +40,13 @@ export default {
             cookies += `${cookie}`
           }
         });
-        // console.info("cookies ===>", cookies)
         Taro.setStorageSync('cookies', cookies)
       }
-      // if (res.header && res.header['Set-Cookie']) {
-      //   Taro.setStorageSync('cookies', res.header['Set-Cookie'])
-      // }
     }
     data = {
       ...data,
-      timestamp: new Date().getTime()
+      timestamp: new Date().getTime(),
+      cookie: Taro.getStorageSync('cookies')
     }
     const option: OptionType = {
       url: url.indexOf('http') !== -1 ? url : baseUrl + url,
@@ -57,7 +54,7 @@ export default {
       method: method,
       header: {
         'content-type': contentType,
-        cookie: Taro.getStorageSync('cookies')
+        // cookie: Taro.getStorageSync('cookies')
       },
       // mode: 'cors',
       xhrFields: { withCredentials: true },
