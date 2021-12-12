@@ -2,17 +2,17 @@ import { Component } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "../../utils/connect";
-import CLyric from "../../components/CLyric";
-import CSlider from "../../components/CSlider";
+import { connect } from "../../../../utils/connect";
+import CLyric from "../../../../components/CLyric";
+import CSlider from "../../../../components/CSlider";
 import {
   getSongInfo,
   changePlayMode,
   getLikeMusicList,
   likeMusic,
   updatePlayStatus
-} from "../../actions/song";
-import { songType } from "../../constants/commonType";
+} from "../../../../actions/song";
+import { songType } from "../../../../constants/commonType";
 import "./index.scss";
 
 type PageStateProps = {
@@ -212,7 +212,7 @@ class Page extends Component {
       const routes = Taro.getCurrentPages();
       const currentRoute = routes[routes.length - 1].route;
       // 如果在当前页面则直接调用下一首的逻辑，反之则触发nextSong事件
-      if (currentRoute === "pages/songDetail/index") {
+      if (currentRoute === "pages/packageA/pages/songDetail/index") {
         this.playByMode(playMode);
       } else {
         Taro.eventCenter.trigger("nextSong");
@@ -400,11 +400,11 @@ class Page extends Component {
       star,
       playPercent
     } = this.state;
-    let playModeImg = require("../../assets/images/song/icn_loop_mode.png");
+    let playModeImg = require("../../../../assets/images/song/icn_loop_mode.png");
     if (playMode === "one") {
-      playModeImg = require("../../assets/images/song/icn_one_mode.png");
+      playModeImg = require("../../../../assets/images/song/icn_one_mode.png");
     } else if (playMode === "shuffle") {
-      playModeImg = require("../../assets/images/song/icn_shuffle_mode.png");
+      playModeImg = require("../../../../assets/images/song/icn_shuffle_mode.png");
     }
     return (
       <View className="song_container">
@@ -423,7 +423,7 @@ class Page extends Component {
           >
             <Image
               className="song__music__main--before"
-              src={require("../../assets/images/aag.png")}
+              src={require("../../../../assets/images/aag.png")}
             />
             <View className="song__music__main__cover">
               <View
@@ -472,33 +472,33 @@ class Page extends Component {
               onClick={this.changePlayMode.bind(this)}
             />
             <Image
-              src={require("../../assets/images/ajh.png")}
+              src={require("../../../../assets/images/ajh.png")}
               className="song__operation__prev"
               onClick={this.getPrevSong.bind(this)}
             />
             {isPlaying ? (
               <Image
-                src={require("../../assets/images/ajd.png")}
+                src={require("../../../../assets/images/ajd.png")}
                 className="song__operation__play"
                 onClick={this.pauseMusic.bind(this)}
               />
             ) : (
               <Image
-                src={require("../../assets/images/ajf.png")}
+                src={require("../../../../assets/images/ajf.png")}
                 className="song__operation__play"
                 onClick={this.playMusic.bind(this)}
               />
             )}
             <Image
-              src={require("../../assets/images/ajb.png")}
+              src={require("../../../../assets/images/ajb.png")}
               className="song__operation__next"
               onClick={this.getNextSong.bind(this)}
             />
             <Image
               src={
                 star
-                  ? require("../../assets/images/song/play_icn_loved.png")
-                  : require("../../assets/images/song/play_icn_love.png")
+                  ? require("../../../../assets/images/song/play_icn_loved.png")
+                  : require("../../../../assets/images/song/play_icn_love.png")
               }
               className="song__operation__like"
               onClick={this.likeMusic.bind(this)}

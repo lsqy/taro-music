@@ -2,35 +2,39 @@ import { Component } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text } from "@tarojs/components";
 import classnames from "classnames";
-import { connect } from "../../utils/connect";
-import CLoading from "../../components/CLoading";
-import CMusic from "../../components/CMusic";
+import { connect } from "../../../../utils/connect";
+import CLoading from "../../../../components/CLoading";
+import CMusic from "../../../../components/CMusic";
 import {
   getSongInfo,
   getPlayListDetail,
   updatePlayStatus
-} from "../../actions/song";
+} from "../../../../actions/song";
+import { getDjListDetail } from "../../../../actions/dj";
 // import { injectPlaySong } from "../../utils/decorators";
-import { formatCount } from "../../utils/common";
-import { songType } from "../../constants/commonType";
+import { formatCount } from "../../../../utils/common";
+import { songType, djListType } from "../../../../constants/commonType";
 import "./index.scss";
 
 type PageStateProps = {
   song: songType;
+  dj: djListType;
 };
 
 type PageDispatchProps = {
   getPlayListDetail: (object) => any;
   getSongInfo: (object) => any;
   updatePlayStatus: (object) => any;
+  getDjListDetail: (object) => any;
 };
 
 type PageState = {};
 
 // @injectPlaySong()
 @connect(
-  ({ song }) => ({
-    song: song
+  ({ song, dj }) => ({
+    song: song,
+    dj: dj
   }),
   dispatch => ({
     getPlayListDetail(payload) {
@@ -41,10 +45,14 @@ type PageState = {};
     },
     updatePlayStatus(object) {
       dispatch(updatePlayStatus(object));
+    },
+    getDjListDetail(object) {
+      dispatch(getDjListDetail(object));
     }
   })
 )
 class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -55,7 +63,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     Taro.setNavigationBarTitle({
       title: name
     });
-    this.props.getPlayListDetail({
+    this.props.getDjListDetail({
       id
     });
   }
@@ -69,7 +77,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
   playSong(songId, playStatus) {
     if (playStatus === 0) {
       Taro.navigateTo({
-        url: `/pages/songDetail/index?id=${songId}`
+        url: `/pages/packageA/pages/songDetail/index?id=${songId}`
       });
     } else {
       Taro.showToast({
@@ -184,5 +192,12 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     );
   }
 }
+
+// #region 导出注意
+//
+// 经过上面的声明后需要将导出的 Taro.Component 子类修改为子类本身的 props 属性
+// 这样在使用这个子类时 Ts 才不会提示缺少 JSX 类型参数错误
+//
+// #endregion
 
 export default Page;

@@ -3,24 +3,24 @@ import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Image, Text, ScrollView } from "@tarojs/components";
 import { AtSearchBar, AtTabs, AtTabsPane, AtIcon } from "taro-ui";
 import classnames from "classnames";
-import CLoading from "../../components/CLoading";
-import CWhiteSpace from "../../components/CWhiteSpace";
-import { connect } from "../../utils/connect";
-import CMusic from "../../components/CMusic";
+import CLoading from "../../../../components/CLoading";
+import CWhiteSpace from "../../../../components/CWhiteSpace";
+import { connect } from "../../../../utils/connect";
+import CMusic from "../../../../components/CMusic";
 // import { injectPlaySong } from "../../utils/decorators";
 import {
   updateCanplayList,
   getSongInfo,
   updatePlayStatus
-} from "../../actions/song";
-import { songType } from "../../constants/commonType";
+} from "../../../../actions/song";
+import { songType } from "../../../../constants/commonType";
 import {
   setKeywordInHistory,
   formatCount,
   formatNumber,
   formatTimeStampToTime
-} from "../../utils/common";
-import api from "../../services/api";
+} from "../../../../utils/common";
+import api from "../../../../services/api";
 import "./index.scss";
 
 type PageStateProps = {
@@ -487,7 +487,7 @@ class Page extends Component<IProps, PageState> {
       .then(res => {
         if (res.data.success) {
           Taro.navigateTo({
-            url: `/pages/songDetail/index?id=${songId}`
+            url: `/pages/packageA/pages/songDetail/index?id=${songId}`
           });
         } else {
           Taro.showToast({
@@ -514,7 +514,7 @@ class Page extends Component<IProps, PageState> {
           (type === "mv" && data.data.url)
         ) {
           Taro.navigateTo({
-            url: `/pages/videoDetail/index?id=${id}&type=${type}`
+            url: `/pages/packageA/pages/videoDetail/index?id=${id}&type=${type}`
           });
         } else {
           Taro.showToast({
@@ -739,7 +739,7 @@ class Page extends Component<IProps, PageState> {
 
   goPlayListDetail(item) {
     Taro.navigateTo({
-      url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+      url: `/pages/packageA/pages/playListDetail/index?id=${item.id}&name=${item.name}`
     });
   }
 

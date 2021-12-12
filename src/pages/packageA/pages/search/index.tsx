@@ -1,11 +1,11 @@
 import { Component } from 'react'
 import { AtSearchBar, AtIcon } from 'taro-ui'
 import Taro from '@tarojs/taro'
-import CLoading from '../../components/CLoading'
+import CLoading from '../../../../components/CLoading'
 import classnames from 'classnames'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { getKeywordInHistory, setKeywordInHistory, clearKeywordInHistory } from '../../utils/common'
-import api from '../../services/api'
+import { getKeywordInHistory, setKeywordInHistory, clearKeywordInHistory } from '../../../../utils/common'
+import api from '../../../../services/api'
 import './index.scss'
 
 
@@ -64,7 +64,7 @@ class Page extends Component<{}, PageState> {
   goResult(keywords) {
     setKeywordInHistory(keywords)
     Taro.navigateTo({
-      url: `/pages/searchResult/index?keywords=${keywords}`
+      url: `/pages/packageA/pages/searchResult/index?keywords=${keywords}`
     })
   }
 

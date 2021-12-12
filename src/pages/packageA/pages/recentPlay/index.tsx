@@ -2,19 +2,19 @@ import { Component } from "react";
 import Taro from "@tarojs/taro";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import { View } from "@tarojs/components";
-import api from "../../services/api";
-import { connect } from "../../utils/connect";
+import api from "../../../../services/api";
+import { connect } from "../../../../utils/connect";
 import classnames from "classnames";
-import CLoading from "../../components/CLoading";
-import CMusic from "../../components/CMusic";
+import CLoading from "../../../../components/CLoading";
+import CMusic from "../../../../components/CMusic";
 import {
   getSongInfo,
   updatePlayStatus,
   updateCanplayList,
   updateRecentTab
-} from "../../actions/song";
+} from "../../../../actions/song";
 // import { injectPlaySong } from "../../utils/decorators";
-import { MusicItemType, songType } from "../../constants/commonType";
+import { MusicItemType, songType } from "../../../../constants/commonType";
 import "./index.scss";
 
 type PageStateProps = {
@@ -125,7 +125,7 @@ class Page extends Component<PageDispatchProps & PageStateProps, PageState> {
     if (canPlay) {
       this.saveData(songId);
       Taro.navigateTo({
-        url: `/pages/songDetail/index?id=${songId}`
+        url: `/pages/packageA/pages/songDetail/index?id=${songId}`
       });
     } else {
       Taro.showToast({

@@ -70,7 +70,7 @@ export default {
         } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
           Taro.clearStorage()
           Taro.navigateTo({
-            url: '/pages/login/index'
+            url: '/pages/packageA/pages/login/index'
           })
           return logError('api', '请先登录')
         } else if (res.statusCode === HTTP_STATUS.SUCCESS) {

@@ -1,9 +1,9 @@
 import Taro from '@tarojs/taro'
 import { FC, useState, useEffect } from 'react'
 import { View, ScrollView } from '@tarojs/components'
-import CLoading from '../../components/CLoading'
-import api from '../../services/api'
-import CUserListItem from '../../components/CUserListItem'
+import CLoading from '../../../../components/CLoading'
+import api from '../../../../services/api'
+import CUserListItem from '../../../../components/CUserListItem'
 import './index.scss'
 
 type userList = Array<{

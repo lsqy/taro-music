@@ -27,7 +27,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
   function goDetail() {
     const { id } = currentSongInfo;
     Taro.navigateTo({
-      url: `/pages/songDetail/index?id=${id}`
+      url: `/pages/packageA/pages/songDetail/index?id=${id}`
     });
   }
 
@@ -48,7 +48,7 @@ const CMusic: FC<Props> = ({ songInfo, isHome, onUpdatePlayStatus }) => {
 
   function playSong(id) {
     Taro.navigateTo({
-      url: `/pages/songDetail/index?id=${id}`
+      url: `/pages/packageA/pages/songDetail/index?id=${id}`
     });
   }
 

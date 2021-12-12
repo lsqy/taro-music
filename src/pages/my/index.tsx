@@ -96,7 +96,7 @@ class Page extends Component<IProps, PageState> {
   componentDidShow() {
     if (!this.state.userInfo) {
       Taro.navigateTo({
-        url: "/pages/login/index"
+        url: "/pages/packageA/pages/login/index"
       });
       return;
     }
@@ -172,21 +172,22 @@ class Page extends Component<IProps, PageState> {
 
   goSearch() {
     Taro.navigateTo({
-      url: `/pages/search/index`
+      url: `/pages/packageA/pages/search/index`
     });
   }
 
   jumpPage(name) {
     Taro.navigateTo({
-      url: `/pages/${name}/index`
+      url: `/pages/packageA/pages/${name}/index`
     });
   }
 
   jumpEventPage() {
-    const { userId } = this.state.userInfo.profile;
-    Taro.navigateTo({
-      url: `/pages/myEvents/index?uid=${userId}`
-    });
+    this.showToast();
+    // const { userId } = this.state.userInfo.profile;
+    // Taro.navigateTo({
+    //   url: `/pages/packageA/pages/myEvents/index?uid=${userId}`
+    // });
   }
 
   signOut() {
@@ -195,13 +196,13 @@ class Page extends Component<IProps, PageState> {
       console.log("退出登陆", res);
     });
     Taro.redirectTo({
-      url: "/pages/login/index"
+      url: "/pages/packageA/pages/login/index"
     });
   }
 
   goDetail(item) {
     Taro.navigateTo({
-      url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+      url: `/pages/packageA/pages/playListDetail/index?id=${item.id}&name=${item.name}`
     });
   }
 

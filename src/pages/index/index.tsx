@@ -191,13 +191,13 @@ class Index extends Component<IProps, PageState> {
 
   goSearch() {
     Taro.navigateTo({
-      url: `/pages/search/index`
+      url: `/pages/packageA/pages/search/index`
     });
   }
 
   goDetail(item) {
     Taro.navigateTo({
-      url: `/pages/playListDetail/index?id=${item.id}&name=${item.name}`
+      url: `/pages/packageA/pages/playListDetail/index?id=${item.id}&name=${item.name}`
     });
   }
 
@@ -217,7 +217,7 @@ class Index extends Component<IProps, PageState> {
     //   icon: 'none'
     // })
     Taro.navigateTo({
-      url: `/pages/djprogramListDetail/index?id=${item.id}&name=${item.name}`
+      url: `/pages/packageA/pages/djprogramListDetail/index?id=${item.id}&name=${item.name}`
     });
   }
 

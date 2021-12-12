@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { FC, useState, useEffect } from 'react'
 import { View } from '@tarojs/components'
-import api from '../../services/api'
+import api from '../../../../services/api'
 import './index.scss'
 
 const Page: FC = () => {

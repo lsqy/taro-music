@@ -2,8 +2,8 @@ import Taro from "@tarojs/taro";
 import { FC, useState } from "react";
 import { View, Input } from "@tarojs/components";
 import { AtIcon, AtButton, AtToast } from "taro-ui";
-import CTitle from "../../components/CTitle";
-import api from "../../services/api";
+import CTitle from "../../../../components/CTitle";
+import api from "../../../../services/api";
 import "./index.scss";
 
 type InputType = "phone" | "password";
