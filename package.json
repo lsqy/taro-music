@@ -21,6 +21,7 @@
 	"author": "lsqy93@aliyun.com",
 	"license": "MIT",
 	"dependencies": {
+		"@tarojs/cli": "3.3.14",
 		"@tarojs/components": "3.3.14",
 		"@tarojs/mini-runner": "3.3.14",
 		"@tarojs/react": "3.3.14",
