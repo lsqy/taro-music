@@ -21,6 +21,8 @@
 
 ##### **重要说明**
 
+**推荐使用cnpm来安装依赖**
+
 安装`@tarojs/cli`的时候需要注意加上版本号，也就是需要按照下方说明来看下执行的命令是否正确
 
 ```
@@ -59,7 +61,7 @@ git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
 
 cd NeteaseCloudMusicApi
 
-npm i
+cnpm i
 
 npm run start
 
@@ -69,7 +71,8 @@ git clone https://github.com/lsqy/taro-music.git
 
 cd taro-music
 
-npm i
+cnpm i
+
 
 npm run dev:weapp
 
