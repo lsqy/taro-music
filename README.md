@@ -13,11 +13,11 @@
 
 #### 注意事项
 
-**taro3.3.14 已迁移完毕**，目前大多数页面可以正常运行，迁移后性能比之前的`taro2.x`有所提升，还有一些细节有待进一步完善，如需查看 `taro2.x` 版本可自行切换到[feature_taro2.x](https://github.com/lsqy/taro-music/tree/feature_taro2.x)该分支查看
+**taro3.6.20 已迁移完毕**，目前大多数页面可以正常运行，迁移后性能比之前的`taro2.x`有所提升，还有一些细节有待进一步完善，如需查看 `taro2.x` 版本可自行切换到[feature_taro2.x](https://github.com/lsqy/taro-music/tree/feature_taro2.x)该分支查看
 
 <hr/>
 
-**目前已将`taro`的版本升级到最新版本`3.3.14`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[Taro 环境及依赖检测](http://taro-docs.jd.com/taro/docs/GETTING-STARTED.html#%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BE%9D%E8%B5%96%E6%A3%80%E6%B5%8B)**
+**目前已将`taro`的版本升级到最新版本`3.6.20`,确保你本地的`taro-cli`的版本也是这个版本，可以通过`taro info`查看版本号，如果不是最新的话，可以通过执行`taro update self`(`mac`或者`linux`前面需要加上`sudo`)以及`taro update project`进行`cli`与项目依赖的更新保持一致，否则将会导致项目无法正常运行，了解更多详情可查看[保持 CLI 的版本与各端依赖版本一致](https://taro-docs.jd.com/docs/GETTING-STARTED#%E4%BF%9D%E6%8C%81-cli-%E7%9A%84%E7%89%88%E6%9C%AC%E4%B8%8E%E5%90%84%E7%AB%AF%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC%E4%B8%80%E8%87%B4)**
 
 ##### **重要说明**
 
@@ -31,11 +31,11 @@
   rm -rf node_modules
   ---------------
   第一步
-  npm install -g @tarojs/cli@3.3.14
+  npm install -g @tarojs/cli@3.6.20
   or
-  cnpm install -g @tarojs/cli@3.3.14
+  cnpm install -g @tarojs/cli@3.6.20
   or
-  yarn global add @tarojs/cli@3.3.14
+  yarn global add @tarojs/cli@3.6.20
 
   第二步
   npm install
